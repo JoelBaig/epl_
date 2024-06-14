@@ -1,22 +1,26 @@
 class World {
     character = new Character();
-    enemies = [
-        new ChickenBig(),
-        new ChickenBig(),
-        new ChickenBig(),
-
-        new ChickenSmall(),
-        new ChickenSmall(),
-        new ChickenSmall()
-    ];
-    endboss = new Endboss();
+    level = level1;
     canvas;
     ctx;
+    keyboard;
+    camera_x = -100;
+    cameraFollowEndX;
+    offset = [
 
-    constructor(canvas) {
+    ];
+
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
+    }
+
+
+    setWorld() {
+        this.character.world = this;
     }
 
     /**
@@ -25,9 +29,13 @@ class World {
      */
     draw() {
         this.clearCanvas();
-        this.drawCharacter();
-        this.drawEnemies();
-        this.drawEndboss();
+        this.moveCtxLeft();
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.endboss);
+        this.addToMap(this.character);
+        this.moveCtxRight();
         this.repeatDraw();
     }
 
@@ -39,34 +47,74 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    /**
-     * Draws the character object
-     * 
-     */
-    drawCharacter() {
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+
+    moveCtxLeft() {
+        this.ctx.translate(this.camera_x, 0);
+    }
+
+
+    moveCtxRight() {
+        this.ctx.translate(-this.camera_x, 0);
     }
 
     /**
-     * Draws the enemy object
+     * Renders an object on the canvas.
      * 
+     * @param {Object} mo - The object to be rendered on the canvas.
      */
-    drawEnemies() {
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+    addToMap(mo) {
+        this.handleObjectDirection(mo);
+        this.displayObject(mo);
+        this.resetObjectDirection(mo);
+    }
+
+
+    handleObjectDirection(mo) {
+        if (mo.otherDirection) {
+            this.flipImage(mo);
+        }
+    }
+
+
+    displayObject(mo) {
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+    }
+
+
+    resetObjectDirection(mo) {
+        if (mo.otherDirection) {
+            this.flipImageBack(mo);
+        }
+    }
+
+
+    flipImage(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
+
+
+    flipImageBack(mo) {
+        mo.x = mo.x * -1;
+        this.ctx.restore();
+    }
+
+    /**
+     * Adds objects to the map by rendering them on the canvas.
+     * 
+     * @param {Object[]} objects - An array of objects to be added to the map.
+     */
+    addObjectsToMap(objects) {
+        objects.forEach(object => {
+            this.addToMap(object);
         });
     }
 
     /**
-     * Draws the enboss object
-     * 
-     */
-    drawEndboss() {
-        this.ctx.drawImage(this.endboss.img, this.endboss.x, this.endboss.y, this.endboss.width, this.endboss.height);
-    }
-
-    /**
-     * Repeats draw() over and over again
+     * Repeatedly calls the draw() function to create an animation loop.
      * 
      */
     repeatDraw() {

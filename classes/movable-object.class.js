@@ -11,6 +11,12 @@ class MovableObject {
     speedY = 0;
     acceleration = 15;
     animationIntervals = [];
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
 
 
     applyGravity() {
@@ -62,15 +68,35 @@ class MovableObject {
     }
 
 
-    drawFrame(ctx) {
+    // drawFrame(ctx) {
+    //     if (this instanceof Character || this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) {
+    //         ctx.beginPath();
+    //         ctx.lineWidth = '5';
+    //         ctx.strokeStyle = 'blue';
+    //         ctx.rect(this.x, this.y, this.width, this.height);
+    //         ctx.stroke();
+    //     }
+    // }
+
+
+    drawRedFrame(ctx) {
         if (this instanceof Character || this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) {
             ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'red';
+            ctx.rect(this.x + this.offset.left, this.y + this.offset.top - this.offset.bottom, this.width - this.offset.right, this.height - this.offset.top);
             ctx.stroke();
         }
     }
+
+
+    isColliding(mo) {
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+    }
+
 
     playAnimation(images) {
         let i = this.currentImage % this.IMAGES_WALKING.length;

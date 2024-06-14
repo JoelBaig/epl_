@@ -16,6 +16,12 @@ class Endboss extends MovableObject {
         '../assets/img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
     animationStarted = false;
+    offset = {
+        top: 110,
+        left: 50,
+        right: 90,
+        bottom: 20
+    };
 
     constructor() {
         super().loadImage(this.IMAGE[0]);

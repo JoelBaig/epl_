@@ -6,9 +6,12 @@ class World {
     keyboard;
     camera_x = -100;
     cameraFollowEndX;
-    offset = [
-
-    ];
+    offset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
+    };
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -16,11 +19,23 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
 
     setWorld() {
         this.character.world = this;
+    }
+
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isColliding(enemy)) {
+                    console.log('collision with character', enemy)
+                };
+            });
+        }, 200);
     }
 
     /**
@@ -78,7 +93,8 @@ class World {
 
     displayObject(mo) {
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
+        mo.drawRedFrame(this.ctx);
     }
 
 

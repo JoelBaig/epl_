@@ -6,12 +6,10 @@ class World {
     keyboard;
     camera_x = -100;
     cameraFollowEndX;
-    offset = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
-    };
+    healthBar = new HealthBar();
+    coinBar = new CoinBar();
+    bottleBar = new BottleBar();
+    endbossHealthBar = new EndbossHealthBar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -32,10 +30,11 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
-                    console.log('collision with character', enemy)
+                    this.character.isHitted();
+                    this.healthBar.setPercentage(this.character.energy);
                 };
             });
-        }, 200);
+        }, 150);
     }
 
     /**
@@ -44,14 +43,40 @@ class World {
      */
     draw() {
         this.clearCanvas();
-        this.moveCtxLeft();
+        this.moveCtxForward();
+        this.drawObjects();
+        this.moveCtxBackward();
+        this.drawStatusBars();
+        this.moveCtxForward();
+        this.drawEnemies();
+        this.drawCharacter();
+        this.moveCtxBackward();
+        this.repeatDraw();
+    }
+
+
+    drawObjects() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
+    }
+
+
+    drawStatusBars() {
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+        this.addToMap(this.endbossHealthBar);
+    }
+
+
+    drawEnemies() {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
+    }
+
+
+    drawCharacter() {
         this.addToMap(this.character);
-        this.moveCtxRight();
-        this.repeatDraw();
     }
 
     /**
@@ -63,12 +88,12 @@ class World {
     }
 
 
-    moveCtxLeft() {
+    moveCtxForward() {
         this.ctx.translate(this.camera_x, 0);
     }
 
 
-    moveCtxRight() {
+    moveCtxBackward() {
         this.ctx.translate(-this.camera_x, 0);
     }
 

@@ -22,6 +22,20 @@ class Character extends MovableObject {
         '../assets/img/2_character_pepe/3_jump/J-38.png',
         '../assets/img/2_character_pepe/3_jump/J-39.png'
     ];
+    IMAGES_HURTING = [
+        '../assets/img/2_character_pepe/4_hurt/H-41.png',
+        '../assets/img/2_character_pepe/4_hurt/H-42.png',
+        '../assets/img/2_character_pepe/4_hurt/H-43.png'
+    ];
+    IMAGES_DYING = [
+        '../assets/img/2_character_pepe/5_dead/D-51.png',
+        '../assets/img/2_character_pepe/5_dead/D-52.png',
+        '../assets/img/2_character_pepe/5_dead/D-53.png',
+        '../assets/img/2_character_pepe/5_dead/D-54.png',
+        '../assets/img/2_character_pepe/5_dead/D-55.png',
+        '../assets/img/2_character_pepe/5_dead/D-56.png',
+        '../assets/img/2_character_pepe/5_dead/D-57.png'
+    ];
     world;
     speed = 20;
     walking_sound = new Audio('../assets/audio/running.mp3');
@@ -36,6 +50,8 @@ class Character extends MovableObject {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_HURTING);
+        this.loadImages(this.IMAGES_DYING);
         this.applyGravity();
         this.animate();
         this.jump();
@@ -52,8 +68,15 @@ class Character extends MovableObject {
 
 
         this.animationIntervals.push(setInterval(() => {
-            this.updateJumpAnimation();
-            this.updateWalkingAnimation();
+            if (this.isDead()) {
+                this.updateDyingAnimation();
+                // this.stopGame();
+            } else if (this.isHurt()) {
+                this.updateHurtingAnimation();
+            } else {
+                this.updateJumpingAnimation();
+                this.updateWalkingAnimation();
+            }
         }, 40));
     }
 
@@ -99,7 +122,21 @@ class Character extends MovableObject {
     }
 
 
-    updateJumpAnimation() {
+    updateDyingAnimation() {
+        if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DYING);
+        }
+    }
+
+
+    updateHurtingAnimation() {
+        if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURTING);
+        }
+    }
+
+
+    updateJumpingAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
         } else if (this.world.keyboard.SPACE) {
@@ -136,4 +173,10 @@ class Character extends MovableObject {
         }
         this.world.camera_x = this.cameraFollowEndX;
     }
+
+
+    // stopGame() {
+    //     this.speedY = 25;
+    //     // this.stopAnimation();
+    // }
 }

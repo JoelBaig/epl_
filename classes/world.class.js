@@ -10,6 +10,7 @@ class World {
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
     endbossHealthBar = new EndbossHealthBar();
+    throwableObjects = [new ThrowableObject()];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -17,7 +18,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
     }
 
 
@@ -26,15 +27,29 @@ class World {
     }
 
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.isHitted();
-                    this.healthBar.setPercentage(this.character.energy);
-                };
-            });
+            this.checkCollisions();
+            this.checkThrowObject();
         }, 150);
+    }
+
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.isHitted();
+                this.healthBar.setPercentage(this.character.energy);
+            };
+        });
+    }
+
+
+    checkThrowObject() {
+        if (this.keyboard.D) {
+            let bottle = new ThrowableObject(this.character.x + 20, this.character.y + 150);
+            this.throwableObjects.push(bottle);
+        }
     }
 
     /**
@@ -44,38 +59,36 @@ class World {
     draw() {
         this.clearCanvas();
         this.moveCtxForward();
-        this.drawObjects();
-        this.moveCtxBackward();
+        this.drawBackgroundObjects();
         this.drawStatusBars();
-        this.moveCtxForward();
-        this.drawEnemies();
-        this.drawCharacter();
+        this.drawMovableObjects();
         this.moveCtxBackward();
         this.repeatDraw();
     }
 
 
-    drawObjects() {
+    drawBackgroundObjects() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.throwableObjects);
     }
 
 
     drawStatusBars() {
+        this.moveCtxBackward();
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
         this.addToMap(this.endbossHealthBar);
+        this.moveCtxForward();
     }
 
 
-    drawEnemies() {
+    drawMovableObjects() {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
-    }
-
-
-    drawCharacter() {
         this.addToMap(this.character);
     }
 

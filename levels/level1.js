@@ -42,6 +42,20 @@ const level1 = new Level(
         new Cloud('../assets/img/5_background/layers/4_clouds/2.png', 3300, 0),
     ],
     [
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle()
+    ],
+    [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin()
+    ],
+    [
         new ChickenBig(),
         new ChickenBig(),
         new ChickenBig(),

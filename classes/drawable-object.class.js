@@ -6,6 +6,7 @@ class DrawableObject {
     img;
     imageCache = {};
     currentImage = 0;
+    intervalIds = [];
 
     /**
     * This function assigns a picture to the img variable
@@ -46,5 +47,16 @@ class DrawableObject {
             ctx.rect(this.x + this.offset.left, this.y + this.offset.top - this.offset.bottom, this.width - this.offset.right, this.height - this.offset.top);
             ctx.stroke();
         }
+    }
+
+
+    setStoppableIntervals(fn, time) {
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+    }
+
+
+    stopIntervals() {
+            this.intervalIds.forEach(clearInterval);
     }
 }

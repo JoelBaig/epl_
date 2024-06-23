@@ -41,9 +41,9 @@ class Character extends MovableObject {
     walking_sound = new Audio('../assets/audio/running.mp3');
     offset = {
         top: 120,
+        bottom: 15,
         left: 30,
-        right: 70,
-        bottom: 15
+        right: 60
     };
 
     constructor() {
@@ -59,29 +59,28 @@ class Character extends MovableObject {
 
 
     animate() {
-        this.animationIntervals.push(setInterval(() => {
-            this.walking_sound.pause();
+        this.setStoppableIntervals(() => {
             this.updateWalkingDirection();
             this.handleJump();
             this.updateCameraPosition();
-        }, 2500 / 60));
+        }, 2500 / 60);
 
 
-        this.animationIntervals.push(setInterval(() => {
+        this.setStoppableIntervals(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
-                // this.stopGame();
             } else if (this.isHurt()) {
                 this.updateHurtingAnimation();
             } else {
                 this.updateJumpingAnimation();
                 this.updateWalkingAnimation();
             }
-        }, 40));
+        }, 1000/ 10);
     }
 
 
     updateWalkingDirection() {
+        this.walking_sound.pause();
         this.handleWalkingRight();
         this.handleWalkingLeft();
     }
@@ -125,6 +124,10 @@ class Character extends MovableObject {
     updateDyingAnimation() {
         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DYING);
+            this.isFallingToGround();
+            setTimeout(() => {
+                this.stopIntervals();
+            }, 200);
         }
     }
 
@@ -173,10 +176,4 @@ class Character extends MovableObject {
         }
         this.world.camera_x = this.cameraFollowEndX;
     }
-
-
-    // stopGame() {
-    //     this.speedY = 25;
-    //     // this.stopAnimation();
-    // }
 }

@@ -3,7 +3,6 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     speedY = 0;
     acceleration = 15;
-    animationIntervals = [];
     offset = {
         top: 0,
         bottom: 0,
@@ -24,6 +23,9 @@ class MovableObject extends DrawableObject {
 
 
     isAboveGround() {
+        if (this instanceof ThrowableObject) {
+            return true;
+        }
         return this.y < 150;
     }
 
@@ -43,13 +45,21 @@ class MovableObject extends DrawableObject {
     //         ctx.stroke();
     //     }
     // }
-    
+
+
+    // isColliding(mo) {
+    //     return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+    //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+    //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+    //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+    // }
+
 
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     }
 
 
@@ -66,7 +76,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed <  0.5;
+        return timepassed < 0.5;
     }
 
 
@@ -80,12 +90,6 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
-    }
-
-
-    stopAnimation() {
-        this.animationIntervals.forEach(clearInterval); // Clear all intervals
-        this.animationIntervals = []; // Reset the array
     }
 
     /**

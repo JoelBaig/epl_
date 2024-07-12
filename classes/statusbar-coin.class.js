@@ -7,7 +7,7 @@ class CoinBar extends DrawableObject {
         '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
         '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png',
     ];
-    percentage = 100;
+    percentage = 0;
     y = 40;
     x = 10;
     height = 60;
@@ -16,7 +16,7 @@ class CoinBar extends DrawableObject {
     constructor() {
         super();
         this.loadImages(this.IMAGES);
-        this.setPercentage(100);
+        this.setPercentage(0);
     }
 
 

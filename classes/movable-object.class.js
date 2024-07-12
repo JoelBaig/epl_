@@ -10,7 +10,12 @@ class MovableObject extends DrawableObject {
         right: 0
     };
     energy = 100;
+    coinAmount = 0;
+    bottleAmount = 0;
     lastHit = 0;
+    dead = false;
+    taking_damage_sound = new Audio('../assets/audio/taking_damage.mp3');
+    dying_sound = new Audio('../assets/audio/loose.mp3');
 
 
     applyGravity() {
@@ -36,39 +41,31 @@ class MovableObject extends DrawableObject {
     }
 
 
-    // drawFrame(ctx) {
-    //     if (this instanceof Character || this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) {
-    //         ctx.beginPath();
-    //         ctx.lineWidth = '5';
-    //         ctx.strokeStyle = 'blue';
-    //         ctx.rect(this.x, this.y, this.width, this.height);
-    //         ctx.stroke();
-    //     }
-    // }
-
-
-    // isColliding(mo) {
-    //     return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-    //         this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-    //         this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-    //         this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
-    // }
-
-
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
 
-    isHitted() {
+    hit() {
+        this.taking_damage_sound.play();
         this.energy -= 10;
         if (this.energy < 0) {
+            this.dying_sound.play();
             this.energy = 0;
         } else {
             this.lastHit = new Date().getTime();
+        }
+    }
+
+
+    hitObject() {
+        if (this instanceof Coin) {
+            this.coinAmount += 20;
+        } else if (this instanceof Bottle) {
+            this.bottleAmount += 20;
         }
     }
 

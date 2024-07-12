@@ -21,6 +21,7 @@ class ChickenBig extends MovableObject {
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImage(this.IMAGES_DEAD);
         this.x = 500 + Math.random() * 2000;
         this.speed = 0.15 + Math.random() * 0.35;
         this.animate();
@@ -39,9 +40,9 @@ class ChickenBig extends MovableObject {
     }
 
 
-    dead() {
-        if (this.isHitted()) {
-            this.isDead();
-        }
+    isDead() {
+        this.dead = true;
+        this.img.src = this.IMAGES_DEAD;
+        this.speed = 0;
     }
 }

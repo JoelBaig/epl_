@@ -38,13 +38,13 @@ class Character extends MovableObject {
     ];
     world;
     speed = 20;
-    walking_sound = new Audio('../assets/audio/running.mp3');
     offset = {
         top: 120,
         bottom: 15,
         left: 30,
         right: 60
     };
+    walking_sound = new Audio('../assets/audio/running.mp3');
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);

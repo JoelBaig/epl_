@@ -16,7 +16,6 @@ class ChickenBig extends MovableObject {
         left: 5,
         right: 10
     };
-    energy = 10;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -42,7 +41,7 @@ class ChickenBig extends MovableObject {
 
     isDead() {
         this.dead = true;
-        this.img.src = this.IMAGES_DEAD;
         this.speed = 0;
+        this.img.src = this.IMAGES_DEAD[0];
     }
 }

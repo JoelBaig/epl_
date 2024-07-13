@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
         right: 0
     };
     energy = 100;
+    energyEnemy = 10;
     coinAmount = 0;
     bottleAmount = 0;
     lastHit = 0;
@@ -50,9 +51,17 @@ class MovableObject extends DrawableObject {
 
 
     hit() {
-        this.taking_damage_sound.play();
         this.energy -= 10;
-        if (this.energy < 0) {
+        
+        if (this instanceof Character) {
+            this.taking_damage_sound.play();
+        }
+
+        if (this instanceof ChickenBig || ChickenSmall && this.energyEnemy <= 0) {
+            this.dying_sound_enemy.play();
+        }
+
+        if (this.energy <= 0) {
             this.dying_sound.play();
             this.energy = 0;
         } else {

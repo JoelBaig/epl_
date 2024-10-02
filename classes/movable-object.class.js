@@ -9,14 +9,14 @@ class MovableObject extends DrawableObject {
         left: 0,
         right: 0
     };
-    energy = 100;
-    energyEnemy = 10;
+    energy;
     coinAmount = 0;
     bottleAmount = 0;
     lastHit = 0;
     dead = false;
     taking_damage_sound = new Audio('../assets/audio/taking_damage.mp3');
     dying_sound = new Audio('../assets/audio/loose.mp3');
+    dying_sound_enemy = new Audio('../assets/audio/chicken.mp3');
 
 
     applyGravity() {
@@ -43,25 +43,36 @@ class MovableObject extends DrawableObject {
 
 
     isColliding(mo) {
+        if (!mo || !mo.offset) {
+            return false;
+        }
+
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
+    
+
+    isFallingOn(mo) {
+        return this.speedY < 0 && (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top);
+    }
 
 
     hit() {
         this.energy -= 10;
-        
-        if (this instanceof Character) {
+
+        if (this instanceof Character && !this.isAboveGround()) {
             this.taking_damage_sound.play();
         }
 
-        if (this instanceof ChickenBig || ChickenSmall && this.energyEnemy <= 0) {
-            this.dying_sound_enemy.play();
+        if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
+            if (this.dying_sound_enemy) {
+                this.dying_sound_enemy.play();
+            }
         }
 
-        if (this.energy <= 0) {
+        if (this.energy <= 0 && this instanceof Character) {
             this.dying_sound.play();
             this.energy = 0;
         } else {

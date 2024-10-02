@@ -8,7 +8,7 @@ class EndbossHealthBar extends DrawableObject {
         '../assets/img/7_statusbars/2_statusbar_endboss/green/green100.png'
     ];
     percentage = 100;
-    y = 0;
+    y = -50;
     x = 510;
     height = 60;
     width = 200;

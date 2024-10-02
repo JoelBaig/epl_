@@ -5,50 +5,49 @@ class Keyboard {
     D = false;
     F = false;
     lastD = false;
+    lastF = false;
 
     constructor() {
         window.addEventListener('keydown', (e) => {
-            if (e.keyCode == 39) {
-                keyboard.RIGHT = true;
-            }
-
-            if (e.keyCode == 37) {
-                keyboard.LEFT = true;
-            }
-
-            if (e.keyCode == 32) {
-                keyboard.SPACE = true;
-            }
-
-            if (e.keyCode == 68) {
-                keyboard.D = true;
-            }
-
-            if (e.keyCode == 70) {
-                keyboard.F = true;
+            switch (e.code) {
+                case 'ArrowRight':
+                    this.RIGHT = true;
+                    break;
+                case 'ArrowLeft':
+                    this.LEFT = true;
+                    break;
+                case 'Space':
+                    this.SPACE = true;
+                    break;
+                case 'KeyD':
+                    this.D = true;
+                    break;
+                case 'KeyF':
+                    this.F = true;
+                    break;
             }
         });
 
 
         window.addEventListener('keyup', (e) => {
-            if (e.keyCode == 39) {
-                keyboard.RIGHT = false;
-            }
-
-            if (e.keyCode == 37) {
-                keyboard.LEFT = false;
-            }
-
-            if (e.keyCode == 32) {
-                keyboard.SPACE = false;
-            }
-
-            if (e.keyCode == 68) {
-                keyboard.D = false;
-            }
-
-            if (e.keyCode == 70) {
-                keyboard.F = false;
+            switch (e.code) {
+                case 'ArrowRight':
+                    this.RIGHT = false;
+                    break;
+                case 'ArrowLeft':
+                    this.LEFT = false;
+                    break;
+                case 'Space':
+                    this.SPACE = false;
+                    break;
+                case 'KeyD':
+                    this.D = false;
+                    this.lastD = false;
+                    break;
+                case 'KeyF':
+                    this.F = false;
+                    this.lastF = false;
+                    break;
             }
         });
     }

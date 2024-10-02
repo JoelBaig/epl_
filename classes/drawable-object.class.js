@@ -1,5 +1,5 @@
 class DrawableObject {
-    x = 120;
+    x = 20;
     y = 250;
     width = 150;
     height = 200;
@@ -35,7 +35,11 @@ class DrawableObject {
 
 
     draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        if (this.img) {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        } else {
+            console.warn('Image not loaded for', this);
+        }
     }
 
 
@@ -56,7 +60,8 @@ class DrawableObject {
     }
 
 
-    stopIntervals() {
-            this.intervalIds.forEach(clearInterval);
+    stopInterval() {
+        this.intervalIds.forEach(clearInterval);
+        this.intervalIds = [];
     }
 }

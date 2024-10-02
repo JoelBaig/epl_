@@ -16,6 +16,7 @@ class ChickenSmall extends MovableObject {
         right: 5,
         bottom: 5
     };
+    energy = 10;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -28,12 +29,11 @@ class ChickenSmall extends MovableObject {
 
 
     animate() {
-        setInterval(() => {
+        this.setStoppableIntervals(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 100);
 
-
-        setInterval(() => {
+        this.setStoppableIntervals(() => {
             this.moveLeft();
         }, 1000 / 60);
     }

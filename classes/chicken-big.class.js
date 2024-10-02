@@ -16,6 +16,7 @@ class ChickenBig extends MovableObject {
         left: 5,
         right: 10
     };
+    energy = 10;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -32,7 +33,6 @@ class ChickenBig extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
         }, 5000 / 60);
 
-
         this.setStoppableIntervals(() => {
             this.moveLeft();
         }, 1000 / 60);
@@ -42,6 +42,6 @@ class ChickenBig extends MovableObject {
     isDead() {
         this.dead = true;
         this.speed = 0;
-        this.img.src = this.IMAGES_DEAD[0];
+        this.img.src = this.IMAGES_DEAD;
     }
 }

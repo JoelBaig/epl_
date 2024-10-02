@@ -1,4 +1,6 @@
 class Character extends MovableObject {
+    world;
+    level = level1;
     x = 100;
     y = 100;
     width = 120;
@@ -36,7 +38,6 @@ class Character extends MovableObject {
         '../assets/img/2_character_pepe/5_dead/D-56.png',
         '../assets/img/2_character_pepe/5_dead/D-57.png'
     ];
-    world;
     speed = 20;
     offset = {
         top: 120,
@@ -44,6 +45,7 @@ class Character extends MovableObject {
         left: 30,
         right: 60
     };
+    energy = 100;
     walking_sound = new Audio('../assets/audio/running.mp3');
 
     constructor() {
@@ -126,7 +128,7 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_DYING);
             this.isFallingToGround();
             setTimeout(() => {
-                this.stopIntervals();
+                this.stopInterval();
             }, 200);
         }
     }
@@ -165,10 +167,12 @@ class Character extends MovableObject {
         }
     }
 
+    
     trackCamera() {
         this.world.camera_x = -this.x + 100;
         this.cameraFollowEndX = null;
     }
+
 
     fixCameraPosition() {
         if (this.cameraFollowEndX === null) {

@@ -51,8 +51,8 @@
         <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
         <div class="info-btns">
             <button onclick="showInstructions()" id="instruction-btn" class="startscreen-btns">Instructions</button>
-            <button id="volume-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon"></button>
-            <button id="mute-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon"></button>
+            <button onclick="muteGamesounds()" id="volume-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon"></button>
+            <button onclick="playGamesounds()" id="mute-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon"></button>
             <button onclick="showImpressum()" id="impressum-btn" class="startscreen-btns">Impressum</button>
         </div>
     </div>
@@ -61,11 +61,14 @@
         <div class="close-btn-con">
             <button onclick="closeInstructions()" id="close-instructions-btn" class="startscreen-btns">Close</button>
         </div>
-        <img class="instruction-img" src="../assets/img/instruction-keyboard.png" alt="">
+        <img class="instruction-img" src="../assets/img/instruction-keyboard.png" alt="keyboard-img">
     </div>
 
     <div id="impressum-screen" class="info-screen">
-        <div class="close-btn-con"><button onclick="closeImpressum()" id="close-impressum-btn" class="startscreen-btns">Close</button></div>
+        <div class="close-btn-con">
+            <button onclick="closeImpressum()" id="close-impressum-btn" class="startscreen-btns">Close</button>
+        </div>
+        <img class="info-img" src="../assets/img/info.png" alt="info-img">
     </div>
 </body>
 </html>

@@ -131,5 +131,16 @@ canvas {
 .instruction-img {
     width: 200px;
     position: relative;
-    top: 250px;
+    top: 285px;
+}
+
+.info-img {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 350px;
+}
+
+.volume-mute-btns {
+    width: 32px;
 }

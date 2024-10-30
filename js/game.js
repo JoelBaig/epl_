@@ -44,6 +44,8 @@ function closeStartscreen() {
     document.getElementById('instruction-btn').style.display = 'none';
     document.getElementById('impressum-btn').style.display = 'none';
     document.getElementById('start-btn').style.display = 'none';
+    document.getElementById('volume-btn').style.display = 'none';
+    document.getElementById('mute-btn').style.display = 'none';
 }
 
 
@@ -68,4 +70,16 @@ function showImpressum() {
 function closeImpressum() {
     document.getElementById('start-screen').style.display = 'flex';
     document.getElementById('impressum-screen').style.display = 'none';
+}
+
+
+function muteGamesounds() {
+    document.getElementById('volume-btn').style.display = 'none';
+    document.getElementById('mute-btn').style.display = 'flex';
+}
+
+
+function playGamesounds() {
+    document.getElementById('volume-btn').style.display = 'flex';
+    document.getElementById('mute-btn').style.display = 'none';
 }

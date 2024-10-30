@@ -40,14 +40,32 @@
 
 </head>
 
-<body onload="startGame()">
+<body onload="init()">
 
     <h1>El Pollo Loco</h1>
 
-    <canvas id="canvas" width="720" height="480">
+    <canvas id="canvas"  width="720" height="480"></canvas>
 
-    </canvas>
+    <div id="start-screen" class="start-screen">
+        <img src="../assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img" class="startscreen-img">
+        <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
+        <div class="info-btns">
+            <button onclick="showInstructions()" id="instruction-btn" class="startscreen-btns">Instructions</button>
+            <button id="volume-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon"></button>
+            <button id="mute-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon"></button>
+            <button onclick="showImpressum()" id="impressum-btn" class="startscreen-btns">Impressum</button>
+        </div>
+    </div>
 
+    <div id="instruction-screen" class="info-screen">
+        <div class="close-btn-con">
+            <button onclick="closeInstructions()" id="close-instructions-btn" class="startscreen-btns">Close</button>
+        </div>
+        <img class="instruction-img" src="../assets/img/instruction-keyboard.png" alt="">
+    </div>
+
+    <div id="impressum-screen" class="info-screen">
+        <div class="close-btn-con"><button onclick="closeImpressum()" id="close-impressum-btn" class="startscreen-btns">Close</button></div>
+    </div>
 </body>
-
 </html>

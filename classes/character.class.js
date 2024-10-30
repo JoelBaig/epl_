@@ -38,6 +38,31 @@ class Character extends MovableObject {
         '../assets/img/2_character_pepe/5_dead/D-56.png',
         '../assets/img/2_character_pepe/5_dead/D-57.png'
     ];
+    IMAGES_IDLE = [
+        '../assets/img/2_character_pepe/1_idle/idle/I-1.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-2.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-3.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-4.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-5.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-6.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-7.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-8.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-9.png',
+        '../assets/img/2_character_pepe/1_idle/idle/I-10.png'
+    ];
+    IMAGES_LONG_IDLE = [
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-11.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-12.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-13.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-14.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-15.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-16.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-17.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-18.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-19.png',
+        '../assets/img/2_character_pepe/1_idle/long_idle/I-20.png'
+    ];
+
     speed = 20;
     offset = {
         top: 120,
@@ -46,6 +71,8 @@ class Character extends MovableObject {
         right: 60
     };
     energy = 100;
+    hurt = false;
+    currentTime;
     walking_sound = new Audio('../assets/audio/running.mp3');
 
     constructor() {
@@ -54,6 +81,8 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURTING);
         this.loadImages(this.IMAGES_DYING);
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONG_IDLE);
         this.applyGravity();
         this.animate();
         this.jump();
@@ -77,7 +106,22 @@ class Character extends MovableObject {
                 this.updateJumpingAnimation();
                 this.updateWalkingAnimation();
             }
-        }, 1000/ 10);
+
+            this.firstArrivel();
+        }, 1000 / 10);
+    }
+
+
+    firstArrivel() {
+        if (gameStarted && !this.toWorld) {
+            this.toWorld = true;
+            this.stand();
+        }
+    }
+
+
+    stand() {
+        this.currentTime = new Date().getTime();
     }
 
 
@@ -119,6 +163,7 @@ class Character extends MovableObject {
     handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
+            this.currentTime = new Date().getTime();
         }
     }
 
@@ -135,7 +180,9 @@ class Character extends MovableObject {
 
 
     updateHurtingAnimation() {
+        this.currentTime = new Date().getTime();
         if (this.isHurt()) {
+            this.hurt = true;
             this.playAnimation(this.IMAGES_HURTING);
         }
     }
@@ -144,8 +191,10 @@ class Character extends MovableObject {
     updateJumpingAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
+            this.currentTime = new Date().getTime();
         } else if (this.world.keyboard.SPACE) {
             this.playAnimation(this.IMAGES_JUMPING);
+            this.currentTime = new Date().getTime();
         } else {
             this.loadImage(this.IMAGES_WALKING[0]);
         }
@@ -155,7 +204,38 @@ class Character extends MovableObject {
     updateWalkingAnimation() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_WALKING);
+            this.currentTime = new Date().getTime();
+        } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT || !this.world.keyboard.SPACE || !this.isHurt()) {
+            this.nothingToDo();
         }
+    }
+
+
+    nothingToDo() {
+        let timepassed = this.proofTime();
+        if (timepassed > 3 && gameStarted) {
+            this.longWait();
+        } else {
+            this.wait();
+        }
+    }
+
+
+    proofTime() {
+        let time = new Date().getTime();
+        let timepassed = time - this.currentTime;
+        timepassed = timepassed / 1000;
+        return timepassed;
+    }
+
+
+    wait() {
+        this.playAnimation(this.IMAGES_IDLE);
+    }
+
+
+    longWait() {
+        this.playAnimation(this.IMAGES_LONG_IDLE);
     }
 
 
@@ -167,7 +247,7 @@ class Character extends MovableObject {
         }
     }
 
-    
+
     trackCamera() {
         this.world.camera_x = -this.x + 100;
         this.cameraFollowEndX = null;

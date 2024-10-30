@@ -17,11 +17,12 @@ class ChickenSmall extends MovableObject {
         bottom: 5
     };
     energy = 10;
+    dead = false;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
-        this.loadImage(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 500 + Math.random() * 2000;
         this.speed = 0.15 + Math.random() * 0.25;
         this.animate();
@@ -37,6 +38,7 @@ class ChickenSmall extends MovableObject {
             this.moveLeft();
         }, 1000 / 60);
     }
+
 
     isDead() {
         this.dead = true;

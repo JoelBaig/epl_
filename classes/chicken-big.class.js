@@ -17,11 +17,12 @@ class ChickenBig extends MovableObject {
         right: 10
     };
     energy = 10;
+    dead = false;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
-        this.loadImage(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 500 + Math.random() * 2000;
         this.speed = 0.15 + Math.random() * 0.35;
         this.animate();
@@ -31,7 +32,7 @@ class ChickenBig extends MovableObject {
     animate() {
         this.setStoppableIntervals(() => {
             this.playAnimation(this.IMAGES_WALKING);
-        }, 5000 / 60);
+        }, 100);
 
         this.setStoppableIntervals(() => {
             this.moveLeft();
@@ -41,7 +42,7 @@ class ChickenBig extends MovableObject {
 
     isDead() {
         this.dead = true;
-        this.speed = 0;
         this.img.src = this.IMAGES_DEAD;
+        this.speed = 0;
     }
 }

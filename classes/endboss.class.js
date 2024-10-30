@@ -35,7 +35,7 @@ class Endboss extends MovableObject {
         '../assets/img/4_enemie_boss_chicken/4_hurt/G22.png',
         '../assets/img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
-    IMAGES_DYING = [
+    IMAGES_DEAD = [
         '../assets/img/4_enemie_boss_chicken/5_dead/G24.png',
         '../assets/img/4_enemie_boss_chicken/5_dead/G25.png',
         '../assets/img/4_enemie_boss_chicken/5_dead/G26.png'
@@ -55,7 +55,6 @@ class Endboss extends MovableObject {
     endbossIsHurt = false;
     dyingSoundPlayed = false;
     moveLeftInterval = null;
-    currentAnimation = null;
 
     constructor() {
         super();
@@ -64,7 +63,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACKING);
         this.loadImages(this.IMAGES_HURTING);
-        this.loadImages(this.IMAGES_DYING);
+        this.loadImages(this.IMAGES_DEAD);
         this.animate();
         this.x = 2500;
     }
@@ -75,23 +74,13 @@ class Endboss extends MovableObject {
             this.manageEndbossActions();
         }, 150);
 
-        // this.setStoppableIntervals(() => {
-        //     this.playAnimation(this.IMAGES_ALERT);
-        // }, 200);
-
         this.setStoppableIntervals(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
             } else if (this.isHurt()) {
                 this.updateHurtingAnimation();
             }
-        }, 1000 / 60);
-    }
-
-
-    stopCurrentAnimation() {
-        clearInterval(this.currentAnimation);
-        this.currentAnimation = null;
+        }, 3000 / 60);
     }
 
 
@@ -103,11 +92,12 @@ class Endboss extends MovableObject {
         if (this.world && this.world.character) {
             this.distance = Math.abs(this.world.character.x - this.x);
 
-            if (this.distance < 200) {
-                this.triggerEndbossAttack();
-            } else if (this.distance < 400 && !this.firstContact) {
+            if (this.distance < 400 && !this.firstContact) {
+                this.firstContact = true;
                 this.triggerEndbossAlert();
-            } else if (this.distance >= 200) {
+            } else if (this.distance < 200) {
+                this.triggerEndbossAttack();
+            } else {
                 this.triggerEndbossWalking();
             }
         }
@@ -115,7 +105,7 @@ class Endboss extends MovableObject {
 
 
     triggerEndbossWalking() {
-        if (!this.endbossIsHurt) {  // Prevent walking animation while hurt
+        if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_WALKING);
             if (!this.isMovingLeft) {
@@ -130,7 +120,7 @@ class Endboss extends MovableObject {
         if (!this.moveLeftInterval) {
             this.speed = 0.15;
             this.moveLeftInterval = setInterval(() => {
-                if (this.isMovingLeft && !this.endbossIsHurt) {  // Prevent moving while hurt
+                if (this.isMovingLeft && !this.endbossIsHurt) {
                     this.moveLeft();
                 }
             }, 75);
@@ -139,7 +129,7 @@ class Endboss extends MovableObject {
 
 
     triggerEndbossAttack() {
-        if (!this.endbossIsHurt) {  // Prevent attack animation while hurt
+        if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_ATTACKING);
         }
@@ -147,31 +137,18 @@ class Endboss extends MovableObject {
 
 
     triggerEndbossAlert() {
-        if (!this.endbossIsHurt) {  // Prevent alert animation while hurt
+        if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.currentAnimation = setInterval(() => {
                 this.playAnimation(this.IMAGES_ALERT);
                 this.stopCurrentAnimation();
-            }, 200);
+            }, 500);
 
             this.firstContact = true;
             this.isMovingLeft = true;
             this.endbossMoveLeft();
         }
     }
-
-
-    // isHitted() {
-    //     // Ensure the hurting animation plays when hit
-    //     this.playHurtingAnimation();
-    // }
-
-
-    // updateHurtingAnimation() {
-    //     if (this.endbossIsHurt) {
-    //         this.playHurtingAnimation();
-    //     }
-    // }
 
 
     updateHurtingAnimation() {
@@ -186,34 +163,34 @@ class Endboss extends MovableObject {
 
         setTimeout(() => {
             this.endbossIsHurt = false;
-        }, 500);
+        }, 200);
     }
-
-
-    // updateDyingAnimation() {
-    //     if (this.isDead()) {
-    //         this.stopCurrentAnimation();
-    //         this.playAnimation(this.IMAGES_DYING);
-    //         this.isFallingToGround();
-    //     }
-    // }
 
 
     updateDyingAnimation() {
         if (this.isDead()) {
             this.stopCurrentAnimation();
-            this.playAnimation(this.IMAGES_DYING);
-
-            if (!this.dyingSoundPlayed && this.dying_sound_enemy.paused) {
-                this.dying_sound_enemy.play();
-                this.dyingSoundPlayed = true;
-            }
-
+            this.playAnimation(this.IMAGES_DEAD);
+            this.playEndbossDyingSound();
             this.isFallingToGround();
 
             setTimeout(() => {
                 this.stopInterval();
-            }, 150);
+            }, 500);
         }
+    }
+
+
+    playEndbossDyingSound() {
+        if (!this.dyingSoundPlayed && this.dying_sound_enemy.paused) {
+            this.dying_sound_enemy.play();
+            this.dyingSoundPlayed = true;
+        }
+    }
+
+
+    stopCurrentAnimation() {
+        clearInterval(this.currentAnimation);
+        this.currentAnimation = null;
     }
 }

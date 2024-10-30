@@ -13,6 +13,8 @@ body {
 }
 
 h1 {
+    position: absolute;
+    top: 200px;
     font-size: 64px;
     letter-spacing: 3px;
     text-shadow: 2px, 2px, 8px rgba(0, 0, 0, 0.5);
@@ -33,4 +35,101 @@ canvas {
     canvas {
         height: 100vh;
     }
+}
+
+.start-screen {
+    height: 480px;
+    width: 720px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.startscreen-img {
+    width: 720px;
+    height: 480px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.info-btns {
+    position: relative;
+    top: 340px;
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+}
+
+.startscreen-btns {
+    width: 200px;
+    height: 50px;
+    position: relative;
+    top: -163px;
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #fa6400;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+}
+
+.startscreen-btns:focus {
+    background-color: #fb8332;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.startscreen-btns:hover {
+    transform: translateY(-1px);
+}
+
+.startscreen-btns:active {
+    background-color: #c85000;
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+}
+
+.info-screen {
+    height: 480px;
+    width: 720px;
+    background-color: rgb(152,61,0);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.close-btn-con {
+    position: relative;
+    top: 190px;
+}
+
+.instruction-img {
+    width: 200px;
+    position: relative;
+    top: 250px;
 }

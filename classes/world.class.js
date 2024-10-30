@@ -64,7 +64,7 @@ class World {
 
 
     endbossFirstContact() {
-        if (this.character.x > 1700) {
+        if (this.character.x > 1800) {
             if (!this.firstContact) {
                 this.endboss.speed = 10;
                 this.firstContact = true;
@@ -76,17 +76,30 @@ class World {
 
 
     checkCollisionEnemies() {
-        this.level.enemies.forEach((enemy, i) => {
-            if (this.character.isColliding(enemy)) {
+        for (let i = this.level.enemies.length - 1; i >= 0; i--) {
+            let enemy = this.level.enemies[i];
+
+            if (this.character.isColliding(enemy) && !enemy.isDead()) {
                 if (this.character.isFallingOn(enemy)) {
-                    this.enemyIsDead(enemy, i);
                     this.character.jump();
+                    this.enemyIsDead(enemy, i);
                 } else {
                     this.character.hit();
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
-        });
+        }
+    }
+
+
+    enemyIsDead(enemy, index) {
+        enemy.dead = true;
+        enemy.stopInterval();
+        enemy.playAnimation(enemy.IMAGES_DEAD);
+
+        setTimeout(() => {
+            this.deleteObject(this.level.enemies, index);
+        }, 500);
     }
 
 
@@ -141,8 +154,10 @@ class World {
     }
 
 
-    deleteObject(arr, object) {
-        arr.splice(object, 1);
+    deleteObject(arr, index) {
+        if (Array.isArray(arr)) {
+            arr.splice(index, 1);
+        }
     }
 
 
@@ -154,7 +169,6 @@ class World {
         }
         this.checkBottleIsCollidingEnemy();
     }
-    
 
 
     throwBottle(currentTime) {
@@ -178,6 +192,9 @@ class World {
     checkCollisionBottleEnemies(bottle, i) {
         if (this.endboss && bottle.isColliding(this.endboss)) {
             bottle.hit(bottle.x, bottle.y + 10);
+
+            this.breaking_bottle_sound.play();
+
             this.hitEndbossWithBottle(this.endboss);
             this.deleteThrownObject(i);
         }
@@ -205,12 +222,11 @@ class World {
     }
 
 
-    enemyIsDead(enemy, i) {
-        enemy.isDead();
+    endbossIsDead(endboss) {
+        this.endboss.isDead();
         setTimeout(() => {
-            this.deleteObject(this.level.enemies, i);
-            this.deleteObject(this.endboss);
-        }, 500);
+            this.deleteObject(this.level.enemies, this.level.enemies.indexOf(endboss));
+        }, 1000);
     }
 
 
@@ -218,28 +234,20 @@ class World {
         this.hit = true;
         let previousEnergy = endboss.energy;
         this.updateEndbossHealth(endboss);
-    
+
         if (endboss.energy < previousEnergy && this.dying_sound_enemy.paused) {
             this.dying_sound_enemy.play();
         }
-    
+
         if (this.endbossHealthBar.percentage <= 0) {
             this.endbossIsDead(endboss);
         }
     }
-    
+
 
     updateEndbossHealth(endboss) {
         endboss.hit();
         this.endbossHealthBar.setPercentage(endboss.energy);
-    }
-
-
-    endbossIsDead(endboss) {
-        this.endboss.isDead();
-        setTimeout(() => {
-            this.deleteObject(this.level.enemies, this.level.enemies.indexOf(endboss));
-        }, 1000);
     }
 
 

@@ -14,6 +14,8 @@ class MovableObject extends DrawableObject {
     bottleAmount = 0;
     lastHit = 0;
     dead = false;
+    dyingSoundPlayed = false;
+    currentAnimation = null;
     taking_damage_sound = new Audio('../assets/audio/taking_damage.mp3');
     dying_sound = new Audio('../assets/audio/loose.mp3');
     dying_sound_enemy = new Audio('../assets/audio/chicken.mp3');
@@ -52,7 +54,11 @@ class MovableObject extends DrawableObject {
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
-    
+
+
+    // isFallingOn(mo) {
+    //     return this.speedY < 0 && (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top);
+    // }
 
     isFallingOn(mo) {
         return this.speedY < 0 && (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top);
@@ -67,9 +73,8 @@ class MovableObject extends DrawableObject {
         }
 
         if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
-            if (this.dying_sound_enemy) {
-                this.dying_sound_enemy.play();
-            }
+            this.dying_sound_enemy.play();
+            this.playAnimation(this.IMAGES_DEAD);
         }
 
         if (this.energy <= 0 && this instanceof Character) {
@@ -108,6 +113,7 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
         this.currentImage++;
     }
+
 
     /**
      * This function is used to move an object to the right side

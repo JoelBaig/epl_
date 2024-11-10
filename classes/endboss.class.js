@@ -55,6 +55,7 @@ class Endboss extends MovableObject {
     endbossIsHurt = false;
     dyingSoundPlayed = false;
     moveLeftInterval = null;
+    endbossIsDead = false;
 
     constructor() {
         super();
@@ -70,11 +71,14 @@ class Endboss extends MovableObject {
 
 
     animate() {
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             this.manageEndbossActions();
+            if (this.endbossIsDead) {
+                gameWon();
+            }
         }, 150);
 
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
             } else if (this.isHurt()) {
@@ -169,14 +173,15 @@ class Endboss extends MovableObject {
 
     updateDyingAnimation() {
         if (this.isDead()) {
+            this.endbossIsDead = true;
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_DEAD);
-            this.playEndbossDyingSound();
             this.isFallingToGround();
 
             setTimeout(() => {
-                this.stopInterval();
-            }, 500);
+                stopInterval();
+                gameWon();  // Wenn `gameWon` in der World definiert ist, aufrufen
+            }, 1000);
         }
     }
 

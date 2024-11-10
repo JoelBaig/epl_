@@ -83,23 +83,12 @@ class World {
                 if (this.character.isFallingOn(enemy)) {
                     this.character.jump();
                     this.enemyIsDead(enemy, i);
-                } else {
+                } else if (!this.character.isHurt()) {
                     this.character.hit();
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
         }
-    }
-
-
-    enemyIsDead(enemy, index) {
-        enemy.dead = true;
-        enemy.stopInterval();
-        enemy.playAnimation(enemy.IMAGES_DEAD);
-
-        setTimeout(() => {
-            this.deleteObject(this.level.enemies, index);
-        }, 500);
     }
 
 
@@ -119,16 +108,6 @@ class World {
     }
 
 
-    checkCollisionObjects(arr) {
-        arr.forEach((object, i) => {
-            if (this.character.isColliding(object)) {
-                this.addObjectAmount(object);
-                this.deleteObject(arr, i);
-            }
-        });
-    }
-
-
     addObjectAmount(object) {
         if (object instanceof Bottle) {
             this.collectBottle();
@@ -141,7 +120,7 @@ class World {
     collectBottle() {
         this.bottleBar.percentage += 20;
         this.bottleBar.setPercentage(this.bottleBar.percentage);
-        this.collecting_bottle_sound.play();
+        this.playSound(this.collecting_bottle_sound);
         this.bottleAmount++;
     }
 
@@ -149,15 +128,8 @@ class World {
     collectCoin() {
         this.coinBar.percentage += 20;
         this.coinBar.setPercentage(this.coinBar.percentage);
-        this.collecting_coin_sound.play();
+        this.playSound(this.collecting_coin_sound);
         this.coinAmount++;
-    }
-
-
-    deleteObject(arr, index) {
-        if (Array.isArray(arr)) {
-            arr.splice(index, 1);
-        }
     }
 
 
@@ -172,7 +144,7 @@ class World {
 
 
     throwBottle(currentTime) {
-        this.throwing_bottle_sound.play();
+        this.playSound(this.throwing_bottle_sound);
         let bottle = new ThrowableObject(this.character.x + 20, this.character.y + 150, this.character.otherDirection);
         this.throwableObjects.push(bottle);
         this.bottleAmount--;
@@ -189,43 +161,72 @@ class World {
     }
 
 
-    checkCollisionBottleEnemies(bottle, i) {
+    checkCollisionBottleEnemies(bottle, bottleIndex) {
         if (this.endboss && bottle.isColliding(this.endboss)) {
             bottle.hit(bottle.x, bottle.y + 10);
-
-            this.breaking_bottle_sound.play();
-
+            this.playSound(this.breaking_bottle_sound);
             this.hitEndbossWithBottle(this.endboss);
-            this.deleteThrownObject(i);
+            this.deleteThrownObject(bottleIndex);
         }
 
-        this.level.enemies.forEach((enemy, j) => {
-            if (bottle.isColliding(enemy)) {
-                this.breaking_bottle_sound.play();
+        this.level.enemies.forEach((enemy) => {
+            if (bottle.isColliding(enemy) && !enemy.isDead()) {
                 bottle.hit(bottle.x, bottle.y + 10);
+                this.playSound(this.breaking_bottle_sound);
 
                 if (enemy instanceof Endboss) {
                     this.hitEndbossWithBottle(enemy);
                 } else {
-                    this.enemyIsDead(enemy, j);
+                    this.enemyIsDead(enemy);
                 }
-                this.deleteThrownObject(i);
+                this.deleteThrownObject(bottleIndex);
             }
         });
     }
 
 
-    deleteThrownObject(i) {
+    deleteThrownObject(bottleIndex) {
         setTimeout(() => {
-            this.deleteObject(this.throwableObjects, i);
+            this.throwableObjects.splice(bottleIndex, 1);
         }, 200);
     }
 
 
+    enemyIsDead(enemy) {
+        if (!enemy.dead) {
+            enemy.die();
+            setTimeout(() => {
+                this.deleteObjectFromArray(this.level.enemies, enemy);
+            }, 300);
+        }
+    }
+
+
+    checkCollisionObjects(arr) {
+        arr.forEach((object) => {
+            if (this.character.isColliding(object)) {
+                this.addObjectAmount(object);
+                this.deleteObjectFromArray(arr, object);
+            }
+        });
+    }
+
+
+    deleteObjectFromArray(arr, obj) {
+        const index = arr.indexOf(obj);
+        if (index > -1) {
+            arr.splice(index, 1);
+        }
+    }
+
+
     endbossIsDead(endboss) {
+        this.pauseAllSounds();
+
+
         this.endboss.isDead();
         setTimeout(() => {
-            this.deleteObject(this.level.enemies, this.level.enemies.indexOf(endboss));
+            this.deleteObjectFromArray(this.level.enemies, this.level.enemies.indexOf(endboss));
         }, 1000);
     }
 
@@ -236,7 +237,7 @@ class World {
         this.updateEndbossHealth(endboss);
 
         if (endboss.energy < previousEnergy && this.dying_sound_enemy.paused) {
-            this.dying_sound_enemy.play();
+            this.playSound(this.dying_sound_enemy);
         }
 
         if (this.endbossHealthBar.percentage <= 0) {
@@ -298,12 +299,27 @@ class World {
     }
 
 
+    // drawStatusBars() {
+    //     this.moveCtxBackward();
+    //     this.addToMap(this.healthBar);
+    //     this.addToMap(this.coinBar);
+    //     this.addToMap(this.bottleBar);
+    //     this.addToMap(this.endbossHealthBar);
+    //     this.moveCtxForward();
+    // }
+
+
     drawStatusBars() {
         this.moveCtxBackward();
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
-        this.addToMap(this.endbossHealthBar);
+    
+        // Endboss-HealthBar nur zeichnen, wenn der Endboss nicht tot ist
+        if (!this.endboss.energy == 0) {
+            this.addToMap(this.endbossHealthBar);
+        }
+        
         this.moveCtxForward();
     }
 
@@ -352,10 +368,21 @@ class World {
     }
 
 
+    // displayObject(mo) {
+    //     mo.draw(this.ctx);
+    //     // mo.drawFrame(this.ctx);
+    //     mo.drawRedFrame(this.ctx);
+    // }
+
+
     displayObject(mo) {
-        mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
-        mo.drawRedFrame(this.ctx);
+        if (mo.img) {  // Prüft, ob das Bild geladen ist
+            mo.draw(this.ctx);
+            mo.drawRedFrame(this.ctx);
+        } 
+        // else {
+        //     console.warn("Bild nicht geladen für", mo);
+        // }
     }
 
 
@@ -400,5 +427,25 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
+    }
+
+
+    playSound(sound) {
+        if (sound && sound.paused) {
+            sound.play().catch(error => console.warn("Error playing sound:", error));
+        }
+    }
+
+
+    pauseSound(sound) {
+        if (sound && !sound.paused) {
+            sound.pause();
+        }
+    }
+
+
+    pauseAllSounds() {
+        [this.collecting_bottle_sound, this.collecting_coin_sound, this.throwing_bottle_sound,
+        this.breaking_bottle_sound, this.dying_sound_enemy].forEach(sound => this.pauseSound(sound));
     }
 }

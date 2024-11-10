@@ -14,10 +14,19 @@ body {
 
 h1 {
     position: absolute;
-    top: 200px;
+    top: 150px;
     font-size: 64px;
     letter-spacing: 3px;
     text-shadow: 2px, 2px, 8px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 30px;
 }
 
 canvas {
@@ -61,12 +70,18 @@ canvas {
     position: relative;
     top: 340px;
     display: flex;
-    justify-content: space-between;
-    width: 400px;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.start-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .startscreen-btns {
-    width: 200px;
+    width: 150px !important;
     height: 50px;
     position: relative;
     top: -163px;
@@ -116,31 +131,102 @@ canvas {
 .info-screen {
     height: 480px;
     width: 720px;
-    background-color: rgb(152,61,0);
+    background-color: rgb(152, 61, 0);
     position: absolute;
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.close-btn-con {
+.close-btn-con-main {
     position: relative;
     top: 190px;
 }
 
-.instruction-img {
+.close-btn-con {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.how-to-play-img {
     width: 200px;
     position: relative;
-    top: 285px;
+    top: -130px;
 }
 
 .info-img {
     width: 50px;
     height: 50px;
     position: relative;
-    top: 350px;
+    top: 40px;
 }
 
 .volume-mute-btns {
     width: 32px;
+}
+
+.imprint-main-con {
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    position: relative;
+    bottom: 150px;
+    margin-left: 50px;
+}
+
+.how-to-play-main-con {
+    display: flex;
+    flex-direction: column;
+    font-size: 28px;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.game-won-screen {
+
+    height: 480px;
+    width: 720px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.game-over-screen {
+    height: 480px;
+    width: 720px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+}
+
+.game-over-img-bgr {
+    height: 480px;
+    width: 720px;
+}
+
+.game-over-img {
+    height: 480px;
+    width: 720px;
+    position: fixed;
+}
+
+.restart-con {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.restart-img {
+    width: 100px;
+    position: relative;
+    top: -170px;
+}
+
+.restart-btn {
+    cursor: pointer;
 }

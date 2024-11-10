@@ -30,19 +30,21 @@ class ChickenSmall extends MovableObject {
 
 
     animate() {
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 100);
 
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
     }
 
 
-    isDead() {
-        this.dead = true;
-        this.img.src = this.IMAGES_DEAD;
-        this.speed = 0;
+    die() {
+        if (!this.dead) {
+            this.dead = true;
+            this.playAnimation(this.IMAGES_DEAD);
+            this.speed = 0;
+        } 
     }
 }

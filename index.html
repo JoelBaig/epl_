@@ -44,31 +44,88 @@
 
     <h1>El Pollo Loco</h1>
 
-    <canvas id="canvas"  width="720" height="480"></canvas>
+    <canvas id="canvas" width="720" height="480"></canvas>
 
     <div id="start-screen" class="start-screen">
-        <img src="../assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img" class="startscreen-img">
-        <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
+        <img src="../assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
+            class="startscreen-img">
+        <div class="start-btn">
+            <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
+        </div>
         <div class="info-btns">
-            <button onclick="showInstructions()" id="instruction-btn" class="startscreen-btns">Instructions</button>
-            <button onclick="muteGamesounds()" id="volume-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon"></button>
-            <button onclick="playGamesounds()" id="mute-btn" class="startscreen-btns"><img class="volume-mute-btns" src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon"></button>
-            <button onclick="showImpressum()" id="impressum-btn" class="startscreen-btns">Impressum</button>
+            <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
+            <button onclick="muteAllSounds()" id="volume-btn" class="startscreen-btns"><img class="volume-mute-btns"
+                    src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon"></button>
+            <button onclick="playAllSounds()" id="mute-btn" class="startscreen-btns"><img class="volume-mute-btns"
+                    src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon"></button>
+            <button onclick="showImprint()" id="imprint-btn" class="startscreen-btns">Imprint</button>
         </div>
     </div>
 
-    <div id="instruction-screen" class="info-screen">
-        <div class="close-btn-con">
-            <button onclick="closeInstructions()" id="close-instructions-btn" class="startscreen-btns">Close</button>
+    <div id="how-to-play-screen" class="info-screen">
+        <div class="close-btn-con-main">
+            <button onclick="closeHowToPlay()" id="close-howtoplay-btn"
+                class="startscreen-btns close-btn-how-to-play">Close</button>
         </div>
-        <img class="instruction-img" src="../assets/img/instruction-keyboard.png" alt="keyboard-img">
+        <div class="how-to-play-main-con">
+            <div>
+                <h2>Instructions</h2>
+                Jump on chickens or collect bottles and throw them on chickens to kill them.<br>
+                You can also collect
+                coins and use them to buy bottles. You have to kill the Endboss with your bottles to win the
+                Game. Good luck!
+            </div>
+            <div>
+                <h2>Controls</h2>
+                <div>
+                    Press arrow right to walk right<br>
+                    Press arrow left to walk left<br>
+                    Press spacebar to jump<br>
+                    Press D to throw bottle<br>
+                    Press F to buy bottle<br>
+                </div>
+            </div>
+        </div>
+        <img class="how-to-play-img" src="../assets/img/instruction-keyboard.png" alt="keyboard-img">
     </div>
 
-    <div id="impressum-screen" class="info-screen">
-        <div class="close-btn-con">
-            <button onclick="closeImpressum()" id="close-impressum-btn" class="startscreen-btns">Close</button>
+    <div id="imprint-screen" class="info-screen">
+        <div class="close-btn-con-main">
+            <div class="close-btn-con">
+                <button onclick="closeImprint()" id="close-imprint-btn"
+                class="startscreen-btns close-btn-imprint">Close</button>
+            </div>
+            <div class="imprint-main-con">
+                <div>
+                    <h2>Imprint</h2>
+                    <p>Joel Baig</p>
+                    <p>Weststraße 9</p>
+                    <p>84264 Weststadt</p>
+                </div>
+                <div>
+                    <h2>Contact</h2>
+                    <p>joelbaig@web.de</p>
+                    <p>phone: 0162/84923624</p>
+                </div>
+            </div>
         </div>
         <img class="info-img" src="../assets/img/info.png" alt="info-img">
     </div>
+
+    <div id="game-won-screen" class="game-won-screen">
+        You Win!
+    </div>
+
+    <div id="game-over-screen" class="game-over-screen">
+        <img class="game-over-img-bgr" src="../assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img class="game-over-img" src="../assets/img/9_intro_outro_screens/game_over/game over.png"
+            alt="game-over-img">
+        <div class="restart-con">
+        </div>
+    </div>
+
+    <button id="restart-btn" onclick="restartGame()" class="restart-btn start"><img class="restart-img"
+            src="../assets/img/icons/restart.png" alt="restart-img"></button>
 </body>
+
 </html>

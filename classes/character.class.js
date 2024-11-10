@@ -74,6 +74,7 @@ class Character extends MovableObject {
     hurt = false;
     currentTime;
     walking_sound = new Audio('../assets/audio/running.mp3');
+    characterIsDead = false;
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -90,14 +91,17 @@ class Character extends MovableObject {
 
 
     animate() {
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             this.updateWalkingDirection();
             this.handleJump();
             this.updateCameraPosition();
+            if (this.characterIsDead) {
+                gameOver();
+            }
         }, 2500 / 60);
 
 
-        this.setStoppableIntervals(() => {
+        setStoppableInterval(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
             } else if (this.isHurt()) {
@@ -170,10 +174,12 @@ class Character extends MovableObject {
 
     updateDyingAnimation() {
         if (this.isDead()) {
+            this.characterIsDead = true;
             this.playAnimation(this.IMAGES_DYING);
             this.isFallingToGround();
             setTimeout(() => {
-                this.stopInterval();
+                stopInterval();
+                gameOver();
             }, 200);
         }
     }
@@ -206,14 +212,16 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
             this.currentTime = new Date().getTime();
         } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT || !this.world.keyboard.SPACE || !this.isHurt()) {
-            this.nothingToDo();
+            setTimeout(() => {
+                this.nothingToDo();   
+            }, 3000);
         }
     }
 
 
     nothingToDo() {
         let timepassed = this.proofTime();
-        if (timepassed > 3 && gameStarted) {
+        if (timepassed > 5 && gameStarted) {
             this.longWait();
         } else {
             this.wait();

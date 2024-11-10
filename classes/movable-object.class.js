@@ -56,34 +56,55 @@ class MovableObject extends DrawableObject {
     }
 
 
-    // isFallingOn(mo) {
-    //     return this.speedY < 0 && (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top);
-    // }
-
     isFallingOn(mo) {
         return this.speedY < 0 && (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top);
     }
 
 
+    // hit() {
+    //     this.energy -= 10;
+
+    //     if (this instanceof Character && !this.isAboveGround()) {
+    //         this.taking_damage_sound.play();
+    //     }
+
+    //     if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
+    //         this.dying_sound_enemy.play();
+    //         this.playAnimation(this.IMAGES_DEAD);
+    //     }
+
+    //     if (this.energy <= 0 && this instanceof Character) {
+    //         this.dying_sound.play();
+    //         this.energy = 0;
+    //     } else {
+    //         this.lastHit = new Date().getTime();
+    //     }
+    // }
+
+
     hit() {
         this.energy -= 10;
 
-        if (this instanceof Character && !this.isAboveGround()) {
-            this.taking_damage_sound.play();
-        }
+        // Überprüfen, ob der Endboss tot ist, bevor Sound abgespielt wird
+        if (!this.world.endboss.isDead()) {
+            if (this instanceof Character && !this.isAboveGround()) {
+                this.taking_damage_sound.play();
+            }
 
-        if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
-            this.dying_sound_enemy.play();
-            this.playAnimation(this.IMAGES_DEAD);
-        }
+            if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
+                this.dying_sound_enemy.play();
+                this.playAnimation(this.IMAGES_DEAD);
+            }
 
-        if (this.energy <= 0 && this instanceof Character) {
-            this.dying_sound.play();
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
+            if (this.energy <= 0 && this instanceof Character) {
+                this.dying_sound.play();
+                this.energy = 0;
+            } else {
+                this.lastHit = new Date().getTime();
+            }
         }
     }
+
 
 
     hitObject() {
@@ -103,8 +124,17 @@ class MovableObject extends DrawableObject {
 
 
     isDead() {
-        return this.energy == 0;
+        return this.dead || this.energy == 0;
     }
+
+
+    // die() {
+    //     if (!this.dead) {
+    //         this.dead = true;
+    //         this.playAnimation(this.IMAGES_DEAD);
+    //         this.speed = 0;
+    //     } 
+    // }
 
 
     playAnimation(images) {

@@ -19,7 +19,7 @@ class World {
     hurt = false;
     firstContact = false;
     distance;
-
+    
     collecting_bottle_sound = new Audio('../assets/audio/collect_bottle.mp3');
     collecting_coin_sound = new Audio('../assets/audio/collect_coin.mp3');
     throwing_bottle_sound = new Audio('assets/audio/throw_bottle.mp3');

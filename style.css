@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -162,8 +163,16 @@ canvas {
     top: 40px;
 }
 
-.volume-mute-btns {
+.volume-buttons-startscreen {
     width: 32px;
+    position: relative;
+    bottom: 160px;
+}
+
+.volume-buttons-ingame {
+    width: 32px;
+    position: relative;
+    bottom: 130px;
 }
 
 .imprint-main-con {
@@ -229,4 +238,10 @@ canvas {
 
 .restart-btn {
     cursor: pointer;
+}
+
+.ingame-pos {
+    position: fixed;
+    bottom: 430px;
+    z-index: 1;
 }

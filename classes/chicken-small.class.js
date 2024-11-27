@@ -44,6 +44,7 @@ class ChickenSmall extends MovableObject {
         if (!this.dead) {
             this.dead = true;
             this.playAnimation(this.IMAGES_DEAD);
+            this.dying_sound_enemy.play();
             this.speed = 0;
         } 
     }

@@ -16,9 +16,12 @@ class MovableObject extends DrawableObject {
     dead = false;
     dyingSoundPlayed = false;
     currentAnimation = null;
+    
     taking_damage_sound = new Audio('../assets/audio/taking_damage.mp3');
     dying_sound = new Audio('../assets/audio/loose.mp3');
     dying_sound_enemy = new Audio('../assets/audio/chicken.mp3');
+    reach_endboss_sound = new Audio('../assets/audio/endboss.mp3');
+    jumping_sound = new Audio('../assets/audio/jump.mp3');
 
 
     applyGravity() {
@@ -83,28 +86,34 @@ class MovableObject extends DrawableObject {
 
 
     hit() {
+        if (this.isDead()) {
+            return;
+        }
+
         this.energy -= 10;
 
-        // Überprüfen, ob der Endboss tot ist, bevor Sound abgespielt wird
         if (!this.world.endboss.isDead()) {
-            if (this instanceof Character && !this.isAboveGround()) {
-                this.taking_damage_sound.play();
-            }
+            // if (this instanceof Character && !this.isAboveGround()) {
+            //     this.taking_damage_sound.play();
+            // }
 
-            if ((this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss) && this.energy <= 0) {
-                this.dying_sound_enemy.play();
-                this.playAnimation(this.IMAGES_DEAD);
-            }
+            // if (this.energy <= 0 && this instanceof ChickenBig || this instanceof ChickenSmall) {
+            //     this.energy = 0;
+            //     this.dead = true;
+            //     this.dying_sound_enemy.play();
+            //     this.playAnimation(this.IMAGES_DEAD);
+            // }
 
             if (this.energy <= 0 && this instanceof Character) {
-                this.dying_sound.play();
                 this.energy = 0;
+                this.dead = true;
+                this.dying_sound.play();
             } else {
                 this.lastHit = new Date().getTime();
+                this.taking_damage_sound.play();
             }
         }
     }
-
 
 
     hitObject() {
@@ -164,5 +173,6 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 60;
+        this.jumping_sound.play();
     }
 }

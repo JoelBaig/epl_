@@ -98,6 +98,7 @@ class Endboss extends MovableObject {
 
             if (this.distance < 400 && !this.firstContact) {
                 this.firstContact = true;
+                this.reach_endboss_sound.play();
                 this.triggerEndbossAlert();
             } else if (this.distance < 200) {
                 this.triggerEndbossAttack();
@@ -180,7 +181,7 @@ class Endboss extends MovableObject {
 
             setTimeout(() => {
                 stopInterval();
-                gameWon();  // Wenn `gameWon` in der World definiert ist, aufrufen
+                gameWon(); 
             }, 1000);
         }
     }

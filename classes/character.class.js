@@ -70,11 +70,14 @@ class Character extends MovableObject {
         left: 30,
         right: 60
     };
-    energy = 100;
+    energy = 1000000;
     hurt = false;
     currentTime;
-    walking_sound = new Audio('../assets/audio/running.mp3');
     characterIsDead = false;
+    waiting = false;
+    longWaiting = false;
+
+    walking_sound = new Audio('../assets/audio/running.mp3');
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
@@ -119,12 +122,12 @@ class Character extends MovableObject {
     firstArrivel() {
         if (gameStarted && !this.toWorld) {
             this.toWorld = true;
-            this.stand();
+            this.startIdleTimer();
         }
     }
 
 
-    stand() {
+    startIdleTimer() {
         this.currentTime = new Date().getTime();
     }
 
@@ -167,7 +170,7 @@ class Character extends MovableObject {
     handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
-            this.currentTime = new Date().getTime();
+            this.startIdleTimer();
         }
     }
 
@@ -186,7 +189,7 @@ class Character extends MovableObject {
 
 
     updateHurtingAnimation() {
-        this.currentTime = new Date().getTime();
+        this.startIdleTimer();
         if (this.isHurt()) {
             this.hurt = true;
             this.playAnimation(this.IMAGES_HURTING);
@@ -197,10 +200,10 @@ class Character extends MovableObject {
     updateJumpingAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
-            this.currentTime = new Date().getTime();
+            this.startIdleTimer();
         } else if (this.world.keyboard.SPACE) {
             this.playAnimation(this.IMAGES_JUMPING);
-            this.currentTime = new Date().getTime();
+            this.startIdleTimer();
         } else {
             this.loadImage(this.IMAGES_WALKING[0]);
         }
@@ -210,10 +213,10 @@ class Character extends MovableObject {
     updateWalkingAnimation() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_WALKING);
-            this.currentTime = new Date().getTime();
+            this.startIdleTimer();
         } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT || !this.world.keyboard.SPACE || !this.isHurt()) {
             setTimeout(() => {
-                this.nothingToDo();   
+                this.nothingToDo();
             }, 3000);
         }
     }
@@ -223,7 +226,7 @@ class Character extends MovableObject {
         let timepassed = this.proofTime();
         if (timepassed > 5 && gameStarted) {
             this.longWait();
-        } else {
+        } else if (timepassed > 3 && gameStarted) {
             this.wait();
         }
     }
@@ -238,11 +241,19 @@ class Character extends MovableObject {
 
 
     wait() {
+        if (!this.isWalkingLeft || !this.isWalkingRight || this.jump || this.isHurt()) {
+            this.longWaiting = false;
+            this.waiting = true;
+        }
         this.playAnimation(this.IMAGES_IDLE);
     }
 
 
     longWait() {
+        if (!this.isWalkingLeft || !this.isWalkingRight || this.jump || this.isHurt()) {
+            this.longWaiting = true;
+            this.waiting = false;
+        }
         this.playAnimation(this.IMAGES_LONG_IDLE);
     }
 

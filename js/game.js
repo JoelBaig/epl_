@@ -3,6 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 let currentTime;
+let winning_sound = new Audio('../assets/audio/win.mp3');
 let game_sound = new Audio('../assets/audio/music.mp3');
 game_sound.loop = true;
 let allSounds = [game_sound]
@@ -16,6 +17,9 @@ let stoppableIntervalIds = [];
 function init() {
     canvas = document.getElementById('canvas');
     hideOnLoadPage();
+
+    document.getElementById('volume-btn').classList.add('volume-buttons-startscreen');
+    document.getElementById('mute-btn').classList.add('volume-buttons-startscreen');
 }
 
 
@@ -36,6 +40,12 @@ function startGame() {
         currentTime = new Date().getTime();
         hideStartscreen();
         initializeGameWorld();
+
+        document.getElementById('volume-btn').classList.remove('volume-buttons-startscreen');
+        document.getElementById('volume-btn').classList.add('volume-buttons-ingame');
+
+        document.getElementById('mute-btn').classList.remove('volume-buttons-startscreen');
+        document.getElementById('mute-btn').classList.add('volume-buttons-ingame');
     }
 }
 
@@ -45,8 +55,6 @@ function hideStartscreen() {
     document.getElementById('how-to-play-btn').style.display = 'none';
     document.getElementById('imprint-btn').style.display = 'none';
     document.getElementById('start-btn').style.display = 'none';
-    document.getElementById('volume-btn').style.display = 'none';
-    document.getElementById('mute-btn').style.display = 'none';
 }
 
 
@@ -95,11 +103,23 @@ function addSoundsToArray() {
     allSounds.push(world.character.taking_damage_sound);
     allSounds.push(world.character.dying_sound);
     allSounds.push(world.character.dying_sound_enemy);
+    allSounds.push(world.character.jumping_sound);
     allSounds.push(world.collecting_bottle_sound);
     allSounds.push(world.collecting_coin_sound);
     allSounds.push(world.throwing_bottle_sound);
     allSounds.push(world.breaking_bottle_sound);
+    allSounds.push(world.endboss.reach_endboss_sound);
     allSounds.push(world.dying_sound_enemy);
+    addAllEnemySounds();
+}
+
+
+function addAllEnemySounds() {
+    world.level.enemies.forEach(enemy => {
+        if (enemy instanceof MovableObject) {
+            allSounds.push(enemy.dying_sound_enemy);
+        }
+    });
 }
 
 
@@ -114,6 +134,7 @@ function addEndbossSoundsToArray() {
 function muteAllSounds() {
     soundsMuted = true;
     allSounds.forEach(sound => sound.muted = true);
+    winning_sound.muted = true;
     document.getElementById('volume-btn').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'flex';
 }
@@ -122,6 +143,7 @@ function muteAllSounds() {
 function playAllSounds() {
     soundsMuted = false;
     allSounds.forEach(sound => sound.muted = false);
+    winning_sound.muted = false;
     document.getElementById('volume-btn').style.display = 'flex';
     document.getElementById('mute-btn').style.display = 'none';
 }
@@ -139,9 +161,18 @@ function showEndscreen() {
 
 function gameWon() {
     showGameWonScreen();
+    winning_sound.play();
     game_sound.pause();
     gameStarted = false;
     stopInterval();
+
+    if (soundsMuted) {
+        document.getElementById('volume-btn').style.display = 'none';
+        document.getElementById('mute-btn').style.display = 'flex';
+    } else {
+        document.getElementById('volume-btn').style.display = 'flex';
+        document.getElementById('mute-btn').style.display = 'none';
+    }
 
     setTimeout(() => {
         allSounds.forEach(sound => sound.pause());
@@ -186,17 +217,19 @@ function restartGame() {
     document.getElementById('game-won-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
+
+    if (soundsMuted) {
+        document.getElementById('volume-btn').style.display = 'none';
+        document.getElementById('mute-btn').style.display = 'flex';
+    } else {
+        document.getElementById('volume-btn').style.display = 'flex';
+        document.getElementById('mute-btn').style.display = 'none';
+    }
 }
 
 
-// function setStoppableInterval(fn, time) {
-//     let intervalId = setInterval(() => fn(intervalId), time);
-//     stoppableIntervalIds.push(intervalId);
-// }
-
-
 function setStoppableInterval(fn, time) {
-    let intervalId = setInterval(fn,time);
+    let intervalId = setInterval(fn, time);
     stoppableIntervalIds.push(intervalId);
 }
 

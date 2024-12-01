@@ -19,7 +19,9 @@ class World {
     hurt = false;
     firstContact = false;
     distance;
-    
+    dead = false;
+    hitEnemy = false
+
     collecting_bottle_sound = new Audio('../assets/audio/collect_bottle.mp3');
     collecting_coin_sound = new Audio('../assets/audio/collect_coin.mp3');
     throwing_bottle_sound = new Audio('assets/audio/throw_bottle.mp3');
@@ -56,9 +58,15 @@ class World {
         setInterval(() => {
             this.endbossFirstContact();
             this.checkCollisionEnemies();
-            this.checkCollisionEndboss();
-            this.checkThrowObject();
             this.checkBuyBottle();
+        }, 1);
+
+        setInterval(() => {
+            this.checkThrowObject();
+        }, 120);
+
+        setInterval(() => {
+            this.checkCollisionEndboss();
         }, 150);
     }
 
@@ -76,19 +84,47 @@ class World {
 
 
     checkCollisionEnemies() {
-        for (let i = this.level.enemies.length - 1; i >= 0; i--) {
-            let enemy = this.level.enemies[i];
-
-            if (this.character.isColliding(enemy) && !enemy.isDead()) {
-                if (this.character.isFallingOn(enemy)) {
-                    this.character.jump();
-                    this.enemyIsDead(enemy, i);
-                } else if (!this.character.isHurt()) {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                if (this.character.isAboveGround() && this.character.speedY <= 0) {
+                    this.enemyIsDead(enemy);
+                    this.character.jumpOnChicken();
+                    this.hitEnemy = true;
+                    this.setHitEnemy();
+                } else if (!this.hitEnemy) {
+                    this.character.hurt = true;
                     this.character.hit();
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
+        });
+    }
+
+
+    enemyIsDead(enemy) {
+        if (!enemy.dead) {
+            enemy.isDead();
+            setTimeout(() => {
+                this.deleteObjectFromArray(this.level.enemies, enemy);
+            }, 500);
         }
+    }
+
+
+    setHitEnemy() {
+        setTimeout(() => {
+            this.hitEnemy = false;
+        }, 1000);
+    }
+
+
+    jumpOnChicken(enemy) {
+        if (this.isFallingOn(enemy)) {
+            this.enemyIsdead(enemy);
+            this.jump();
+            return true;
+        }
+        return false;
     }
 
 
@@ -167,6 +203,7 @@ class World {
             this.playSound(this.breaking_bottle_sound);
             this.hitEndbossWithBottle(this.endboss);
             this.deleteThrownObject(bottleIndex);
+            return;
         }
 
         this.level.enemies.forEach((enemy) => {
@@ -178,6 +215,9 @@ class World {
                     this.hitEndbossWithBottle(enemy);
                 } else {
                     this.enemyIsDead(enemy);
+                    setTimeout(() => {
+                        this.deleteObjectFromArray(this.level.enemies, enemy);
+                    }, 1000);
                 }
                 this.deleteThrownObject(bottleIndex);
             }
@@ -189,16 +229,6 @@ class World {
         setTimeout(() => {
             this.throwableObjects.splice(bottleIndex, 1);
         }, 200);
-    }
-
-
-    enemyIsDead(enemy) {
-        if (!enemy.dead) {
-            enemy.die();
-            setTimeout(() => {
-                this.deleteObjectFromArray(this.level.enemies, enemy);
-            }, 300);
-        }
     }
 
 
@@ -299,27 +329,16 @@ class World {
     }
 
 
-    // drawStatusBars() {
-    //     this.moveCtxBackward();
-    //     this.addToMap(this.healthBar);
-    //     this.addToMap(this.coinBar);
-    //     this.addToMap(this.bottleBar);
-    //     this.addToMap(this.endbossHealthBar);
-    //     this.moveCtxForward();
-    // }
-
-
     drawStatusBars() {
         this.moveCtxBackward();
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
-    
-        // Endboss-HealthBar nur zeichnen, wenn der Endboss nicht tot ist
+
         if (!this.endboss.energy == 0) {
             this.addToMap(this.endbossHealthBar);
         }
-        
+
         this.moveCtxForward();
     }
 
@@ -368,21 +387,11 @@ class World {
     }
 
 
-    // displayObject(mo) {
-    //     mo.draw(this.ctx);
-    //     // mo.drawFrame(this.ctx);
-    //     mo.drawRedFrame(this.ctx);
-    // }
-
-
     displayObject(mo) {
-        if (mo.img) {  // Prüft, ob das Bild geladen ist
+        if (mo.img) {
             mo.draw(this.ctx);
             mo.drawRedFrame(this.ctx);
-        } 
-        // else {
-        //     console.warn("Bild nicht geladen für", mo);
-        // }
+        }
     }
 
 
@@ -432,7 +441,7 @@ class World {
 
     playSound(sound) {
         if (sound && sound.paused) {
-            sound.play().catch(error => console.warn("Error playing sound:", error));
+            sound.play();
         }
     }
 

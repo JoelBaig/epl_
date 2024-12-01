@@ -2,7 +2,7 @@ class Character extends MovableObject {
     world;
     level = level1;
     x = 100;
-    y = 100;
+    y = 170;
     width = 120;
     height = 260;
     IMAGES_WALKING = [
@@ -64,18 +64,19 @@ class Character extends MovableObject {
     ];
 
     speed = 20;
+    speedY = 15;
     offset = {
         top: 120,
-        bottom: 15,
-        left: 30,
-        right: 60
+        bottom:15,
+        left: 15,
+        right: 20
     };
     energy = 1000000;
     hurt = false;
     currentTime;
     characterIsDead = false;
-    waiting = false;
-    longWaiting = false;
+    isIdle = false;
+    isLongIdle = false;
 
     walking_sound = new Audio('../assets/audio/running.mp3');
 
@@ -103,7 +104,6 @@ class Character extends MovableObject {
             }
         }, 2500 / 60);
 
-
         setStoppableInterval(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
@@ -113,15 +113,14 @@ class Character extends MovableObject {
                 this.updateJumpingAnimation();
                 this.updateWalkingAnimation();
             }
-
-            this.firstArrivel();
         }, 1000 / 10);
+
+        this.firstArrivel();
     }
 
 
     firstArrivel() {
-        if (gameStarted && !this.toWorld) {
-            this.toWorld = true;
+        if (gameStarted) {
             this.startIdleTimer();
         }
     }
@@ -129,6 +128,8 @@ class Character extends MovableObject {
 
     startIdleTimer() {
         this.currentTime = new Date().getTime();
+        // this.isIdle = false; // Idle deaktivieren
+        // this.isLongIdle = false; // Long-Idle deaktivieren
     }
 
 
@@ -169,9 +170,16 @@ class Character extends MovableObject {
 
     handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-            this.jump();
-            this.startIdleTimer();
+            this.jumping();
+            this.jumping_sound.play();
+            this.startIdleTimer(); // Timer nur beim Springen zurücksetzen
         }
+    }
+
+
+    jumping() {
+        this.jump(20);
+        this.currentTime = new Date().getTime();
     }
 
 
@@ -189,8 +197,8 @@ class Character extends MovableObject {
 
 
     updateHurtingAnimation() {
-        this.startIdleTimer();
         if (this.isHurt()) {
+            this.startIdleTimer(); // Timer nur beim Schaden zurücksetzen
             this.hurt = true;
             this.playAnimation(this.IMAGES_HURTING);
         }
@@ -200,61 +208,115 @@ class Character extends MovableObject {
     updateJumpingAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
-            this.startIdleTimer();
         } else if (this.world.keyboard.SPACE) {
             this.playAnimation(this.IMAGES_JUMPING);
-            this.startIdleTimer();
         } else {
             this.loadImage(this.IMAGES_WALKING[0]);
         }
     }
 
 
+    // updateWalkingAnimation() {
+    //     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+    //         this.playAnimation(this.IMAGES_WALKING);
+    //     } else if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.isHurt()) {
+    //         this.nothingToDo();
+    //     }
+    // }
+
+
     updateWalkingAnimation() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            // Stop any idle or long-idle animations if they are running
+            if (this.animationIntervalWait) {
+                clearSpecificInterval(this.animationIntervalWait);
+                this.animationIntervalWait = null;
+            }
+            if (this.animationInterval) {
+                clearSpecificInterval(this.animationInterval);
+                this.animationInterval = null;
+            }
+
+            // Play walking animation
             this.playAnimation(this.IMAGES_WALKING);
-            this.startIdleTimer();
-        } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT || !this.world.keyboard.SPACE || !this.isHurt()) {
-            setTimeout(() => {
-                this.nothingToDo();
-            }, 3000);
+            this.startIdleTimer(); // Reset the idle timer
+        } else if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.isHurt()) {
+            this.nothingToDo(); // Check for Idle or Long-Idle
         }
     }
 
 
     nothingToDo() {
         let timepassed = this.proofTime();
-        if (timepassed > 5 && gameStarted) {
-            this.longWait();
-        } else if (timepassed > 3 && gameStarted) {
-            this.wait();
+
+        if (timepassed > 3 && !this.isIdle) {
+            this.wait(); // Wechsel zu Idle
         }
-    }
-
-
-    proofTime() {
-        let time = new Date().getTime();
-        let timepassed = time - this.currentTime;
-        timepassed = timepassed / 1000;
-        return timepassed;
+        if (timepassed > 5 && this.isIdle) {
+            this.longWait(); // Wechsel zu Long-Idle
+        }
     }
 
 
     wait() {
-        if (!this.isWalkingLeft || !this.isWalkingRight || this.jump || this.isHurt()) {
-            this.longWaiting = false;
-            this.waiting = true;
-        }
-        this.playAnimation(this.IMAGES_IDLE);
+        this.isIdle = true; // Idle aktivieren
+        this.isLongIdle = false;
+        this.animationIntervalWait = setStoppableInterval(() => {
+            this.playAnimation(this.IMAGES_IDLE);
+        }, 800); // Animation alle 200ms wechseln
+
+        setTimeout(() => {
+            clearSpecificInterval(this.animationIntervalWait);
+            this.animationIntervalWait = null;
+        }, 3000);
     }
 
 
+    // wait() {
+    //     if (!this.isIdle) {
+    //         this.isIdle = true; // Activate Idle
+    //         this.isLongIdle = false;
+    
+    //         // Start Idle animation
+    //         this.animationIntervalWait = setStoppableInterval(() => {
+    //             this.playAnimation(this.IMAGES_IDLE);
+    //         }, 500);
+    
+    //         // Stop Idle animation after 3 seconds
+    //         setTimeout(() => {
+    //             clearSpecificInterval(this.animationIntervalWait);
+    //             this.animationIntervalWait = null;
+    //         }, 3000);
+    //     }
+    // }
+
+
     longWait() {
-        if (!this.isWalkingLeft || !this.isWalkingRight || this.jump || this.isHurt()) {
-            this.longWaiting = true;
-            this.waiting = false;
-        }
-        this.playAnimation(this.IMAGES_LONG_IDLE);
+        this.isIdle = false; // Idle deaktivieren
+        this.isLongIdle = true; // Long-Idle aktivieren
+        this.animationInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+        }, 200); // Animation alle 200ms wechseln
+    }
+
+
+    // longWait() {
+    //     if (!this.isLongIdle) {
+    //         this.isIdle = false; // Deactivate Idle
+    //         this.isLongIdle = true; // Activate Long-Idle
+    
+    //         // Start Long-Idle animation
+    //         this.animationInterval = setStoppableInterval(() => {
+    //             this.playAnimation(this.IMAGES_LONG_IDLE);
+    //         }, 200);
+    //     }
+    // }
+
+
+    proofTime() {
+        let time = new Date().getTime();
+        let timepassed = (time - this.currentTime) / 1000; // Zeit in Sekunden
+        return timepassed;
     }
 
 

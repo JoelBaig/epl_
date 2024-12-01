@@ -238,3 +238,10 @@ function stopInterval() {
     stoppableIntervalIds.forEach(clearInterval);
     stoppableIntervalIds = [];
 }
+
+
+function clearSpecificInterval(intervalId) {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+}

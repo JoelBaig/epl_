@@ -1,7 +1,7 @@
 class ChickenBig extends MovableObject {
-    y = 365;
-    width = 50;
-    height = 70;
+    y = 345;
+    width = 70;
+    height = 90;
     IMAGES_WALKING = [
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         '../assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -42,12 +42,19 @@ class ChickenBig extends MovableObject {
     }
 
 
-    die() {
+    isDead() {
         if (!this.dead) {
             this.dead = true;
-            this.playAnimation(this.IMAGES_DEAD);
+            setStoppableInterval(() => {
+                this.playAnimation(this.IMAGES_DEAD);
+            }, 1000 / 30);
             this.dying_sound_enemy.play();
             this.speed = 0;
+            setTimeout(() => {
+                if (this.world) {
+                    this.world.deleteObjectFromArray(this.world.level.enemies, this);
+                }
+            }, 1000);
         }
     }
 }

@@ -40,18 +40,4 @@ class DrawableObject {
             console.warn('Image not loaded for', this);
         }
     }
-
-
-    drawRedFrame(ctx) {
-        if (this instanceof Character || this instanceof ChickenBig || this instanceof ChickenSmall || this instanceof Endboss || this instanceof Coin || this instanceof Bottle) {
-            ctx.beginPath();
-            ctx.lineWidth = '3';
-            ctx.strokeStyle = 'red';
-            ctx.rect(this.x + this.offset.left, 
-                this.y + this.offset.top - this.offset.bottom, 
-                this.width - this.offset.right, 
-                this.height - this.offset.top);
-            ctx.stroke();
-        }
-    }
 }

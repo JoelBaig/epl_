@@ -73,10 +73,13 @@ class Endboss extends MovableObject {
     animate() {
         setStoppableInterval(() => {
             this.manageEndbossActions();
+        }, 150);
+
+        setTimeout(() => {
             if (this.endbossIsDead) {
                 gameWon();
             }
-        }, 150);
+        }, 1000);
 
         setStoppableInterval(() => {
             if (this.isDead()) {
@@ -84,28 +87,51 @@ class Endboss extends MovableObject {
             } else if (this.isHurt()) {
                 this.updateHurtingAnimation();
             }
-        }, 3000 / 60);
+        }, 5000 / 60);
     }
 
 
     manageEndbossActions() {
+        this.manageEndbossIsHurt();
+        this.manageEndbossReactions();
+    }
+
+
+    manageEndbossIsHurt() {
         if (this.endbossIsHurt) {
             return;
         }
+    }
 
+
+    manageEndbossReactions() {
         if (this.world && this.world.character) {
             this.distance = Math.abs(this.world.character.x - this.x);
-
-            if (this.distance < 400 && !this.firstContact) {
-                this.firstContact = true;
-                this.reach_endboss_sound.play();
-                this.triggerEndbossAlert();
-            } else if (this.distance < 200) {
-                this.triggerEndbossAttack();
-            } else {
-                this.triggerEndbossWalking();
-            }
+            this.handleReactions();
         }
+    }
+
+
+    handleReactions() {
+        if (this.isFirstContact()) {
+            this.handleAlert();
+        } else if (this.distance < 200) {
+            this.triggerEndbossAttack();
+        } else {
+            this.triggerEndbossWalking();
+        }
+    }
+
+
+    isFirstContact() {
+        return this.distance < 400 && !this.firstContact;
+    }
+
+
+    handleAlert() {
+        this.firstContact = true;
+        audioManager.play(SOUNDS.REACH_ENDBOSS);
+        this.triggerEndbossAlert();
     }
 
 
@@ -181,7 +207,7 @@ class Endboss extends MovableObject {
 
             setTimeout(() => {
                 stopInterval();
-                gameWon(); 
+                gameWon();
             }, 1000);
         }
     }
@@ -189,7 +215,7 @@ class Endboss extends MovableObject {
 
     playEndbossDyingSound() {
         if (!this.dyingSoundPlayed && this.dying_sound_enemy.paused) {
-            this.dying_sound_enemy.play();
+            audioManager.play(SOUNDS.DYING_ENEMY);
             this.dyingSoundPlayed = true;
         }
     }

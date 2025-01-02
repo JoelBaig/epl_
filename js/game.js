@@ -3,12 +3,10 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 let currentTime;
-let winning_sound = new Audio('../assets/audio/win.mp3');
-let game_sound = new Audio('../assets/audio/music.mp3');
-game_sound.loop = true;
-let allSounds = [game_sound]
-let soundsMuted = false;
 let stoppableIntervalIds = [];
+let win = null;
+let soundsMuted = false;
+
 
 /**
  *  This function initializes the world
@@ -36,8 +34,8 @@ function hideOnLoadPage() {
 
 function startGame() {
     if (!gameStarted) {
-        gameStarted = true;
         currentTime = new Date().getTime();
+        gameStarted = true;
         hideStartscreen();
         initializeGameWorld();
 
@@ -84,66 +82,31 @@ function closeImprint() {
 
 function initializeGameWorld() {
     initLevel();
-    game_sound.play();
+    registerAllSounds();
+    audioManager.unmuteAll();
+    audioManager.getAudioInstance(SOUNDS.GAME_MUSIC, true).play();
     document.getElementById('canvas').style.display = 'flex';
     world = new World(canvas, keyboard, gameStarted, currentTime);
-    handleSounds();
 }
 
 
-function handleSounds() {
-    addSoundsToArray();
-    addEndbossSoundsToArray();
-    allSounds.forEach(sound => sound.muted = soundsMuted);
-}
-
-
-function addSoundsToArray() {
-    allSounds.push(world.character.walking_sound);
-    allSounds.push(world.character.taking_damage_sound);
-    allSounds.push(world.character.dying_sound);
-    allSounds.push(world.character.dying_sound_enemy);
-    allSounds.push(world.character.jumping_sound);
-    allSounds.push(world.collecting_bottle_sound);
-    allSounds.push(world.collecting_coin_sound);
-    allSounds.push(world.throwing_bottle_sound);
-    allSounds.push(world.breaking_bottle_sound);
-    allSounds.push(world.endboss.reach_endboss_sound);
-    allSounds.push(world.dying_sound_enemy);
-    addAllEnemySounds();
-}
-
-
-function addAllEnemySounds() {
-    world.level.enemies.forEach(enemy => {
-        if (enemy instanceof MovableObject) {
-            allSounds.push(enemy.dying_sound_enemy);
-        }
+function registerAllSounds() {
+    Object.values(SOUNDS).forEach(src => {
+        audioManager.getAudioInstance(src);
     });
-}
-
-
-function addEndbossSoundsToArray() {
-    if (world.endboss) {
-        allSounds.push(world.endboss.dying_sound);
-        allSounds.push(world.endboss.taking_damage_sound);
-    }
 }
 
 
 function muteAllSounds() {
     soundsMuted = true;
-    allSounds.forEach(sound => sound.muted = true);
-    winning_sound.muted = true;
+    audioManager.muteAll();
     document.getElementById('volume-btn').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'flex';
 }
 
-
 function playAllSounds() {
     soundsMuted = false;
-    allSounds.forEach(sound => sound.muted = false);
-    winning_sound.muted = false;
+    audioManager.unmuteAll();
     document.getElementById('volume-btn').style.display = 'flex';
     document.getElementById('mute-btn').style.display = 'none';
 }
@@ -151,21 +114,39 @@ function playAllSounds() {
 
 function showEndscreen() {
     if (world.endboss.endbossIsDead) {
-        gameWon();
+        win = true;
+        setTimeout(() => {
+            gameWon();
+        }, 2000);
     }
+
     if (world.character.characterIsDead) {
-        gameOver();
+        win = false;
+        setTimeout(() => {
+            gameOver();
+        }, 2000);
     }
 }
 
 
 function gameWon() {
+    handleGAmeWonSounds();
     showGameWonScreen();
-    winning_sound.play();
-    game_sound.pause();
-    gameStarted = false;
     stopInterval();
+    toggleVolumeIcon();
+    gameStarted = false;
+}
 
+
+function handleGAmeWonSounds() {
+    audioManager.pause(SOUNDS.GAME_MUSIC);
+    audioManager.muteAll();
+    audioManager.unmuteAll();
+    audioManager.play(SOUNDS.WIN_GAME);
+}
+
+
+function toggleVolumeIcon() {
     if (soundsMuted) {
         document.getElementById('volume-btn').style.display = 'none';
         document.getElementById('mute-btn').style.display = 'flex';
@@ -173,10 +154,6 @@ function gameWon() {
         document.getElementById('volume-btn').style.display = 'flex';
         document.getElementById('mute-btn').style.display = 'none';
     }
-
-    setTimeout(() => {
-        allSounds.forEach(sound => sound.pause());
-    }, 500);
 }
 
 
@@ -191,14 +168,23 @@ function showGameWonScreen() {
 
 
 function gameOver() {
-    showGameOverScreen();
-    game_sound.pause();
-    gameStarted = false;
+    handleGameOverSounds();
+    toggleVolumeIcon();
     stopInterval();
 
     setTimeout(() => {
-        allSounds.forEach(sound => sound.pause());
-    }, 1200);
+        showGameOverScreen();
+        gameStarted = false;
+    }, 1000);
+}
+
+
+function handleGameOverSounds() {
+    audioManager.pause(SOUNDS.GAME_MUSIC);
+    audioManager.pause(SOUNDS.REACH_ENDBOSS);
+    audioManager.muteAll();
+    audioManager.unmuteAll();
+    audioManager.play(SOUNDS.LOOSE_GAME);
 }
 
 
@@ -213,18 +199,31 @@ function showGameOverScreen() {
 
 
 function restartGame() {
+    hideEndscreen();
+    restartSounds();
+    toggleVolumeIcon();
+    win = null;
+    init();
     startGame();
-    document.getElementById('game-won-screen').style.display = 'none';
-    document.getElementById('game-over-screen').style.display = 'none';
-    document.getElementById('restart-btn').style.display = 'none';
+}
 
-    if (soundsMuted) {
-        document.getElementById('volume-btn').style.display = 'none';
-        document.getElementById('mute-btn').style.display = 'flex';
-    } else {
-        document.getElementById('volume-btn').style.display = 'flex';
-        document.getElementById('mute-btn').style.display = 'none';
+
+function hideEndscreen() {
+    if (win == true) {
+        document.getElementById('game-won-screen').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+
+    } else if (win == false) {
+        document.getElementById('game-over-screen').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
     }
+}
+
+
+function restartSounds() {
+    audioManager.muteAll();
+    // audioManager.pause(SOUNDS.WIN_GAME);
+    // audioManager.pause(SOUNDS.GAME_MUSIC);
 }
 
 

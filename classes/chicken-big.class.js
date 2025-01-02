@@ -47,14 +47,14 @@ class ChickenBig extends MovableObject {
             this.dead = true;
             setStoppableInterval(() => {
                 this.playAnimation(this.IMAGES_DEAD);
-            }, 1000 / 30);
-            this.dying_sound_enemy.play();
+            }, 100 / 60);
+            audioManager.play(SOUNDS.DYING_ENEMY);
             this.speed = 0;
             setTimeout(() => {
                 if (this.world) {
                     this.world.deleteObjectFromArray(this.world.level.enemies, this);
                 }
-            }, 1000);
+            }, 100);
         }
     }
 }

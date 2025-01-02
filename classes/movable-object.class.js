@@ -3,7 +3,6 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     speedY = 0;
     acceleration = 1;
-    groundLevel = 170;
     offset = {
         top: 0,
         bottom: 0,
@@ -20,22 +19,11 @@ class MovableObject extends DrawableObject {
     hurt = false;
     gravity;
 
-    taking_damage_sound = new Audio('../assets/audio/taking_damage.mp3');
-    dying_sound = new Audio('../assets/audio/loose.mp3');
-    dying_sound_enemy = new Audio('../assets/audio/chicken.mp3');
-    reach_endboss_sound = new Audio('../assets/audio/endboss.mp3');
-    jumping_sound = new Audio('../assets/audio/jump.mp3');
-
 
     applyGravity() {
         this.gravity = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.isFallingToGround();
-
-                // if (this.y >= this.groundLevel) {
-                //     this.y = this.groundLevel;
-                //     this.speedY = 0;
-                // }
             }
         }, 1000 / 60);
     }
@@ -43,15 +31,23 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return true;
+            return true; 
         }
-        return this.y < 170;
+        if (this.isDead()) {
+            return true; 
+        }
+        return this.y < 170; 
     }
 
 
     isFallingToGround() {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
+        if (this instanceof Endboss) {
+            this.y -= this.speedY * 4;
+            this.speedY -= this.acceleration * 4;
+        } else {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+        }
     }
 
 
@@ -76,6 +72,7 @@ class MovableObject extends DrawableObject {
     jumpOnChicken() {
         if (this.speedY <= 0) {
             this.jump(20);
+            audioManager.play(SOUNDS.JUMPING);
         }
     }
 
@@ -91,10 +88,10 @@ class MovableObject extends DrawableObject {
             if (this.energy <= 0 && this instanceof Character) {
                 this.energy = 0;
                 this.dead = true;
-                this.dying_sound.play();
+                audioManager.play(SOUNDS.LOOSE_GAME);
             } else {
                 this.lastHit = new Date().getTime();
-                this.taking_damage_sound.play();
+                audioManager.play(SOUNDS.TAKING_DAMAGE);
             }
         }
     }
@@ -147,6 +144,6 @@ class MovableObject extends DrawableObject {
 
 
     jump(speedY) {
-            this.speedY = speedY; // Sprunggeschwindigkeit setzen
+        this.speedY = speedY; // Sprunggeschwindigkeit setzen
     }
 }

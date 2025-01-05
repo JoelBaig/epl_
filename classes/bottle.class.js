@@ -4,11 +4,11 @@ class Bottle extends MovableObject {
     height = 80;
     width = 90;
     IMAGE = [
-        '../assets/img/6_salsa_bottle/salsa_bottle.png'
+        './assets/img/6_salsa_bottle/salsa_bottle.png'
     ]
     IMAGES_GROUND = [
-        '../assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-        '../assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
+        './assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+        './assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
     ]
     offset = {
         top: 20,

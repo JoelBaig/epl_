@@ -1,18 +1,18 @@
 class AudioManager {
     constructor() {
-        this.audioInstances = {}; // Speicher für alle Audio-Objekte
+        this.audioInstances = {};
     }
 
-    // Holt ein Audio-Objekt oder erstellt es, falls es noch nicht existiert
+
     getAudioInstance(src, loop = false) {
         if (!this.audioInstances[src]) {
             this.audioInstances[src] = new Audio(src);
         }
-        this.audioInstances[src].loop = loop; // Loop immer setzen
+        this.audioInstances[src].loop = loop; 
         return this.audioInstances[src];
     }
 
-    // Audio abspielen
+
     play(src) {
         const audio = this.getAudioInstance(src);
         if (audio.paused) {
@@ -22,7 +22,7 @@ class AudioManager {
         }
     }
 
-    // Audio pausieren
+
     pause(src) {
         const audio = this.getAudioInstance(src);
         if (!audio.paused) {
@@ -30,14 +30,22 @@ class AudioManager {
         }
     }
 
-    // Alle Audios stummschalten
+
+    setVolume(src, volume) {
+        const audio = this.getAudioInstance(src);
+        if (audio) {
+            audio.volume = Math.min(Math.max(volume, 0), 1);
+        }
+    }
+
+
     muteAll() {
         Object.values(this.audioInstances).forEach(audio => {
             audio.muted = true;
         });
     }
 
-    // Stummschaltung für alle Audios aufheben
+
     unmuteAll() {
         Object.values(this.audioInstances).forEach(audio => {
             audio.muted = false;
@@ -45,5 +53,5 @@ class AudioManager {
     }
 }
 
-// Singleton-Instanz des AudioManagers
+
 const audioManager = new AudioManager();

@@ -12,7 +12,7 @@ class DrawableObject {
     *
     * @param {picture path} path 
     */
-    loadImage(path) { // loadImage('../assets/img/example.png');
+    loadImage(path) { 
         this.img = new Image();
         this.img.src = path;
     }
@@ -21,7 +21,7 @@ class DrawableObject {
     /**
      * Loads images from the provided array of paths and stores them in the image cache.
      * 
-     * @param {string[]} arr - An array of paths to the images to be loaded.
+     * @param {string[]} arr 
      */
 
     loadImages(arr) {

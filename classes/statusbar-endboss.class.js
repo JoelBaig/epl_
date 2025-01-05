@@ -1,11 +1,11 @@
 class EndbossHealthBar extends DrawableObject {
     IMAGES = [
-        '../assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png',
-        '../assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png',
-        '../assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png',
-        '../assets/img/7_statusbars/2_statusbar_endboss/blue/blue60.png',
-        '../assets/img/7_statusbars/2_statusbar_endboss/blue/blue80.png',
-        '../assets/img/7_statusbars/2_statusbar_endboss/green/green100.png'
+        './assets/img/7_statusbars/2_statusbar_endboss/orange/orange0.png',
+        './assets/img/7_statusbars/2_statusbar_endboss/orange/orange20.png',
+        './assets/img/7_statusbars/2_statusbar_endboss/orange/orange40.png',
+        './assets/img/7_statusbars/2_statusbar_endboss/blue/blue60.png',
+        './assets/img/7_statusbars/2_statusbar_endboss/blue/blue80.png',
+        './assets/img/7_statusbars/2_statusbar_endboss/green/green100.png'
     ];
     percentage = 100;
     y = -50;

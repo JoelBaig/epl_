@@ -31,23 +31,33 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return true; 
+            return true;
         }
         if (this.isDead()) {
-            return true; 
+            return true;
         }
-        return this.y < 170; 
+        return this.y < 170;
     }
 
 
     isFallingToGround() {
         if (this instanceof Endboss) {
-            this.y -= this.speedY * 4;
-            this.speedY -= this.acceleration * 4;
+            this.endbossIsFalling();
         } else {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
+            this.characterIsFalling();
         }
+    }
+
+
+    endbossIsFalling() {
+        this.y -= this.speedY * 4;
+        this.speedY -= this.acceleration * 4;
+    }
+
+
+    characterIsFalling() {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
     }
 
 
@@ -72,6 +82,7 @@ class MovableObject extends DrawableObject {
     jumpOnChicken() {
         if (this.speedY <= 0) {
             this.jump(20);
+            audioManager.setVolume(SOUNDS.JUMPING, 0.5);
             audioManager.play(SOUNDS.JUMPING);
         }
     }
@@ -81,17 +92,23 @@ class MovableObject extends DrawableObject {
         if (this.isDead()) {
             return;
         }
-
         this.energy -= 10;
 
+        if (!this.world.endboss.isDead()) {
+            this.checkCharacterDeathOrHit();
+        }
+    }
+
+
+    checkCharacterDeathOrHit() {
         if (!this.world.endboss.isDead()) {
             if (this.energy <= 0 && this instanceof Character) {
                 this.energy = 0;
                 this.dead = true;
+                audioManager.setVolume(SOUNDS.LOOSE_GAME, 0.5);
                 audioManager.play(SOUNDS.LOOSE_GAME);
             } else {
                 this.lastHit = new Date().getTime();
-                audioManager.play(SOUNDS.TAKING_DAMAGE);
             }
         }
     }

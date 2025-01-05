@@ -1,11 +1,11 @@
 class CoinBar extends DrawableObject {
     IMAGES = [
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png',
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
-        '../assets/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
+        './assets/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png',
     ];
     percentage = 0;
     y = 40;

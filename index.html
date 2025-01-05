@@ -7,49 +7,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
 
+    <!-- <base href="https://joel-baig.developerakademie.net/"> -->
+
+
     <style>
         @font-face {
             font-family: 'zabars';
-            src: url('../assets/fonts/zabars.ttf') format('truetype');
+            src: url('./assets/fonts/zabars.ttf') format('truetype');
         }
     </style>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="../assets/img/favicon/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/img/favicon/favicon.png" type="image/x-icon">
 
-    <script src="../classes/world.class.js"></script>
-    <script src="../classes/drawable-object.class.js"></script>
-    <script src="../classes/movable-object.class.js"></script>
-    <script src="../classes/keyboard.class.js"></script>
-    <script src="../classes/cloud.class.js"></script>
-    <script src="../classes/character.class.js"></script>
-    <script src="../classes/background-object.class.js"></script>
-    <script src="../classes/chicken-big.class.js"></script>
-    <script src="../classes/chicken-small.class.js"></script>
-    <script src="../classes/bottle.class.js"></script>
-    <script src="../classes/coin.class.js"></script>
-    <script src="../classes/level.class.js"></script>
-    <script src="../classes/endboss.class.js"></script>
-    <script src="../classes/statusbar-health.class.js"></script>
-    <script src="../classes/statusbar-coin.class.js"></script>
-    <script src="../classes/statusbar-bottle.class.js"></script>
-    <script src="../classes/statusbar-endboss.class.js"></script>
-    <script src="../classes/throwable-object.class.js"></script>
-    <script src="../classes/audio-manager.class.js"></script>
-    <script src="../js/sounds.js"></script>
-    <script src="../levels/level1.js"></script>
-    <script src="../js/game.js"></script>
-
+    <script src="./classes/world.class.js"></script>
+    <script src="./classes/drawable-object.class.js"></script>
+    <script src="./classes/movable-object.class.js"></script>
+    <script src="./classes/keyboard.class.js"></script>
+    <script src="./classes/cloud.class.js"></script>
+    <script src="./classes/character.class.js"></script>
+    <script src="./classes/background-object.class.js"></script>
+    <script src="./classes/chicken-big.class.js"></script>
+    <script src="./classes/chicken-small.class.js"></script>
+    <script src="./classes/bottle.class.js"></script>
+    <script src="./classes/coin.class.js"></script>
+    <script src="./classes/level.class.js"></script>
+    <script src="./classes/endboss.class.js"></script>
+    <script src="./classes/statusbar-health.class.js"></script>
+    <script src="./classes/statusbar-coin.class.js"></script>
+    <script src="./classes/statusbar-bottle.class.js"></script>
+    <script src="./classes/statusbar-endboss.class.js"></script>
+    <script src="./classes/throwable-object.class.js"></script>
+    <script src="./classes/audio-manager.class.js"></script>
+    <script src="./js/sounds.js"></script>
+    <script src="./js/display-settings.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./js/game.js"></script>
 </head>
 
 <body onload="init()">
-
     <h1>El Pollo Loco</h1>
 
     <canvas id="canvas" width="720" height="480"></canvas>
 
     <div id="start-screen" class="start-screen">
-        <img src="../assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
+        <img src="./assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
             class="startscreen-img">
         <div class="start-btn">
             <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
@@ -57,11 +59,11 @@
         <div class="info-btns">
             <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
 
-                <img onclick="muteAllSounds()" id="volume-btn"
-                    src="../assets/img/icons/volume-high-solid.svg" alt="volume-high-icon">
+            <img onclick="muteAllSounds()" id="volume-btn" src="./assets/img/icons/volume-high-solid.svg"
+                alt="volume-high-icon">
 
-                <img onclick="playAllSounds()" id="mute-btn"
-                    src="../assets/img/icons/volume-xmark-solid.svg" alt="volume-muted-icon">
+            <img onclick="playAllSounds()" id="mute-btn" src="./assets/img/icons/volume-xmark-solid.svg"
+                alt="volume-muted-icon">
             <button onclick="showImprint()" id="imprint-btn" class="startscreen-btns">Imprint</button>
         </div>
     </div>
@@ -90,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <img class="how-to-play-img" src="../assets/img/instruction-keyboard.png" alt="keyboard-img">
+        <img class="how-to-play-img" src="./assets/img/instruction-keyboard.png" alt="keyboard-img">
     </div>
 
     <div id="imprint-screen" class="info-screen">
@@ -113,25 +115,25 @@
                 </div>
             </div>
         </div>
-        <img class="info-img" src="../assets/img/info.png" alt="info-img">
+        <img class="info-img" src="./assets/img/info.png" alt="info-img">
     </div>
 
     <div id="game-won-screen" class="game-won-screen">
-        <img class="game-over-img-bgr" src="../assets/img/5_background/first_half_background.png" alt="game-over-bgr">
-        <img class="game-over-img" src="../assets/img/9_intro_outro_screens/laurel_wreath.png" alt="laurel-wreath">
+        <img class="game-over-img-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img class="game-over-img" src="./assets/img/9_intro_outro_screens/laurel_wreath.png" alt="laurel-wreath">
         <h1>You Win!</h1>
     </div>
 
     <div id="game-over-screen" class="game-over-screen">
-        <img class="game-over-img-bgr" src="../assets/img/5_background/first_half_background.png" alt="game-over-bgr">
-        <img class="game-over-img" src="../assets/img/9_intro_outro_screens/game_over/game over.png"
+        <img class="game-over-img-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img class="game-over-img" src="./assets/img/9_intro_outro_screens/game_over/game%20over.png"
             alt="game-over-img">
         <div class="restart-con">
         </div>
     </div>
 
     <button id="restart-btn" onclick="restartGame()" class="restart-btn start"><img class="restart-img"
-            src="../assets/img/icons/restart.png" alt="restart-img"></button>
+            src="./assets/img/icons/restart.png" alt="restart-img"></button>
 </body>
 
 </html>

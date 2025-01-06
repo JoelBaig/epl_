@@ -285,7 +285,7 @@ class World {
         let previousEnergy = endboss.energy;
         this.updateEndbossHealth(endboss);
 
-        if (endboss.energy < previousEnergy) {
+        if (endboss.energy < previousEnergy && endboss.energy > 20) {
             audioManager.setVolume(SOUNDS.DYING_ENEMY, 0.5);
             audioManager.play(SOUNDS.DYING_ENEMY);
         }
@@ -312,8 +312,11 @@ class World {
     checkCollisionObjects(arr) {
         arr.forEach((object) => {
             if (this.character.isColliding(object)) {
-                this.addObjectAmount(object);
-                this.deleteObjectFromArray(arr, object);
+                if (object instanceof Bottle && this.bottleBar.percentage >= 100) {
+                    return;  
+                }
+                this.addObjectAmount(object);  
+                this.deleteObjectFromArray(arr, object); 
             }
         });
     }
@@ -339,6 +342,7 @@ class World {
 
     checkBuyBottle() {
         if (this.keyboard.F && !this.keyboard.lastF && this.bottleAmount < 5 && this.coinAmount > 0) {
+            audioManager.play(SOUNDS.BUY_BOTTLE);
             let bottle = new ThrowableObject();
             this.throwableObjects.push(bottle);
             this.bottleAmount++;

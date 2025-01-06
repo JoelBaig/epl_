@@ -61,7 +61,7 @@ class ChickenBig extends MovableObject {
     playDeathAnimation() {
         setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);  
-        }, 1000 / 60); 
+        }, 200 / 20); 
     }
     
     

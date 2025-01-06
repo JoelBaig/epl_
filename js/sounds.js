@@ -6,9 +6,12 @@
     COLLECT_COIN: './assets/audio/collect_coin.mp3',
     THROW_BOTTLE: './assets/audio/throw_bottle.mp3',
     BREAK_BOTTLE: './assets/audio/breaking_bottle.mp3',
+    BUY_BOTTLE: './assets/audio/buy_bottle.mp3',
     TAKING_DAMAGE: './assets/audio/taking_damage.mp3',
     DYING_ENEMY: './assets/audio/chicken.mp3',
+    DYING_ENDBOSS: './assets/audio/dying_endboss.mp3',
     REACH_ENDBOSS: './assets/audio/endboss.mp3',
     JUMPING: './assets/audio/jump.mp3',
-    WALKING: './assets/audio/running.mp3'
+    WALKING: './assets/audio/running.mp3',
+    SNORING: './assets/audio/snoring.mp3'
 };

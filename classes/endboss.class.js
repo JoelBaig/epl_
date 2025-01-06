@@ -49,12 +49,14 @@ class Endboss extends MovableObject {
     speed = 0;
     energy = 100;
     distance;
+    isMovingRight = false;
     isMovingLeft = false;
     endbossAlert = false;
     firstContact = false;
     endbossIsHurt = false;
     dyingSoundPlayed = false;
     moveLeftInterval = null;
+    moveRightInterval = null;
     endbossIsDead = false;
 
     constructor() {
@@ -99,6 +101,7 @@ class Endboss extends MovableObject {
     manageEndbossActions() {
         this.manageEndbossIsHurt();
         this.manageEndbossReactions();
+        this.trackCharacter();
     }
 
 
@@ -120,9 +123,9 @@ class Endboss extends MovableObject {
     handleReactions() {
         if (this.isFirstContact()) {
             this.handleAlert();
-        } else if (this.distance < 200) {
+        } else if (this.firstContact && this.distance < 200) {
             this.triggerEndbossAttack();
-        } else {
+        } else if (this.firstContact) {
             this.triggerEndbossWalking();
         }
     }
@@ -145,23 +148,76 @@ class Endboss extends MovableObject {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_WALKING);
-            if (!this.isMovingLeft) {
-                this.isMovingLeft = true;
-                this.endbossMoveLeft();
-            }
+            this.trackCharacter(); 
         }
     }
 
 
-    endbossMoveLeft() {
-        if (!this.moveLeftInterval) {
-            this.speed = 0.15;
-            this.moveLeftInterval = setInterval(() => {
-                if (this.isMovingLeft && !this.endbossIsHurt) {
-                    this.moveLeft();
-                }
-            }, 75);
+    trackCharacter() {
+        if (!this.firstContact) {
+            return;
         }
+
+        const characterX = this.world.character.x;
+        const endbossX = this.x;
+
+        if (characterX < endbossX) {
+            this.moveInDirection("left");
+        } else {
+            this.moveInDirection("right");
+        }
+    }
+
+
+    moveInDirection(direction) {
+        if (!this.firstContact) {
+            return;
+        }
+        this.clearMoveIntervals(); 
+        this.setMovementDirection(direction); 
+        this.setSpeed();
+        this.traceCharacter();
+    }
+
+
+    traceCharacter() {
+        if (this.isMovingLeft) {
+            this.startMovingLeft();
+        } else if (this.isMovingRight) {
+            this.startMovingRight();
+        }
+    }
+
+    
+    clearMoveIntervals() {
+        clearInterval(this.moveLeftInterval);
+        clearInterval(this.moveRightInterval);
+    }
+    
+    setMovementDirection(direction) {
+        this.isMovingLeft = direction === "left";
+        this.isMovingRight = direction === "right";
+        this.otherDirection = direction === "right"; 
+    }
+    
+    setSpeed() {
+        this.speed = 15;
+    }
+    
+    startMovingLeft() {
+        this.moveLeftInterval = setInterval(() => {
+            if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
+                this.moveLeft();
+            }
+        }, 75);
+    }
+    
+    startMovingRight() {
+        this.moveRightInterval = setInterval(() => {
+            if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
+                this.moveRight();
+            }
+        }, 75);
     }
 
 
@@ -177,13 +233,13 @@ class Endboss extends MovableObject {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.currentAnimation = setInterval(() => {
-                this.playAnimation(this.IMAGES_ALERT);
-                this.stopCurrentAnimation();
+                this.playAnimation(this.IMAGES_ALERT);  
             }, 500);
 
-            this.firstContact = true;
-            this.isMovingLeft = true;
-            this.endbossMoveLeft();
+            setTimeout(() => {
+                clearInterval(this.currentAnimation);
+                this.currentAnimation = null;
+            }, 2000); 
         }
     }
 
@@ -210,6 +266,7 @@ class Endboss extends MovableObject {
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_DEAD);
             this.isFallingToGround();
+            this.playEndbossDyingSound();
 
             setTimeout(() => {
                 stopInterval();
@@ -222,10 +279,10 @@ class Endboss extends MovableObject {
 
 
     playEndbossDyingSound() {
-        if (!this.dyingSoundPlayed && this.dying_sound_enemy.paused) {
-            audioManager.setVolume(SOUNDS.DYING_ENEMY, 0.5);
-            audioManager.play(SOUNDS.DYING_ENEMY);
+        if (!this.dyingSoundPlayed) {
             this.dyingSoundPlayed = true;
+            audioManager.setVolume(SOUNDS.DYING_ENDBOSS, 0.5);
+            audioManager.play(SOUNDS.DYING_ENDBOSS);
         }
     }
 

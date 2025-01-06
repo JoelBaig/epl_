@@ -265,12 +265,14 @@ class Character extends MovableObject {
 
     longWait() {
         this.playAnimation(this.IMAGES_LONG_IDLE);
+        audioManager.play(SOUNDS.SNORING);
     }
 
 
     resetIdleTimerIfMoving() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D) {
             this.startIdleTimer();
+            audioManager.pause(SOUNDS.SNORING);
         }
     }
 

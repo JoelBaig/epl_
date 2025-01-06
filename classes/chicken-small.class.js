@@ -57,20 +57,18 @@ class ChickenSmall extends MovableObject {
             this.speed = 0;  
         }
     }
-
     
     playDeathAnimation() {
         setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_DEAD);  
-        }, 1000 / 60); 
+        }, 200 / 20); 
     }
-    
     
     scheduleRemoval() {
         setTimeout(() => {
             if (this.world) {
                 this.world.deleteObjectFromArray(this.world.level.enemies, this);
             }
-        }, 1000);
+        }, 500);
     }
 }

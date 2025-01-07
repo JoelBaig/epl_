@@ -6,6 +6,7 @@ let currentTime;
 let stoppableIntervalIds = [];
 let win = null;
 let soundsMuted = false;
+let currentView = 'start';
 
 
 /**
@@ -15,10 +16,131 @@ let soundsMuted = false;
 function init() {
     canvas = document.getElementById('canvas');
     hideOnLoadPage();
+    setupTouchControls();
 
     document.getElementById('volume-btn').classList.add('volume-buttons-startscreen');
     document.getElementById('mute-btn').classList.add('volume-buttons-startscreen');
 }
+
+
+/**
+ * Prüft, ob es sich um ein mobiles Gerät oder Tablet handelt
+ */
+function isMobileDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+
+
+function setupTouchControls() {
+    const touchBtns = document.querySelectorAll('.touch-btn');
+
+    touchBtns[0].addEventListener('pointerdown', () => (keyboard.LEFT = true));
+    touchBtns[0].addEventListener('pointerup', () => (keyboard.LEFT = false));
+
+    touchBtns[1].addEventListener('pointerdown', () => (keyboard.RIGHT = true));
+    touchBtns[1].addEventListener('pointerup', () => (keyboard.RIGHT = false));
+
+    touchBtns[2].addEventListener('pointerdown', () => (keyboard.SPACE = true));
+    touchBtns[2].addEventListener('pointerup', () => (keyboard.SPACE = false));
+
+    touchBtns[3].addEventListener('pointerdown', () => (keyboard.D = true));
+    touchBtns[3].addEventListener('pointerup', () => (keyboard.D = false));
+
+    touchBtns[4].addEventListener('pointerdown', () => (keyboard.F = true));  // Flasche kaufen
+    touchBtns[4].addEventListener('pointerup', () => (keyboard.F = false));
+}
+
+window.addEventListener('load', () => {
+    init();
+    setupTouchControls();  // Sichere Initialisierung beim Laden
+});
+
+
+function addTouchControls() {
+    document.getElementById('touch-controls').style.display = 'flex';
+}
+
+
+function removeTouchControls() {
+    document.getElementById('touch-controls').style.display = 'none';
+}
+
+
+function isSmallScreen() {
+    return window.innerWidth <= 900;
+}
+
+
+/**
+ * Wechselt in den Vollbildmodus
+ */
+
+function requestFullscreen() {
+    let element = document.documentElement; // Das gesamte Dokument als Vollbild
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) { // Safari
+        element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) { // Firefox
+        element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) { // Internet Explorer/Edge
+        element.msRequestFullscreen();
+    }
+}
+
+
+function checkOrientation() {
+    const overlay = document.getElementById('rotate-device-overlay');
+
+    if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
+        // Zeige Overlay, wenn der Bildschirm im Hochformat ist und schmaler als 900px
+        overlay.style.display = 'flex';
+        hideAllScreens();
+    } else {
+        // Verstecke Overlay bei breiten Bildschirmen oder Querformat
+        overlay.style.display = 'none';
+        showCurrentView();
+    }
+}
+
+
+function hideAllScreens() {
+    document.getElementById('canvas').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('how-to-play-screen').style.display = 'none';
+    document.getElementById('imprint-screen').style.display = 'none';
+    document.getElementById('game-won-screen').style.display = 'none';
+    document.getElementById('game-over-screen').style.display = 'none';
+    document.getElementById('restart-btn').style.display = 'none';
+}
+
+
+function showCurrentView() {
+    hideAllScreens();
+
+    if (currentView === 'start') {
+        document.getElementById('start-screen').style.display = 'flex';
+    } else if (currentView === 'game') {
+        document.getElementById('canvas').style.display = 'flex';
+    } else if (currentView === 'howToPlay') {
+        document.getElementById('how-to-play-screen').style.display = 'flex';
+    } else if (currentView === 'imprint') {
+        document.getElementById('imprint-screen').style.display = 'flex';
+    } else if (currentView === 'gameOver') {
+        document.getElementById('game-over-screen').style.display = 'flex';
+        document.getElementById('restart-btn').style.display = 'flex';
+    } else if (currentView === 'gameWon') {
+        document.getElementById('game-won-screen').style.display = 'flex';
+        document.getElementById('restart-btn').style.display = 'flex';
+    }
+}
+
+
+// Überprüfen der Orientierung beim Laden der Seite
+window.addEventListener('load', checkOrientation);
+
+// Überprüfen der Orientierung bei Änderung der Bildschirmgröße
+window.addEventListener('resize', checkOrientation);
 
 
 function hideOnLoadPage() {
@@ -34,6 +156,13 @@ function hideOnLoadPage() {
 
 function startGame() {
     if (!gameStarted) {
+        currentView = 'game';
+        if (isMobileDevice() && isSmallScreen()) {
+            requestFullscreen(); // Nur im Rahmen der Benutzeraktion ausführen
+            addTouchControls();
+        } else {
+            removeTouchControls();
+        }
         currentTime = new Date().getTime();
         gameStarted = true;
         hideStartscreen();
@@ -58,8 +187,10 @@ function hideStartscreen() {
 
 
 function showHowToPlay() {
+    currentView = 'howToPlay';
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'flex';
+    removeTouchControls();
 }
 
 
@@ -70,8 +201,10 @@ function closeHowToPlay() {
 
 
 function showImprint() {
+    currentView = 'imprint';
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('imprint-screen').style.display = 'flex';
+    removeTouchControls();
 }
 
 
@@ -131,6 +264,8 @@ function showEndscreen() {
 
 
 function gameWon() {
+    currentView = 'gameWon';
+    removeTouchControls();
     handleGAmeWonSounds();
     showGameWonScreen();
     stopInterval();
@@ -161,6 +296,8 @@ function showGameWonScreen() {
 
 
 function gameOver() {
+    currentView = 'gameOver';
+    removeTouchControls();
     handleGameOverSounds();
     toggleVolumeIcon();
     stopInterval();
@@ -168,6 +305,7 @@ function gameOver() {
     setTimeout(() => {
         showGameOverScreen();
         gameStarted = false;
+        audioManager.muteAll(); 
     }, 1000);
 }
 

@@ -50,5 +50,31 @@ class Keyboard {
                     break;
             }
         });
+        this.setupTouchControls();
+    }
+
+
+    /**
+        * Fügt Event-Listener für Touch-Controls hinzu
+        */
+    setupTouchControls() {
+        const touchBtns = document.querySelectorAll('.touch-btn');
+
+        if (touchBtns.length === 0) return;  // Falls keine Buttons vorhanden sind, abbrechen
+
+        touchBtns[0].addEventListener('pointerdown', () => (this.LEFT = true));
+        touchBtns[0].addEventListener('pointerup', () => (this.LEFT = false));
+
+        touchBtns[1].addEventListener('pointerdown', () => (this.RIGHT = true));
+        touchBtns[1].addEventListener('pointerup', () => (this.RIGHT = false));
+
+        touchBtns[2].addEventListener('pointerdown', () => (this.SPACE = true));
+        touchBtns[2].addEventListener('pointerup', () => (this.SPACE = false));
+
+        touchBtns[3].addEventListener('pointerdown', () => (this.D = true));
+        touchBtns[3].addEventListener('pointerup', () => (this.D = false));
+
+        touchBtns[4].addEventListener('pointerdown', () => (this.F = true));  // Flasche kaufen
+        touchBtns[4].addEventListener('pointerup', () => (this.F = false));
     }
 }

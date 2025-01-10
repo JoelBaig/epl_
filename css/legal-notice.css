@@ -1,0 +1,36 @@
+body {
+    margin: 32px;
+}
+
+.back-to-game-btn {
+    
+}
+
+.back-btn {
+    position: fixed;  /* Fixiert den Button an der gewünschten Position */
+    top: 20px;        /* Abstand von oben */
+    right: 20px;      /* Abstand von rechts */
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;  /* Blaue Hintergrundfarbe */
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;  /* Sicherstellen, dass der Button über anderen Elementen bleibt */
+}
+
+.back-btn:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: #ddd;
+}
+
+/* .back-btn::before {
+    content: '⬅️';
+    margin-right: 8px;
+} */

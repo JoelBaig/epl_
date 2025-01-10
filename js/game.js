@@ -9,6 +9,26 @@ let soundsMuted = false;
 let currentView = 'start';
 
 
+window.addEventListener('load', checkOrientation);
+
+
+window.addEventListener('resize', checkOrientation);
+
+
+window.addEventListener('load', () => {
+    init();
+    setupTouchControls();
+});
+
+
+/**
+ * Prüft, ob es sich um ein mobiles Gerät oder Tablet handelt
+ */
+function isMobileDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+
+
 /**
  *  This function initializes the world
  * 
@@ -20,14 +40,6 @@ function init() {
 
     document.getElementById('volume-btn').classList.add('volume-buttons-startscreen');
     document.getElementById('mute-btn').classList.add('volume-buttons-startscreen');
-}
-
-
-/**
- * Prüft, ob es sich um ein mobiles Gerät oder Tablet handelt
- */
-function isMobileDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 }
 
 
@@ -46,14 +58,9 @@ function setupTouchControls() {
     touchBtns[3].addEventListener('pointerdown', () => (keyboard.D = true));
     touchBtns[3].addEventListener('pointerup', () => (keyboard.D = false));
 
-    touchBtns[4].addEventListener('pointerdown', () => (keyboard.F = true));  // Flasche kaufen
+    touchBtns[4].addEventListener('pointerdown', () => (keyboard.F = true));
     touchBtns[4].addEventListener('pointerup', () => (keyboard.F = false));
 }
-
-window.addEventListener('load', () => {
-    init();
-    setupTouchControls();  // Sichere Initialisierung beim Laden
-});
 
 
 function addTouchControls() {
@@ -72,19 +79,57 @@ function isSmallScreen() {
 
 
 /**
- * Wechselt in den Vollbildmodus
+ * Funktion, um das Canvas im Vollbildmodus anzuzeigen
  */
+function requestCanvasFullscreen() {
+    const canvas = document.getElementById('canvas');  // Canvas-Element auswählen
+    if (canvas.requestFullscreen) {
+        canvas.requestFullscreen();  // Standard-Browser
+    } else if (canvas.webkitRequestFullscreen) {
+        canvas.webkitRequestFullscreen();  // Safari/Chrome
+    } else if (canvas.mozRequestFullScreen) {
+        canvas.mozRequestFullScreen();  // Firefox
+    } else if (canvas.msRequestFullscreen) {
+        canvas.msRequestFullscreen();  // Internet Explorer/Edge
+    }
+    toggleFullscreenIcons(true);
+}
 
-function requestFullscreen() {
-    let element = document.documentElement; // Das gesamte Dokument als Vollbild
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) { // Safari
-        element.webkitRequestFullscreen();
-    } else if (element.mozRequestFullScreen) { // Firefox
-        element.mozRequestFullScreen();
-    } else if (element.msRequestFullscreen) { // Internet Explorer/Edge
-        element.msRequestFullscreen();
+/**
+ * Funktion, um den Vollbildmodus des Canvas zu verlassen
+ */
+function exitCanvasFullscreen() {
+    if (document.fullscreenElement === canvas) {  // Nur beenden, wenn das Canvas im Vollbildmodus ist
+        document.exitFullscreen();
+    }
+    toggleFullscreenIcons(false);
+}
+
+/**
+ * Umschalten zwischen Vollbildmodus und normaler Ansicht
+ */
+function toggleCanvasFullscreen() {
+    const canvas = document.getElementById('canvas');
+    if (document.fullscreenElement === canvas) {
+        exitCanvasFullscreen();  // Vollbildmodus beenden
+    } else {
+        requestCanvasFullscreen();  // Vollbildmodus starten
+    }
+}
+
+/**
+ * Funktion zur Umschaltung des Icons (Vollbild ein/aus)
+ */
+function toggleFullscreenIcons(isFullscreen) {
+    const enterFullscreenIcon = document.getElementById('fullscreen-icon');
+    const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
+
+    if (isFullscreen) {
+        enterFullscreenIcon.classList.add('d-none');  // "Enter Fullscreen" ausblenden
+        exitFullscreenIcon.classList.remove('d-none');  // "Exit Fullscreen" anzeigen
+    } else {
+        enterFullscreenIcon.classList.remove('d-none');  // "Enter Fullscreen" anzeigen
+        exitFullscreenIcon.classList.add('d-none');  // "Exit Fullscreen" ausblenden
     }
 }
 
@@ -93,11 +138,9 @@ function checkOrientation() {
     const overlay = document.getElementById('rotate-device-overlay');
 
     if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
-        // Zeige Overlay, wenn der Bildschirm im Hochformat ist und schmaler als 900px
         overlay.style.display = 'flex';
         hideAllScreens();
     } else {
-        // Verstecke Overlay bei breiten Bildschirmen oder Querformat
         overlay.style.display = 'none';
         showCurrentView();
     }
@@ -108,7 +151,6 @@ function hideAllScreens() {
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
-    document.getElementById('imprint-screen').style.display = 'none';
     document.getElementById('game-won-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
@@ -124,9 +166,8 @@ function showCurrentView() {
         document.getElementById('canvas').style.display = 'flex';
     } else if (currentView === 'howToPlay') {
         document.getElementById('how-to-play-screen').style.display = 'flex';
-    } else if (currentView === 'imprint') {
-        document.getElementById('imprint-screen').style.display = 'flex';
-    } else if (currentView === 'gameOver') {
+    }
+    else if (currentView === 'gameOver') {
         document.getElementById('game-over-screen').style.display = 'flex';
         document.getElementById('restart-btn').style.display = 'flex';
     } else if (currentView === 'gameWon') {
@@ -136,17 +177,9 @@ function showCurrentView() {
 }
 
 
-// Überprüfen der Orientierung beim Laden der Seite
-window.addEventListener('load', checkOrientation);
-
-// Überprüfen der Orientierung bei Änderung der Bildschirmgröße
-window.addEventListener('resize', checkOrientation);
-
-
 function hideOnLoadPage() {
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
-    document.getElementById('imprint-screen').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
@@ -158,7 +191,7 @@ function startGame() {
     if (!gameStarted) {
         currentView = 'game';
         if (isMobileDevice() && isSmallScreen()) {
-            requestFullscreen(); // Nur im Rahmen der Benutzeraktion ausführen
+            requestFullscreen();
             addTouchControls();
         } else {
             removeTouchControls();
@@ -168,13 +201,20 @@ function startGame() {
         hideStartscreen();
         initializeGameWorld();
         toggleVolumeIcon();
-
-        document.getElementById('volume-btn').classList.remove('volume-buttons-startscreen');
-        document.getElementById('volume-btn').classList.add('volume-buttons-ingame');
-
-        document.getElementById('mute-btn').classList.remove('volume-buttons-startscreen');
-        document.getElementById('mute-btn').classList.add('volume-buttons-ingame');
+        changeIconPositionIngame();
     }
+}
+
+
+function changeIconPositionIngame() {
+    document.getElementById('volume-btn').classList.remove('volume-buttons-startscreen');
+    document.getElementById('volume-btn').classList.add('volume-buttons-ingame');
+    document.getElementById('mute-btn').classList.remove('volume-buttons-startscreen');
+    document.getElementById('mute-btn').classList.add('volume-buttons-ingame');
+    document.getElementById('fullscreen-icon').classList.remove('fullscreen-btn');
+    document.getElementById('fullscreen-icon').classList.add('fullscreen-btn-ingame');
+    document.getElementById('exit-fullscreen-icon').classList.remove('fullscreen-btn');
+    document.getElementById('exit-fullscreen-icon').classList.add('fullscreen-btn-ingame');
 }
 
 
@@ -197,20 +237,6 @@ function showHowToPlay() {
 function closeHowToPlay() {
     document.getElementById('start-screen').style.display = 'flex';
     document.getElementById('how-to-play-screen').style.display = 'none';
-}
-
-
-function showImprint() {
-    currentView = 'imprint';
-    document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('imprint-screen').style.display = 'flex';
-    removeTouchControls();
-}
-
-
-function closeImprint() {
-    document.getElementById('start-screen').style.display = 'flex';
-    document.getElementById('imprint-screen').style.display = 'none';
 }
 
 
@@ -290,7 +316,6 @@ function showGameWonScreen() {
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
-    document.getElementById('imprint-screen').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'none';
 }
 
@@ -305,7 +330,7 @@ function gameOver() {
     setTimeout(() => {
         showGameOverScreen();
         gameStarted = false;
-        audioManager.muteAll(); 
+        audioManager.muteAll();
     }, 1000);
 }
 
@@ -323,7 +348,6 @@ function showGameOverScreen() {
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
-    document.getElementById('imprint-screen').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'none';
 }
 

@@ -47,29 +47,37 @@
 </head>
 
 <body onload="init()">
-    <h1>El Pollo Loco</h1>
+    <h1 class="epl-headline">El Pollo Loco</h1>
 
-    <canvas id="canvas" width="720" height="480"></canvas>
+        <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
+        <div id="start-screen" class="start-screen">
+            <img src="./assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
+                class="startscreen-img">
+            <div class="start-btn">
+                <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
+            </div>
+            <div class="info-btns">
+                <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
 
-    <div id="start-screen" class="start-screen">
-        <img src="./assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
-            class="startscreen-img">
-        <div class="start-btn">
-            <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
+                <img id="fullscreen-icon" src="./assets/img/icons/enter-fullscreen.svg" alt="fullscreen-icon"
+                    onclick="toggleCanvasFullscreen()" class="fullscreen-btn">
+
+                <img id="exit-fullscreen-icon" src="./assets/img/icons/exit-fullscreen.svg" alt="exit-fullscreen-icon"
+                    onclick="toggleCanvasFullscreen()" class="fullscreen-btn d-none">
+
+                <img onclick="muteAllSounds()" id="volume-btn" src="./assets/img/icons/volume-high-solid.svg"
+                    alt="volume-high-icon">
+
+                <img onclick="playAllSounds()" id="mute-btn" src="./assets/img/icons/volume-xmark-solid.svg"
+                    alt="volume-muted-icon">
+                <button onclick="location.href='./legal-notice.html'" id="imprint-btn"
+                    class="startscreen-btns">Imprint</button>
+            </div>
         </div>
-        <div class="info-btns">
-            <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
 
-            <img onclick="muteAllSounds()" id="volume-btn" src="./assets/img/icons/volume-high-solid.svg"
-                alt="volume-high-icon">
-
-            <img onclick="playAllSounds()" id="mute-btn" src="./assets/img/icons/volume-xmark-solid.svg"
-                alt="volume-muted-icon">
-            <button onclick="showImprint()" id="imprint-btn" class="startscreen-btns">Imprint</button>
-        </div>
-    </div>
 
     <div id="how-to-play-screen" class="info-screen">
+        <img class="imprint-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-bgr">
         <div class="close-btn-con-main">
             <button onclick="closeHowToPlay()" id="close-howtoplay-btn"
                 class="startscreen-btns close-btn-how-to-play">Close</button>
@@ -83,40 +91,17 @@
                 Game. Good luck!
             </div>
             <div>
-                <h2>Controls</h2>
+                <h2 class="controls-headline">Controls</h2>
                 <div>
-                    Press arrow right to walk right<br>
-                    Press arrow left to walk left<br>
-                    Press spacebar to jump<br>
-                    Press D to throw bottle<br>
-                    Press F to buy bottle<br>
+                    <span>▶️</span> Press arrow right to walk right<br>
+                    <span>◀️</span> Press arrow left to walk left<br>
+                    <span>⏹️</span> Press spacebar to jump<br>
+                    <span>🎯</span> Press D to throw bottle<br>
+                    <span>🍾</span> Press F to buy bottle<br>
                 </div>
             </div>
         </div>
         <img class="how-to-play-img" src="./assets/img/instruction-keyboard.png" alt="keyboard-img">
-    </div>
-
-    <div id="imprint-screen" class="info-screen">
-        <div class="close-btn-con-main">
-            <div class="close-btn-con">
-                <button onclick="closeImprint()" id="close-imprint-btn"
-                    class="startscreen-btns close-btn-imprint">Close</button>
-            </div>
-            <div class="imprint-main-con">
-                <div>
-                    <h2>Imprint</h2>
-                    <p>Joel Baig</p>
-                    <p>Weststraße 9</p>
-                    <p>84264 Weststadt</p>
-                </div>
-                <div>
-                    <h2>Contact</h2>
-                    <p>joelbaig@web.de</p>
-                    <p>phone: 0162/84923624</p>
-                </div>
-            </div>
-        </div>
-        <img class="info-img" src="./assets/img/info.png" alt="info-img">
     </div>
 
     <div id="game-won-screen" class="game-won-screen">
@@ -142,7 +127,7 @@
         <button class="touch-btn" ontouchstart="keyboard.RIGHT = true" ontouchend="keyboard.RIGHT = false">▶️</button>
         <button class="touch-btn" ontouchstart="keyboard.SPACE = true" ontouchend="keyboard.SPACE = false">⬆️</button>
         <button class="touch-btn" ontouchstart="keyboard.D = true" ontouchend="keyboard.D = false">🎯</button>
-        <button class="touch-btn" ontouchstart="keyboard.F = true" ontouchend="keyboard.F = false">🍾</button> <!-- Flasche kaufen -->
+        <button class="touch-btn" ontouchstart="keyboard.F = true" ontouchend="keyboard.F = false">🍾</button>
     </div>
 
     <div id="rotate-device-overlay" class="rotate-device-overlay">

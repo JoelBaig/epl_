@@ -71,7 +71,7 @@ class Character extends MovableObject {
         left: 15,
         right: 20
     };
-    energy = 100;
+    energy = 1000000;
     hurt = false;
     characterIsDead = false;
     currentTime;

@@ -117,19 +117,37 @@ function toggleCanvasFullscreen() {
     }
 }
 
-/**
- * Funktion zur Umschaltung des Icons (Vollbild ein/aus)
- */
+// /**
+//  * Funktion zur Umschaltung des Icons (Vollbild ein/aus)
+//  */
+// function toggleFullscreenIcons(isFullscreen) {
+//     const enterFullscreenIcon = document.getElementById('fullscreen-icon');
+//     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
+
+//     if (isFullscreen) {
+//         enterFullscreenIcon.classList.add('d-none');  // "Enter Fullscreen" ausblenden
+//         exitFullscreenIcon.classList.remove('d-none');  // "Exit Fullscreen" anzeigen
+//     } else {
+//         enterFullscreenIcon.classList.remove('d-none');  // "Enter Fullscreen" anzeigen
+//         exitFullscreenIcon.classList.add('d-none');  // "Exit Fullscreen" ausblenden
+//     }
+// }
+
+
 function toggleFullscreenIcons(isFullscreen) {
     const enterFullscreenIcon = document.getElementById('fullscreen-icon');
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
 
     if (isFullscreen) {
-        enterFullscreenIcon.classList.add('d-none');  // "Enter Fullscreen" ausblenden
-        exitFullscreenIcon.classList.remove('d-none');  // "Exit Fullscreen" anzeigen
+        enterFullscreenIcon.classList.add('d-none');  // Vollbild-Icon verstecken
+        exitFullscreenIcon.classList.remove('d-none');  // Ausstieg-Icon anzeigen
     } else {
-        enterFullscreenIcon.classList.remove('d-none');  // "Enter Fullscreen" anzeigen
-        exitFullscreenIcon.classList.add('d-none');  // "Exit Fullscreen" ausblenden
+        enterFullscreenIcon.classList.remove('d-none');  // Vollbild-Icon anzeigen
+        exitFullscreenIcon.classList.add('d-none');  // Ausstieg-Icon verstecken
+
+        // Buttons nach Verlassen des Fullscreen-Modus sichtbar machen
+        document.getElementById('volume-btn').style.display = 'flex';
+        document.getElementById('mute-btn').style.display = 'none';
     }
 }
 
@@ -187,15 +205,59 @@ function hideOnLoadPage() {
 }
 
 
+// function startGame() {
+//     if (!gameStarted) {
+//         currentView = 'game';
+//         if (isMobileDevice() && isSmallScreen()) {
+//             requestFullscreen();
+//             addTouchControls();
+//         } else {
+//             removeTouchControls();
+//         }
+//         currentTime = new Date().getTime();
+//         gameStarted = true;
+//         hideStartscreen();
+//         initializeGameWorld();
+//         toggleVolumeIcon();
+//         changeIconPositionIngame();
+//     }
+// }
+
+
+// function startGame() {
+//     if (!gameStarted) {
+//         currentView = 'game';
+//         if (isMobileDevice() && isSmallScreen()) {
+//             requestCanvasFullscreen();  // Korrekte Funktion verwenden
+//             addTouchControls();
+//         } else {
+//             removeTouchControls();
+//         }
+//         currentTime = new Date().getTime();
+//         gameStarted = true;
+//         hideStartscreen();
+//         initializeGameWorld();
+//         toggleVolumeIcon();
+//         changeIconPositionIngame();
+//     }
+// }
+
+
 function startGame() {
     if (!gameStarted) {
         currentView = 'game';
-        if (isMobileDevice() && isSmallScreen()) {
-            requestFullscreen();
-            addTouchControls();
+
+        // Auf mobilen Geräten wird kein Vollbildmodus aktiviert
+        if (!isMobileDevice() && isSmallScreen()) {
+            requestCanvasFullscreen();  // Nur auf Desktop- oder Tablet-Geräten aktivieren
+        }
+
+        if (isSmallScreen()) {
+            addTouchControls();  // Touch-Steuerelemente nur bei kleinen Bildschirmen hinzufügen
         } else {
             removeTouchControls();
         }
+
         currentTime = new Date().getTime();
         gameStarted = true;
         hideStartscreen();

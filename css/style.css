@@ -57,6 +57,17 @@ canvas {
     display: block;
 }
 
+.canvas-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+.start-fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+}
+
 @media only screen and (max-width:720px) {
     canvas {
         width: 100%;
@@ -79,25 +90,11 @@ canvas {
     flex-direction: column;
 }
 
-/* .startscreen-img {
-    width: 720px;
-    height: 480px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-} */
-
 .startscreen-img {
     width: 100%;
-    /* Nimmt die volle Breite des Eltern-Elements (canvas) ein */
     height: 100%;
-    /* Nimmt die volle Höhe des Eltern-Elements (canvas) ein */
     object-fit: cover;
-    /* Bild wird skaliert, ohne das Seitenverhältnis zu verlieren */
     position: absolute;
-    /* Sicherstellen, dass es über dem canvas liegt */
     top: 0;
     left: 0;
 }
@@ -206,6 +203,16 @@ canvas {
     bottom: 415px;
     right: 500px;
     cursor: pointer;
+    z-index: 1;
+}
+
+.fullscreen-active-volume-btn-pos {
+    width: 32px;
+    position: relative;
+    bottom: 499px;
+    right: 807px;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .imprint-main-con {
@@ -364,7 +371,29 @@ canvas {
     width: 32px;
     height: 32px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1;
+}
+
+.fullscreen-active-btn-pos-ingame {
+    position: relative;
+    top: -455px;
+    left: -237px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.fullscreen-active-btn-pos-start {
+    position: relative;
+    top: -155px;
+    left: 63px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1;
 }
 
 @media(max-width: 1000px) {
@@ -474,7 +503,6 @@ canvas {
     .fullscreen-btn,
     .fullscreen-btn-ingame {
         display: none !important;
-        /* Keine Anzeige auf mobilen Geräten */
     }
 
     .info-screen {

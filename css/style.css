@@ -190,31 +190,6 @@ canvas {
     top: -230px;
 }
 
-.volume-buttons-startscreen {
-    width: 32px;
-    position: relative;
-    bottom: 160px;
-    cursor: pointer;
-}
-
-.volume-buttons-ingame {
-    width: 32px;
-    position: relative;
-    bottom: 415px;
-    right: 500px;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.fullscreen-active-volume-btn-pos {
-    width: 32px;
-    position: relative;
-    bottom: 499px;
-    right: 807px;
-    cursor: pointer;
-    z-index: 1;
-}
-
 .imprint-main-con {
     display: flex;
     justify-content: space-between;
@@ -376,8 +351,8 @@ canvas {
 
 .fullscreen-active-btn-pos-ingame {
     position: relative;
-    top: -455px;
-    left: -237px;
+    top: -438px;
+    left: -221px;
     right: 20px;
     width: 32px;
     height: 32px;
@@ -392,6 +367,40 @@ canvas {
     right: 20px;
     width: 32px;
     height: 32px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.volume-buttons-startscreen {
+    width: 32px;
+    position: relative;
+    bottom: 160px;
+    cursor: pointer;
+}
+
+.volume-buttons-ingame {
+    width: 32px;
+    position: relative;
+    bottom: 415px;
+    right: 500px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.fullscreen-active-volume-btn-pos-ingame {
+    width: 32px;
+    position: relative;
+    bottom: 475px;
+    right: 743px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.fullscreen-active-volume-btn-pos-start {
+    width: 32px;
+    position: relative;
+    bottom: 499px;
+    right: 807px;
     cursor: pointer;
     z-index: 1;
 }

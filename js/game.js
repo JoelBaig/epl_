@@ -115,6 +115,8 @@ function enterCanvasFullscreen() {
     document.getElementById('canvas').classList.remove('canvas');
 
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
+    const volumeIcon = document.getElementById('volume-btn');
+    const muteIcon = document.getElementById('mute-btn');
 
     // Klassen basierend auf dem aktuellen Bildschirm ändern
     if (currentView === 'start') {
@@ -122,11 +124,31 @@ function enterCanvasFullscreen() {
         exitFullscreenIcon.classList.remove('fullscreen-btn');  // Standardklasse entfernen
         exitFullscreenIcon.classList.remove('fullscreen-btn-ingame');  // Falls vorhanden, entfernen
         exitFullscreenIcon.classList.add('fullscreen-active-btn-pos-start');  // Klasse hinzufügen
+
+        volumeIcon.classList.remove('volume-buttons-startscreen');
+        volumeIcon.classList.remove('fullscreen-active-volume-btn-pos-ingame');
+        volumeIcon.classList.add('fullscreen-active-volume-btn-pos-start');
+
+        muteIcon.classList.remove('volume-buttons-startscreen');
+        muteIcon.classList.remove('fullscreen-active-volume-btn-pos-ingame');
+        muteIcon.classList.add('fullscreen-active-volume-btn-pos-start');
+
     } else if (currentView === 'game') {
         // Vollbildmodus im Spiel
         exitFullscreenIcon.classList.remove('fullscreen-btn');  // Standardklasse entfernen
+        exitFullscreenIcon.classList.remove('fullscreen-btn-ingame'); 
         exitFullscreenIcon.classList.remove('fullscreen-active-btn-pos-start');  // Falls vorhanden, entfernen
         exitFullscreenIcon.classList.add('fullscreen-active-btn-pos-ingame');  // Klasse hinzufügen
+
+        volumeIcon.classList.remove('volume-buttons-startscreen');
+        volumeIcon.classList.remove('volume-buttons-ingame');
+        volumeIcon.classList.remove('fullscreen-active-volume-btn-pos-start');
+        volumeIcon.classList.add('fullscreen-active-volume-btn-pos-ingame');
+
+        muteIcon.classList.remove('volume-buttons-startscreen');
+        muteIcon.classList.remove('volume-buttons-ingame');
+        muteIcon.classList.remove('fullscreen-active-volume-btn-pos-start');
+        muteIcon.classList.add('fullscreen-active-volume-btn-pos-ingame');
     }
 
     // Vollbildsymbol ein-/ausblenden
@@ -195,31 +217,6 @@ function hideOnLoadPage() {
     document.getElementById('restart-btn').style.display = 'none';
     document.getElementById('game-won-screen').style.display = 'none';
 }
-
-
-// function startGame() {
-//     if (!gameStarted) {
-//         currentView = 'game';
-
-//         // // Auf mobilen Geräten wird kein Vollbildmodus aktiviert
-//         // if (!isMobileDevice()) {
-//         //     requestCanvasFullscreen();  // Nur auf Desktop- oder Tablet-Geräten aktivieren
-//         // }
-
-//         if (isSmallScreen()) {
-//             addTouchControls();  // Touch-Steuerelemente nur bei kleinen Bildschirmen hinzufügen
-//         } else {
-//             removeTouchControls();
-//         }
-
-//         currentTime = new Date().getTime();
-//         gameStarted = true;
-//         hideStartscreen();
-//         initializeGameWorld();
-//         toggleVolumeIcon();
-//         changeIconPositionIngame();
-//     }
-// }
 
 
 function startGame() {

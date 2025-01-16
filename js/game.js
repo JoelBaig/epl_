@@ -161,6 +161,8 @@ function exitCanvasFullscreen() {
     document.getElementById('start-screen').classList.remove('start-fullscreen');
     document.getElementById('canvas').classList.remove('canvas-fullscreen');
     document.getElementById('canvas').classList.add('canvas');
+    document.getElementById('volume-btn').classList.remove('fullscreen-active-volume-btn-pos-ingame');
+    document.getElementById('volume-btn').classList.add('volume-buttons-ingame');
     document.getElementById('fullscreen-icon').style.display = 'flex';
     document.getElementById('exit-fullscreen-icon').style.display = 'none';
     document.getElementById('start-screen').style.display = 'flex';

@@ -341,7 +341,7 @@ canvas {
 .fullscreen-btn-ingame {
     position: relative;
     top: -379px;
-    left: -143px;
+    left: -144px;
     right: 20px;
     width: 32px;
     height: 32px;
@@ -351,9 +351,8 @@ canvas {
 
 .fullscreen-active-btn-pos-ingame {
     position: relative;
-    top: -438px;
-    left: -221px;
-    right: 20px;
+    top: -434px;
+    left: -211px;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -390,8 +389,8 @@ canvas {
 .fullscreen-active-volume-btn-pos-ingame {
     width: 32px;
     position: relative;
-    bottom: 475px;
-    right: 743px;
+    bottom: 470px;
+    right: 715px;
     cursor: pointer;
     z-index: 1;
 }

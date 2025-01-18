@@ -101,10 +101,14 @@ canvas {
 
 .info-btns {
     position: relative;
-    top: 340px;
+    top: 270px;
     display: flex;
     justify-content: space-around;
     width: 100%;
+}
+
+.info-btns-fullscreen {
+    top: 450px !important;
 }
 
 .start-btn {
@@ -117,7 +121,7 @@ canvas {
     width: 150px !important;
     height: 50px;
     position: relative;
-    top: -163px;
+    top: -109px;
     align-items: center;
     background-clip: padding-box;
     background-color: #fa6400;
@@ -153,13 +157,18 @@ canvas {
 }
 
 .startscreen-btns:hover {
-    transform: translateY(-1px);
+    background-color: #fbbd95;
+    transform: translateY(-2px);
 }
 
 .startscreen-btns:active {
     background-color: #c85000;
     box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
     transform: translateY(0);
+}
+
+.startscreen-btns-fullscreen {
+    top: -280px !important;
 }
 
 .info-screen {
@@ -174,7 +183,7 @@ canvas {
 
 .close-btn-con-main {
     position: relative;
-    top: -220px;
+    top: -280px;
 }
 
 .close-btn-con {
@@ -328,80 +337,41 @@ canvas {
     margin: 0;
 }
 
-.fullscreen-btn {
+.icon-main-con {
+    display: flex;
+    justify-content: space-between;
     position: relative;
-    top: -152px;
-    right: 20px;
+    top: -210px;
+    width:80px;
+}
+
+.icon-main-con-fullscreen {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: -410px;
+    width:80px;
+}
+
+.fullscreen-btn {
     width: 32px;
     height: 32px;
     cursor: pointer;
     z-index: 1000;
 }
 
-.fullscreen-btn-ingame {
-    position: relative;
-    top: -379px;
-    left: -144px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.fullscreen-active-btn-pos-ingame {
-    position: relative;
-    top: -434px;
-    left: -211px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.fullscreen-active-btn-pos-start {
-    position: relative;
-    top: -155px;
-    left: 63px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    z-index: 1;
+.fullscreen-btn:hover {
+    transform: translateY(-2px);
 }
 
 .volume-buttons-startscreen {
     width: 32px;
-    position: relative;
-    bottom: 160px;
-    cursor: pointer;
-}
-
-.volume-buttons-ingame {
-    width: 32px;
-    position: relative;
-    bottom: 415px;
-    right: 500px;
     cursor: pointer;
     z-index: 1;
 }
 
-.fullscreen-active-volume-btn-pos-ingame {
-    width: 32px;
-    position: relative;
-    bottom: 470px;
-    right: 715px;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.fullscreen-active-volume-btn-pos-start {
-    width: 32px;
-    position: relative;
-    bottom: 499px;
-    right: 807px;
-    cursor: pointer;
-    z-index: 1;
+.volume-buttons-startscreen:hover {
+    transform: translateY(-2px);
 }
 
 @media(max-width: 1000px) {
@@ -508,11 +478,6 @@ canvas {
         top: -152px;
     }
 
-    .fullscreen-btn,
-    .fullscreen-btn-ingame {
-        display: none !important;
-    }
-
     .info-screen {
         width: 100%;
     }
@@ -520,34 +485,44 @@ canvas {
     .close-btn-how-to-play {
         top: -200px;
     }
+
+    .close-btn-con-main {
+        top: -250px;
+    }
+
+    .icon-main-con {
+        display: flex;
+        justify-content: center;
+        top: -145px;
+    }
 }
 
 @media(max-width: 900px) {
-    .volume-buttons-ingame {
+    /* .volume-buttons-ingame {
         width: 32px;
         position: relative;
         bottom: 340px;
         right: 405px;
         cursor: pointer;
-    }
+    } */
 
     .info-btns {
         top: 280px;
     }
 
-    .volume-buttons-startscreen {
+    /* .volume-buttons-startscreen {
         bottom: 130px;
-    }
+    } */
 }
 
 @media(max-width: 850px) {
-    .volume-buttons-ingame {
+    /* .volume-buttons-ingame {
         width: 32px;
         position: relative;
         bottom: 330px;
         right: 380px;
         cursor: pointer;
-    }
+    } */
 
     .info-btns {
         top: 270px;
@@ -572,11 +547,11 @@ canvas {
         margin-top: 10px;
     }
 
-    .volume-buttons-ingame {
+    /* .volume-buttons-ingame {
         position: fixed;
         top: 122px;
         left: 20px;
-    }
+    } */
 
     .fullscreen-btn {
         top: -110px;

@@ -49,31 +49,35 @@
 <body onload="init()">
     <h1 class="epl-headline">El Pollo Loco</h1>
 
-        <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
-        <div id="start-screen" class="start-screen">
-            <img src="./assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
-                class="startscreen-img">
-            <div class="start-btn">
-                <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
-            </div>
-            <div class="info-btns">
-                <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
-
-                <img id="fullscreen-icon" src="./assets/img/icons/enter-fullscreen.svg" alt="fullscreen-icon"
-                    onclick="enterCanvasFullscreen()" class="fullscreen-btn">
-
-                <img id="exit-fullscreen-icon" src="./assets/img/icons/exit-fullscreen.svg" alt="exit-fullscreen-icon"
-                    onclick="exitCanvasFullscreen()" class="fullscreen-btn d-none">
-
-                <img onclick="muteAllSounds()" id="volume-btn" src="./assets/img/icons/volume-high-solid.svg"
-                    alt="volume-high-icon">
-
-                <img onclick="playAllSounds()" id="mute-btn" src="./assets/img/icons/volume-xmark-solid.svg"
-                    alt="volume-muted-icon">
-                <button onclick="location.href='./legal-notice.html'" id="imprint-btn"
-                    class="startscreen-btns">Imprint</button>
-            </div>
+    <canvas id="canvas" class="canvas" width="720" height="480"></canvas>
+    <div id="start-screen" class="start-screen">
+        <img src="./assets/img/9_intro_outro_screens/start/startscreen_1.png" alt="startscreen-img" id="start-img"
+            class="startscreen-img">
+        <div class="start-btn">
+            <button onclick="startGame()" id="start-btn" class="startscreen-btns">Start Game</button>
         </div>
+
+        <div id="icon-main-con" class="icon-main-con">
+            <img id="fullscreen-icon" src="./assets/img/icons/enter-fullscreen.svg" alt="fullscreen-icon"
+                onclick="enterCanvasFullscreen()" class="fullscreen-btn">
+
+            <img id="exit-fullscreen-icon" src="./assets/img/icons/exit-fullscreen.svg" alt="exit-fullscreen-icon"
+                onclick="exitCanvasFullscreen()" class="fullscreen-btn d-none">
+
+            <img onclick="muteAllSounds()" id="volume-btn" src="./assets/img/icons/volume-high-solid.svg"
+                alt="volume-high-icon" class="volume-buttons-startscreen">
+
+            <img onclick="playAllSounds()" id="mute-btn" src="./assets/img/icons/volume-xmark-solid.svg"
+                alt="volume-muted-icon" class="volume-buttons-startscreen">
+        </div>
+
+        <div id="info-btns" class="info-btns">
+            <button onclick="showHowToPlay()" id="how-to-play-btn" class="startscreen-btns">How to play</button>
+
+            <button onclick="location.href='./legal-notice.html'" id="imprint-btn"
+                class="startscreen-btns">Imprint</button>
+        </div>
+    </div>
 
 
     <div id="how-to-play-screen" class="info-screen">

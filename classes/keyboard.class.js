@@ -54,13 +54,10 @@ class Keyboard {
     }
 
 
-    /**
-        * Fügt Event-Listener für Touch-Controls hinzu
-        */
     setupTouchControls() {
         const touchBtns = document.querySelectorAll('.touch-btn');
 
-        if (touchBtns.length === 0) return;  // Falls keine Buttons vorhanden sind, abbrechen
+        if (touchBtns.length === 0) return; 
 
         touchBtns[0].addEventListener('pointerdown', () => (this.LEFT = true));
         touchBtns[0].addEventListener('pointerup', () => (this.LEFT = false));
@@ -74,7 +71,7 @@ class Keyboard {
         touchBtns[3].addEventListener('pointerdown', () => (this.D = true));
         touchBtns[3].addEventListener('pointerup', () => (this.D = false));
 
-        touchBtns[4].addEventListener('pointerdown', () => (this.F = true));  // Flasche kaufen
+        touchBtns[4].addEventListener('pointerdown', () => (this.F = true)); 
         touchBtns[4].addEventListener('pointerup', () => (this.F = false));
     }
 }

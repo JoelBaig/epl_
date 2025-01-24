@@ -50,28 +50,65 @@ class World {
 
 
     handleObjectIntervals() {
+        this.checkCollidingObjectInterval();
+        this.checkThrowingObjectInterval();
+    }
+
+
+    checkCollidingObjectInterval() {
         setInterval(() => {
             this.checkCollisionObjects(this.level.bottles, this.coinBar);
             this.checkCollisionObjects(this.level.coins, this.bottleBar);
             this.checkBuyBottle();
         }, 50);
+    }
 
+
+    checkThrowingObjectInterval() {
         setInterval(() => {
             this.checkThrowObject();
         }, 120);
     }
 
 
+    // handleEnemyIntervals() {
+    //     setInterval(() => {
+    //         this.endbossFirstContact();
+    //         this.checkTopCollisionEnemies();
+    //     }, 1);
+
+    //     setInterval(() => {
+    //         this.checkSideCollisionEnemies();
+    //     }, 200);
+
+    //     setInterval(() => {
+    //         this.checkCollisionEndboss();
+    //     }, 150);
+    // }
+
+
     handleEnemyIntervals() {
+        this.startEndbossContactCheck();
+        this.startSideCollisionCheck();
+        this.startEndbossCollisionCheck();
+    }
+
+    startEndbossContactCheck() {
         setInterval(() => {
             this.endbossFirstContact();
             this.checkTopCollisionEnemies();
         }, 1);
+    }
 
+
+    startSideCollisionCheck() {
         setInterval(() => {
             this.checkSideCollisionEnemies();
         }, 200);
+    }
 
+
+    startEndbossCollisionCheck() {
         setInterval(() => {
             this.checkCollisionEndboss();
         }, 150);
@@ -313,10 +350,10 @@ class World {
         arr.forEach((object) => {
             if (this.character.isColliding(object)) {
                 if (object instanceof Bottle && this.bottleBar.percentage >= 100) {
-                    return;  
+                    return;
                 }
-                this.addObjectAmount(object);  
-                this.deleteObjectFromArray(arr, object); 
+                this.addObjectAmount(object);
+                this.deleteObjectFromArray(arr, object);
             }
         });
     }

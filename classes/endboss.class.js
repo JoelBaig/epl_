@@ -78,16 +78,29 @@ class Endboss extends MovableObject {
 
 
     animate() {
-        setStoppableInterval(() => {
-            this.manageEndbossActions();
-        }, 150);
+        this.handleEndbossDefeat();
+        this.manageEndbossState();
+        this.checkHealthStatus();
+    }
 
+
+    handleEndbossDefeat() {
         setTimeout(() => {
             if (this.endbossIsDead) {
                 gameWon();
             }
         }, 1000);
+    }
 
+
+    manageEndbossState() {
+        setStoppableInterval(() => {
+            this.manageEndbossActions();
+        }, 150);
+    }
+
+
+    checkHealthStatus() {
         setStoppableInterval(() => {
             if (this.isDead()) {
                 this.updateDyingAnimation();
@@ -148,7 +161,7 @@ class Endboss extends MovableObject {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.playAnimation(this.IMAGES_WALKING);
-            this.trackCharacter(); 
+            this.trackCharacter();
         }
     }
 
@@ -173,8 +186,8 @@ class Endboss extends MovableObject {
         if (!this.firstContact) {
             return;
         }
-        this.clearMoveIntervals(); 
-        this.setMovementDirection(direction); 
+        this.clearMoveIntervals();
+        this.setMovementDirection(direction);
         this.setSpeed();
         this.traceCharacter();
     }
@@ -188,22 +201,22 @@ class Endboss extends MovableObject {
         }
     }
 
-    
+
     clearMoveIntervals() {
         clearInterval(this.moveLeftInterval);
         clearInterval(this.moveRightInterval);
     }
-    
+
     setMovementDirection(direction) {
         this.isMovingLeft = direction === "left";
         this.isMovingRight = direction === "right";
-        this.otherDirection = direction === "right"; 
+        this.otherDirection = direction === "right";
     }
-    
+
     setSpeed() {
         this.speed = 15;
     }
-    
+
     startMovingLeft() {
         this.moveLeftInterval = setInterval(() => {
             if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
@@ -211,7 +224,7 @@ class Endboss extends MovableObject {
             }
         }, 75);
     }
-    
+
     startMovingRight() {
         this.moveRightInterval = setInterval(() => {
             if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
@@ -233,14 +246,18 @@ class Endboss extends MovableObject {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
             this.currentAnimation = setInterval(() => {
-                this.playAnimation(this.IMAGES_ALERT);  
+                this.playAnimation(this.IMAGES_ALERT);
             }, 500);
-
-            setTimeout(() => {
-                clearInterval(this.currentAnimation);
-                this.currentAnimation = null;
-            }, 2000); 
+            this.clearAlertAnimationTimeout();
         }
+    }
+
+
+    clearAlertAnimationTimeout() {
+        setTimeout(() => {
+            clearInterval(this.currentAnimation);
+            this.currentAnimation = null;
+        }, 2000);
     }
 
 
@@ -253,7 +270,11 @@ class Endboss extends MovableObject {
         this.endbossIsHurt = true;
         this.stopCurrentAnimation();
         this.playAnimation(this.IMAGES_HURTING);
+        this.hurtingAnimationTimeout();
+    }
 
+
+    hurtingAnimationTimeout() {
         setTimeout(() => {
             this.endbossIsHurt = false;
         }, 200);
@@ -267,14 +288,18 @@ class Endboss extends MovableObject {
             this.playAnimation(this.IMAGES_DEAD);
             this.isFallingToGround();
             this.playEndbossDyingSound();
-
-            setTimeout(() => {
-                stopInterval();
-                audioManager.pause(SOUNDS.GAME_MUSIC);
-                audioManager.pause(SOUNDS.WALKING);
-                gameWon();
-            }, 500);
+            this.dyingAnimationTimeout();
         }
+    }
+
+
+    dyingAnimationTimeout() {
+        setTimeout(() => {
+            stopInterval();
+            audioManager.pause(SOUNDS.GAME_MUSIC);
+            audioManager.pause(SOUNDS.WALKING);
+            gameWon();
+        }, 500);
     }
 
 

@@ -42,16 +42,12 @@ function setupTouchControls() {
 
     touchBtns[0].addEventListener('pointerdown', () => (keyboard.LEFT = true));
     touchBtns[0].addEventListener('pointerup', () => (keyboard.LEFT = false));
-
     touchBtns[1].addEventListener('pointerdown', () => (keyboard.RIGHT = true));
     touchBtns[1].addEventListener('pointerup', () => (keyboard.RIGHT = false));
-
     touchBtns[2].addEventListener('pointerdown', () => (keyboard.SPACE = true));
     touchBtns[2].addEventListener('pointerup', () => (keyboard.SPACE = false));
-
     touchBtns[3].addEventListener('pointerdown', () => (keyboard.D = true));
     touchBtns[3].addEventListener('pointerup', () => (keyboard.D = false));
-
     touchBtns[4].addEventListener('pointerdown', () => (keyboard.F = true));
     touchBtns[4].addEventListener('pointerup', () => (keyboard.F = false));
 }
@@ -80,7 +76,15 @@ function enterCanvasFullscreen() {
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
     const startBtn = document.getElementById('start-btn');
     const infoBtns = document.getElementById('info-btns');
+    const restartImg = document.getElementById('restart-img');
+    const gameOverBgr = document.getElementById('game-over-bgr');
+    const gameOverImg = document.getElementById('game-over-img');
+    const gameOverScreen = document.getElementById('game-over-screen');
+    manageEnterFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns, restartImg, gameOverBgr, gameOverImg, gameOverScreen);
+}
 
+
+function manageEnterFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns, restartImg, gameOverBgr, gameOverImg, gameOverScreen) {
     startscreen.classList.add('start-fullscreen');
     canvas.classList.add('canvas-fullscreen');
     canvas.classList.remove('canvas');
@@ -90,6 +94,14 @@ function enterCanvasFullscreen() {
     iconMainCon.classList.add('icon-main-con-fullscreen');
     startBtn.classList.add('startscreen-btns-fullscreen');
     infoBtns.classList.add('info-btns-fullscreen');
+    restartImg.classList.remove('restart-img');
+    restartImg.classList.add('restart-img-fullscreen-game-over');
+    gameOverBgr.classList.remove('endscreen-bgr');
+    gameOverBgr.classList.add('endscreen-bgr-fullscreen');
+    gameOverImg.classList.remove('game-over-img');
+    gameOverImg.classList.add('game-over-img-fullscreen');
+    gameOverScreen.classList.remove('game-over-screen');
+    gameOverScreen.classList.add('game-over-screen-fullscreen');
 }
 
 
@@ -101,7 +113,12 @@ function exitCanvasFullscreen() {
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
     const startBtn = document.getElementById('start-btn');
     const infoBtns = document.getElementById('info-btns');
+    manageGameOverFullscreen();
+    manageExitFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns);
+}
 
+
+function manageExitFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns) {
     startscreen.classList.remove('start-fullscreen');
     canvas.classList.remove('canvas-fullscreen');
     canvas.classList.add('canvas');
@@ -111,6 +128,23 @@ function exitCanvasFullscreen() {
     iconMainCon.classList.remove('icon-main-con-fullscreen');
     startBtn.classList.remove('startscreen-btns-fullscreen');
     infoBtns.classList.remove('info-btns-fullscreen');
+
+}
+
+
+function manageGameOverFullscreen() {
+    const restartImg = document.getElementById('restart-img');
+    const gameOverBgr = document.getElementById('game-over-bgr');
+    const gameOverImg = document.getElementById('game-over-img');
+    const gameOverScreen = document.getElementById('game-over-screen');
+    restartImg.classList.add('restart-img');
+    restartImg.classList.remove('restart-img-fullscreen-game-over');
+    gameOverBgr.classList.add('endscreen-bgr');
+    gameOverBgr.classList.remove('endscreen-bgr-fullscreen');
+    gameOverImg.classList.add('game-over-img');
+    gameOverImg.classList.remove('game-over-img-fullscreen');
+    gameOverScreen.classList.add('game-over-screen');
+    gameOverScreen.classList.remove('game-over-screen-fullscreen');
 }
 
 
@@ -153,7 +187,11 @@ function hideAllScreens() {
 
 function showCurrentView() {
     hideAllScreens();
+    handleCurrentView();
+}
 
+
+function handleCurrentView() {
     if (currentView === 'start') {
         document.getElementById('start-screen').style.display = 'flex';
     } else if (currentView === 'game') {
@@ -183,33 +221,23 @@ function hideOnLoadPage() {
 function startGame() {
     if (!gameStarted) {
         currentView = 'game';
-
-        if (isSmallScreen()) {
-            addTouchControls();
-        } else {
-            removeTouchControls();
-        }
-
+        checkIfSmallScreen();
         currentTime = new Date().getTime();
         gameStarted = true;
         hideStartscreen();
         initializeGameWorld();
         toggleVolumeIcon();
-        // changeIconPositionIngame();
     }
 }
 
 
-// function changeIconPositionIngame() {
-//     document.getElementById('volume-btn').classList.remove('volume-buttons-startscreen');
-//     document.getElementById('volume-btn').classList.add('volume-buttons-ingame');
-//     document.getElementById('mute-btn').classList.remove('volume-buttons-startscreen');
-//     document.getElementById('mute-btn').classList.add('volume-buttons-ingame');
-//     document.getElementById('fullscreen-icon').classList.remove('fullscreen-btn');
-//     document.getElementById('fullscreen-icon').classList.add('fullscreen-btn-ingame');
-//     document.getElementById('exit-fullscreen-icon').classList.remove('fullscreen-btn');
-//     document.getElementById('exit-fullscreen-icon').classList.add('fullscreen-btn-ingame');
-// }
+function checkIfSmallScreen() {
+    if (isSmallScreen()) {
+        addTouchControls();
+    } else {
+        removeTouchControls();
+    }
+}
 
 
 function hideStartscreen() {
@@ -237,10 +265,17 @@ function closeHowToPlay() {
 function initializeGameWorld() {
     initLevel();
     registerAllSounds();
-    audioManager.setVolume(SOUNDS.GAME_MUSIC, 0.5);
-    audioManager.getAudioInstance(SOUNDS.GAME_MUSIC, true).play();
+    checkIfSoundsMuted();
     document.getElementById('canvas').style.display = 'flex';
     world = new World(canvas, keyboard, gameStarted, currentTime);
+}
+
+
+function checkIfSoundsMuted() {
+    if (!soundsMuted) {
+        audioManager.setVolume(SOUNDS.GAME_MUSIC, 0.5);
+        audioManager.getAudioInstance(SOUNDS.GAME_MUSIC, true).play();
+    }
 }
 
 
@@ -258,22 +293,41 @@ function muteAllSounds() {
     document.getElementById('mute-btn').style.display = 'flex';
 }
 
+
 function playAllSounds() {
     soundsMuted = false;
     audioManager.unmuteAll();
     document.getElementById('volume-btn').style.display = 'flex';
     document.getElementById('mute-btn').style.display = 'none';
+    manageSoundIfGameStarted();
+}
+
+
+function manageSoundIfGameStarted() {
+    if (gameStarted) {
+        audioManager.setVolume(SOUNDS.GAME_MUSIC, 0.5);
+        audioManager.getAudioInstance(SOUNDS.GAME_MUSIC, true).play();
+    }
 }
 
 
 function showEndscreen() {
+    checkIfEndbossIsDead();
+    checkIfEndbossIsDead();
+}
+
+
+function checkIfEndbossIsDead() {
     if (world.endboss.endbossIsDead) {
         win = true;
         setTimeout(() => {
             gameWon();
         }, 2000);
     }
+}
 
+
+function checkIfCharacterIsDead() {
     if (world.character.characterIsDead) {
         win = false;
         setTimeout(() => {
@@ -305,8 +359,22 @@ function handleGAmeWonSounds() {
 }
 
 
+// function showGameWonScreen() {
+//     document.getElementById('icon-main-con').style.display = 'none';
+//     document.getElementById('game-won-screen').style.display = 'flex';
+//     document.getElementById('restart-btn').style.display = 'flex';
+//     document.getElementById('canvas').style.display = 'none';
+//     document.getElementById('how-to-play-screen').style.display = 'none';
+//     document.getElementById('mute-btn').style.display = 'none';
+// }
+
+
 function showGameWonScreen() {
-    document.getElementById('game-won-screen').style.display = 'flex';
+    document.getElementById('icon-main-con').style.display = 'none';
+    const gameWonScreen = document.getElementById('game-won-screen');
+    gameWonScreen.style.display = 'flex';
+    gameWonScreen.classList.add('start-fullscreen'); // Vollbildmodus aktivieren
+
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
@@ -320,7 +388,11 @@ function gameOver() {
     handleGameOverSounds();
     toggleVolumeIcon();
     stopInterval();
+    gameOverScreenTimeout();
+}
 
+
+function gameOverScreenTimeout() {
     setTimeout(() => {
         showGameOverScreen();
         gameStarted = false;
@@ -338,6 +410,7 @@ function handleGameOverSounds() {
 
 
 function showGameOverScreen() {
+    document.getElementById('icon-main-con').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'flex';
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
@@ -346,10 +419,24 @@ function showGameOverScreen() {
 }
 
 
+
+// function showGameOverScreen() {
+//     const gameOverScreen = document.getElementById('game-over-screen');
+//     gameOverScreen.style.display = 'flex';
+//     // gameOverScreen.classList.add('start-fullscreen'); // Vollbildmodus aktivieren
+//     document.getElementById('icon-main-con').style.display = 'none';
+//     document.getElementById('restart-btn').style.display = 'flex';
+//     document.getElementById('canvas').style.display = 'none';
+//     document.getElementById('how-to-play-screen').style.display = 'none';
+//     document.getElementById('mute-btn').style.display = 'none';
+// }
+
+
 function restartGame() {
     hideEndscreen();
     restartSounds();
     toggleVolumeIcon();
+    document.getElementById('icon-main-con').style.display = 'flex';
     win = null;
     init();
     startGame();

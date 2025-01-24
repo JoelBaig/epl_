@@ -54,25 +54,29 @@ class ChickenSmall extends MovableObject {
             this.playDeathAnimation();
             this.scheduleRemoval();
             audioManager.play(SOUNDS.DYING_ENEMY);
-            this.speed = 0;  
+            this.speed = 0;
         }
     }
-    
+
+
     playDeathAnimation() {
-        let currentFrame = 0; 
-    
+        let currentFrame = 0;
         let intervalId = setInterval(() => {
             this.playAnimation([this.IMAGES_DEAD[currentFrame]]);
-            currentFrame++; 
-    
-            if (currentFrame >= this.IMAGES_DEAD.length) {
-                clearInterval(intervalId); 
-                this.image = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]; 
-            }
-        }, 200); 
+            currentFrame++;
+            this.clearDeathInterval(intervalId, currentFrame);
+        }, 200);
     }
-    
-    
+
+
+    clearDeathInterval(intervalId, currentFrame) {
+        if (currentFrame >= this.IMAGES_DEAD.length) {
+            clearInterval(intervalId);
+            this.image = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1];
+        }
+    }
+
+
     scheduleRemoval() {
         setTimeout(() => {
             if (this.world) {

@@ -1,0 +1,188 @@
+@media(max-width: 1000px) {
+    h1 {
+        display: none;
+    }
+
+    canvas {
+        width: 100%;
+    }
+
+    .info-btns {
+        position: relative;
+        top: 290px;
+    }
+
+    .start-btn {
+        position: absolute;
+    }
+
+    .startscreen-btns {
+        top: -130px;
+        z-index: 1;
+    }
+
+    .volume-buttons-startscreen {
+        bottom: 130px;
+    }
+
+    .volume-buttons-ingame {
+        width: 32px;
+        position: relative;
+        bottom: 357px;
+        right: 425px;
+        cursor: pointer;
+    }
+
+    .restart-con {
+        width: 100%;
+    }
+
+    .game-won-screen {
+        width: 100%;
+    }
+
+    .game-over-screen {
+        width: 100%;
+    }
+
+    .game-over-img {
+        width: 100%;
+    }
+
+    .game-over-img-bgr {
+        width: 100%;
+    }
+
+    .restart-img {
+        top: -132px;
+    }
+
+    .win-headline {
+        display: flex;
+        position: fixed;
+    }
+
+    .wreath-img {
+        height: 360px;
+        width: 100%;
+        position: fixed;
+    }
+
+    .how-to-play-main-con {
+        display: flex;
+        flex-direction: column;
+        font-size: 22px;
+        margin-top: 20px;
+        margin-left: 32px;
+        margin-right: 32px;
+        position: relative;
+        top: -515px;
+    }
+
+    .how-to-play-img {
+        top: -620px;
+    }
+
+    .info-img {
+        width: 50px;
+        height: 50px;
+        position: relative;
+        top: -250px;
+    }
+
+    .start-screen {
+        width: 100%;
+    }
+
+    .startscreen-img {
+        width: 100%;
+    }
+
+    .fullscreen-btn {
+        top: -152px;
+    }
+
+    .info-screen {
+        width: 100%;
+    }
+
+    .close-btn-how-to-play {
+        top: -200px;
+    }
+
+    .close-btn-con-main {
+        top: -250px;
+    }
+
+    .icon-main-con {
+        display: flex;
+        justify-content: center;
+        top: -145px;
+    }
+}
+
+@media(max-width: 900px) {
+    .info-btns {
+        top: 280px;
+    }
+}
+
+@media(max-width: 850px) {
+    .info-btns {
+        top: 270px;
+    }
+
+    .volume-buttons-startscreen {
+        bottom: 130px;
+    }
+
+    .how-to-play-main-con {
+        top: -525px;
+    }
+
+    .how-to-play-img {
+        top: -650px;
+    }
+}
+
+@media(max-width: 670px) {
+    .controls-headline {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .fullscreen-btn {
+        top: -110px;
+    }
+
+    .volume-buttons-startscreen {
+        bottom: 120px;
+    }
+
+    .startscreen-btns {
+        top: -120px;
+        z-index: 1;
+    }
+
+    .info-btns {
+        position: relative;
+        top: 245px;
+    }
+
+    .startscreen-img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .close-btn-con-main {
+        top: -190px;
+    }
+
+    .how-to-play-img {
+        top: -530px;
+    }
+
+    .how-to-play-main-con {
+        top: -415px;
+    }
+}

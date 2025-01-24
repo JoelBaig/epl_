@@ -18,6 +18,7 @@
     </style>
 
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
     <link rel="shortcut icon" href="./assets/img/favicon/favicon.png" type="image/x-icon">
 
     <script src="./classes/world.class.js"></script>
@@ -109,21 +110,21 @@
     </div>
 
     <div id="game-won-screen" class="game-won-screen">
-        <img class="game-over-img-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img id="game-won-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
         <img class="wreath-img" src="./assets/img/9_intro_outro_screens/laurel_wreath.png" alt="laurel-wreath">
         <h1 class="win-headline">You Win!</h1>
     </div>
 
     <div id="game-over-screen" class="game-over-screen">
-        <img class="game-over-img-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
-        <img class="game-over-img" src="./assets/img/9_intro_outro_screens/game_over/game%20over.png"
+        <img id="game-over-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img id="game-over-img" class="game-over-img" src="./assets/img/9_intro_outro_screens/game_over/game%20over.png"
             alt="game-over-img">
         <div class="restart-con">
         </div>
     </div>
 
     <button id="restart-btn" onclick="restartGame()" class="restart-btn start">
-        <img class="restart-img" src="./assets/img/icons/restart.png" alt="restart-img">
+        <img id="restart-img" class="restart-img" src="./assets/img/icons/restart.png" alt="restart-img">
     </button>
 
     <div id="touch-controls" class="touch-controls" style="display: none;">

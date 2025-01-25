@@ -22,6 +22,7 @@
     <link rel="shortcut icon" href="./assets/img/favicon/favicon.png" type="image/x-icon">
 
     <script src="./classes/world.class.js"></script>
+    <script src="./classes/collisions.class.js"></script>
     <script src="./classes/drawable-object.class.js"></script>
     <script src="./classes/movable-object.class.js"></script>
     <script src="./classes/keyboard.class.js"></script>
@@ -42,7 +43,9 @@
     <script src="./classes/throwable-object.class.js"></script>
     <script src="./classes/audio-manager.class.js"></script>
     <script src="./js/sounds.js"></script>
+    <script src="./js/sound-settings.js"></script>
     <script src="./js/display-settings.js"></script>
+    <script src="./js/control-settings.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
 </head>
@@ -110,13 +113,15 @@
     </div>
 
     <div id="game-won-screen" class="game-won-screen">
-        <img id="game-won-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img id="game-won-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png"
+            alt="game-over-bgr">
         <img class="wreath-img" src="./assets/img/9_intro_outro_screens/laurel_wreath.png" alt="laurel-wreath">
-        <h1 class="win-headline">You Win!</h1>
+        <h1 id="win-headline" class="win-headline">You Win!</h1>
     </div>
 
     <div id="game-over-screen" class="game-over-screen">
-        <img id="game-over-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png" alt="game-over-bgr">
+        <img id="game-over-bgr" class="endscreen-bgr" src="./assets/img/5_background/first_half_background.png"
+            alt="game-over-bgr">
         <img id="game-over-img" class="game-over-img" src="./assets/img/9_intro_outro_screens/game_over/game%20over.png"
             alt="game-over-img">
         <div class="restart-con">

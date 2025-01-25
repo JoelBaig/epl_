@@ -229,9 +229,25 @@ canvas {
     top: -570px;
 }
 
+.win-headline-fullscreen {
+    display: flex;
+    position: fixed;
+    top: 310px;
+}
+
 .game-won-screen {
     height: 480px;
     width: 720px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.game-won-screen-fullscreen {
+    height: 100vh;
+    width: 100vw;
     position: absolute;
     display: flex;
     align-items: center;

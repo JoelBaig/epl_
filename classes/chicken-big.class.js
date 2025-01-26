@@ -23,7 +23,7 @@ class ChickenBig extends MovableObject {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.preloadImages();
         this.x = 500 + Math.random() * 2000;
-        this.speed = 0.15 + Math.random() * 0.35;
+        this.speed = 0.8 + Math.random() * 1;
         this.animate();
     }
 

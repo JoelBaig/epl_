@@ -1,6 +1,7 @@
 class AudioManager {
     constructor() {
         this.audioInstances = {};
+        this.muted = false;
     }
 
 
@@ -9,13 +10,14 @@ class AudioManager {
             this.audioInstances[src] = new Audio(src);
         }
         this.audioInstances[src].loop = loop; 
+        this.audioInstances[src].muted = this.muted; 
         return this.audioInstances[src];
     }
 
 
     play(src) {
         const audio = this.getAudioInstance(src);
-        if (audio.paused) {
+        if (!this.muted && audio.paused) {
             audio.play().catch((error) => {
                 console.warn(`Failed to play audio: ${src}`, error);
             });
@@ -40,6 +42,7 @@ class AudioManager {
 
 
     muteAll() {
+        this.muted = true;
         Object.values(this.audioInstances).forEach(audio => {
             audio.muted = true;
         });
@@ -47,6 +50,7 @@ class AudioManager {
 
 
     unmuteAll() {
+        this.muted = false;
         Object.values(this.audioInstances).forEach(audio => {
             audio.muted = false;
         });

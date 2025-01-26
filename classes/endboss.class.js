@@ -136,7 +136,7 @@ class Endboss extends MovableObject {
     handleReactions() {
         if (this.isFirstContact()) {
             this.handleAlert();
-        } else if (this.firstContact && this.distance < 200) {
+        } else if (this.firstContact && this.distance < 400) {
             this.triggerEndbossAttack();
         } else if (this.firstContact) {
             this.triggerEndbossWalking();

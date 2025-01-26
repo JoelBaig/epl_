@@ -7,6 +7,7 @@ let stoppableIntervalIds = [];
 let win = null;
 let soundsMuted = false;
 let currentView = 'start';
+let fullscreen = false;
 
 
 window.addEventListener('load', checkOrientation);
@@ -45,6 +46,9 @@ function startGame() {
         gameStarted = true;
         hideStartscreen();
         initializeGameWorld();
+        if (soundsMuted) {
+            audioManager.muteAll();
+        }
         toggleVolumeIcon();
     }
 }
@@ -115,14 +119,40 @@ function gameOverScreenTimeout() {
 }
 
 
+// function restartGame() {
+//     hideEndscreen();
+//     restartSounds();
+//     toggleVolumeIcon();
+//     document.getElementById('icon-main-con').style.display = 'flex';
+//     win = null;
+//     init();
+//     startGame();
+// }
+
+
 function restartGame() {
     hideEndscreen();
     restartSounds();
-    toggleVolumeIcon();
+
+    // 🟢 Speichere den aktuellen Fullscreen-Status
+    let wasFullscreen = fullscreen;
+
+    if (!fullscreen) { 
+        toggleVolumeIcon();
+    }
+
     document.getElementById('icon-main-con').style.display = 'flex';
     win = null;
     init();
     startGame();
+
+    // 🟢 Falls Fullscreen vorher aktiv war, erneut aktivieren
+    if (wasFullscreen) {
+        enterCanvasFullscreen();
+    } else {
+        // 🟢 Wenn Fullscreen vorher NICHT aktiv war, Icons NICHT ändern!
+        toggleFullscreenIcon();
+    }
 }
 
 

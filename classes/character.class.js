@@ -76,8 +76,9 @@ class Character extends MovableObject {
     characterIsDead = false;
     currentTime;
 
-    constructor() {
+    constructor(world) {
         super().loadImage(this.IMAGES_WALKING[0]);
+        this.world = world;
         this.preloadImages();
         this.applyGravity();
         this.animate();

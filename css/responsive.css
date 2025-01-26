@@ -117,13 +117,17 @@
     .icon-main-con {
         display: flex;
         justify-content: center;
-        top: -145px;
+        top: -165px;
     }
 }
 
 @media(max-width: 900px) {
     .info-btns {
         top: 280px;
+    }
+
+    .icon-main-con {
+        top: -152px;
     }
 }
 
@@ -184,5 +188,9 @@
 
     .how-to-play-main-con {
         top: -415px;
+    }
+
+    .icon-main-con {
+        top: -143px;
     }
 }

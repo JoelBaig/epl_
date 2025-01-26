@@ -313,6 +313,12 @@ canvas {
     top: -170px;
 }
 
+.restart-img-fullscreen-game-over {
+    width: 100px;
+    position: relative;
+    top: -300px;
+}
+
 .restart-btn {
     cursor: pointer;
 }
@@ -416,10 +422,4 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.restart-img-fullscreen-game-over {
-    width: 100px;
-    position: relative;
-    top: -370px;
 }

@@ -1,4 +1,5 @@
 function enterCanvasFullscreen() {
+    fullscreen = true;
     const startscreen = document.getElementById('start-screen');
     const canvas = document.getElementById('canvas');
     const iconMainCon = document.getElementById('icon-main-con');
@@ -65,6 +66,7 @@ function toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline) {
 
 
 function exitCanvasFullscreen() {
+    fullscreen = false;
     const startscreen = document.getElementById('start-screen');
     const canvas = document.getElementById('canvas');
     const iconMainCon = document.getElementById('icon-main-con');
@@ -219,12 +221,25 @@ function handleCurrentView() {
 function toggleFullscreenIcon() {
     const enterFullscreenIcon = document.getElementById('fullscreen-icon');
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
+    handleDesktopMode(enterFullscreenIcon, exitFullscreenIcon);
+    handleMobileMode(enterFullscreenIcon, exitFullscreenIcon);
+}
 
-    if (isMobileDevice()) {
+
+function handleDesktopMode(enterFullscreenIcon, exitFullscreenIcon) {
+    if (fullscreen) {
         enterFullscreenIcon.classList.add('d-none');
-        exitFullscreenIcon.classList.add('d-none');
+        exitFullscreenIcon.classList.remove('d-none');
     } else {
         enterFullscreenIcon.classList.remove('d-none');
+        exitFullscreenIcon.classList.add('d-none');
+    }
+}
+
+
+function handleMobileMode(enterFullscreenIcon, exitFullscreenIcon) {
+    if (isMobileDevice()) {
+        enterFullscreenIcon.classList.add('d-none');
         exitFullscreenIcon.classList.add('d-none');
     }
 }

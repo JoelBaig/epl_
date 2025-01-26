@@ -3,13 +3,6 @@ class World {
     canvas;
     ctx;
     keyboard;
-    character = new Character();
-    endboss = new Endboss();
-    healthBar = new HealthBar();
-    coinBar = new CoinBar();
-    bottleBar = new BottleBar();
-    endbossHealthBar = new EndbossHealthBar();
-    throwableObjects = [new ThrowableObject()];
     lastThrowTime = 0;
     throwCooldown = 250;
     coinAmount = [];
@@ -26,11 +19,34 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.collisions = new Collisions(this);
+        this.loadModels();
         this.setupKeyboardListeners();
         this.setWorld();
         this.draw();
         this.run();
+    }
+
+
+    loadModels() {
+        this.character = new Character(this);
+        this.endboss = new Endboss(this);
+        this.healthBar = new HealthBar(this);
+        this.coinBar = new CoinBar(this);
+        this.bottleBar = new BottleBar(this);
+        this.endbossHealthBar = new EndbossHealthBar(this);
+        this.throwableObjects = [new ThrowableObject(this)];
+        this.objectManager = new ObjectManager(this);
+        this.hitManager = new HitManager(this);
+        this.collisions = new Collisions(this);
+    }
+
+
+    setupKeyboardListeners() {
+        document.addEventListener('keyup', (event) => {
+            if (event.key.toLowerCase() === 'd') {
+                this.keyboard.lastD = false;
+            }
+        });
     }
 
 
@@ -48,16 +64,7 @@ class World {
     run() {
         this.collisions.handleObjectIntervals();
         this.collisions.handleEnemyIntervals();
-        this.checkThrowingObjectInterval();
-    }
-
-
-    checkThrowingObjectInterval() {
-        console.log("checkThrowingObjectInterval gestartet");
-        setInterval(() => {
-            console.log("checkThrowObject() sollte aufgerufen werden");
-            this.checkThrowObject();
-        }, 120);
+        this.objectManager.checkThrowingObjectInterval();
     }
 
 
@@ -73,18 +80,11 @@ class World {
     }
 
 
-    setHitEnemy() {
-        setTimeout(() => {
-            this.hitEnemy = false;
-        }, 500);
-    }
-
-
     enemyIsDead(enemy) {
         if (!enemy.dead) {
             enemy.isDead();
             setTimeout(() => {
-                this.deleteObjectFromArray(this.level.enemies, enemy);
+                this.objectManager.deleteObjectFromArray(this.level.enemies, enemy);
             }, 500);
         }
     }
@@ -100,135 +100,11 @@ class World {
     }
 
 
-    addObjectAmount(object) {
-        if (object instanceof Bottle) {
-            this.collectBottle();
-        } else if (object instanceof Coin) {
-            this.collectCoin();
-        }
-    }
-
-
-    collectBottle() {
-        this.bottleBar.percentage += 20;
-        this.bottleBar.setPercentage(this.bottleBar.percentage);
-        audioManager.setVolume(SOUNDS.COLLECT_BOTTLE, 0.5);
-        audioManager.play(SOUNDS.COLLECT_BOTTLE);
-        this.bottleAmount++;
-    }
-
-
-    collectCoin() {
-        this.coinBar.percentage += 20;
-        this.coinBar.setPercentage(this.coinBar.percentage);
-        audioManager.setVolume(SOUNDS.COLLECT_COIN, 0.5);
-        audioManager.play(SOUNDS.COLLECT_COIN);
-        this.coinAmount++;
-    }
-
-
-    checkThrowObject() {
-        let currentTime = Date.now();
-
-        if (this.keyboard.D && !this.keyboard.lastD && this.bottleAmount >= 1 && (currentTime - this.lastThrowTime) >= this.throwCooldown) {
-            this.throwBottle(currentTime);
-            this.keyboard.lastD = true;
-        }
-        this.collisions.checkBottleIsCollidingEnemy();
-    }
-
-
-    setupKeyboardListeners() {
-        document.addEventListener('keyup', (event) => {
-            if (event.key === 'd' || event.key === 'D') {
-                this.keyboard.lastD = false;
-            }
-        });
-    }
-
-
-    throwBottle(currentTime) {
-        audioManager.setVolume(SOUNDS.THROW_BOTTLE, 0.5);
-        audioManager.play(SOUNDS.THROW_BOTTLE);
-        let bottle = new ThrowableObject(this.character.x + 20, this.character.y + 150, this.character.otherDirection);
-        this.throwableObjects.push(bottle);
-        this.bottleAmount--;
-        this.bottleBar.percentage -= 20;
-        this.bottleBar.setPercentage(this.bottleBar.percentage);
-        this.lastThrowTime = currentTime;
-    }
-
-
-    endbossIsDead(endboss) {
-        this.endboss.isDead();
-        setTimeout(() => {
-            this.deleteObjectFromArray(this.level.enemies, this.level.enemies.indexOf(endboss));
-            this.pauseAllSounds();
-        }, 1000);
-    }
-
-
-    hitEndbossWithBottle(endboss) {
-        this.hit = true;
-        let previousEnergy = endboss.energy;
-        this.updateEndbossHealth(endboss);
-
-        if (endboss.energy < previousEnergy && endboss.energy > 20) {
-            audioManager.setVolume(SOUNDS.DYING_ENEMY, 0.5);
-            audioManager.play(SOUNDS.DYING_ENEMY);
-        }
-
-        if (this.endbossHealthBar.percentage <= 0) {
-            this.endbossIsDead(endboss);
-        }
-    }
-
-
     updateEndbossHealth(endboss) {
         endboss.hit();
         this.endbossHealthBar.setPercentage(endboss.energy);
     }
 
-
-    deleteThrownObject(bottleIndex) {
-        setTimeout(() => {
-            this.throwableObjects.splice(bottleIndex, 1);
-        }, 200);
-    }
-
-
-    deleteObjectFromArray(arr, obj) {
-        const index = arr.indexOf(obj);
-        if (index > -1) {
-            arr.splice(index, 1);
-        }
-    }
-
-
-    characterIsInjured() {
-        this.character.hit();
-        this.hurt = true;
-        setTimeout(() => {
-            this.hurt = false;
-        }, 300);
-        this.level.characterBar.setPercentage(this.character.energy);
-    }
-
-
-    checkBuyBottle() {
-        if (this.keyboard.F && !this.keyboard.lastF && this.bottleAmount < 5 && this.coinAmount > 0) {
-            audioManager.play(SOUNDS.BUY_BOTTLE);
-            let bottle = new ThrowableObject();
-            this.throwableObjects.push(bottle);
-            this.bottleAmount++;
-            this.bottleBar.percentage += 20;
-            this.bottleBar.setPercentage(this.bottleBar.percentage);
-            this.coinAmount--;
-            this.coinBar.percentage -= 20;
-            this.coinBar.setPercentage(this.coinBar.percentage);
-            this.keyboard.lastF = true;
-        }
-    }
 
     /**
      * Draws objects onto the world by rendering them on the canvas.

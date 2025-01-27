@@ -423,3 +423,22 @@ canvas {
     align-items: center;
     justify-content: center;
 }
+
+.back-to-start-btn {
+    position: fixed;
+    bottom: 300px;
+    z-index: 1;
+    border-style: none;
+    background: none;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.back-to-start-img {
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+}

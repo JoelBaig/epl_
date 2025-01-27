@@ -119,40 +119,42 @@ function gameOverScreenTimeout() {
 }
 
 
-// function restartGame() {
-//     hideEndscreen();
-//     restartSounds();
-//     toggleVolumeIcon();
-//     document.getElementById('icon-main-con').style.display = 'flex';
-//     win = null;
-//     init();
-//     startGame();
-// }
-
-
 function restartGame() {
+    win = null;
+    document.getElementById('icon-main-con').style.display = 'flex';
     hideEndscreen();
     restartSounds();
-
-    // 🟢 Speichere den aktuellen Fullscreen-Status
-    let wasFullscreen = fullscreen;
-
-    if (!fullscreen) { 
-        toggleVolumeIcon();
-    }
-
-    document.getElementById('icon-main-con').style.display = 'flex';
-    win = null;
+    handleFullscreen();
     init();
     startGame();
+}
 
-    // 🟢 Falls Fullscreen vorher aktiv war, erneut aktivieren
+
+function handleFullscreen() {
+    fullscreenWasntActive();
+    fullscreenWasActive();
+}
+
+
+function fullscreenWasntActive() {
+    if (!fullscreen) {
+        toggleVolumeIcon();
+    }
+}
+
+
+function fullscreenWasActive() {
+    let wasFullscreen = fullscreen;
     if (wasFullscreen) {
         enterCanvasFullscreen();
     } else {
-        // 🟢 Wenn Fullscreen vorher NICHT aktiv war, Icons NICHT ändern!
         toggleFullscreenIcon();
     }
+}
+
+
+function backToStartscreen() {
+    location.reload();
 }
 
 

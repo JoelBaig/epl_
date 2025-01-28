@@ -232,7 +232,7 @@ canvas {
 .win-headline-fullscreen {
     display: flex;
     position: fixed;
-    top: 310px;
+    top: 410px;
 }
 
 .game-won-screen {
@@ -308,19 +308,44 @@ canvas {
 }
 
 .restart-img {
-    width: 100px;
-    position: relative;
-    top: -170px;
+    width: 78px;
+    height: 78px;
 }
 
-.restart-img-fullscreen-game-over {
-    width: 100px;
-    position: relative;
-    top: -300px;
+.restart-img:hover {
+    transform: translateY(-2px);
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
 }
 
 .restart-btn {
     cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    position: fixed;
+    top: 300px;
+    border: none;
+    background: none;
+}
+
+.restart-btn-fullscreen-game-over {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    position: fixed;
+    top: 100px;
+    border: none;
+    background: none;
 }
 
 .ingame-pos {
@@ -427,7 +452,18 @@ canvas {
 .back-to-start-btn {
     position: fixed;
     bottom: 300px;
-    z-index: 1;
+    border-style: none;
+    background: none;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.back-to-start-btn-fullscreen {
+    position: fixed;
+    bottom: 130px;
     border-style: none;
     background: none;
     font-size: 18px;
@@ -441,4 +477,12 @@ canvas {
     height: 48px;
     width: 48px;
     cursor: pointer;
+}
+
+.back-to-start-img:hover {
+    transform: translateY(-2px);
+}
+
+.z-index {
+    z-index: -1;
 }

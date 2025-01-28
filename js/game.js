@@ -54,18 +54,28 @@ function startGame() {
 }
 
 
+function restartGame() {
+    win = null;
+    document.getElementById('icon-main-con').style.display = 'flex';
+    hideEndscreen();
+    restartSounds();
+    handleFullscreen();
+    init();
+    startGame();
+}
+
+
+function backToStartscreen() {
+    location.reload();
+}
+
+
 function initializeGameWorld() {
     initLevel();
     registerAllSounds();
     checkIfSoundsMuted();
     document.getElementById('canvas').style.display = 'flex';
     world = new World(canvas, keyboard, gameStarted, currentTime);
-}
-
-
-function showEndscreen() {
-    checkIfEndbossIsDead();
-    checkIfEndbossIsDead();
 }
 
 
@@ -116,45 +126,6 @@ function gameOverScreenTimeout() {
         gameStarted = false;
         audioManager.muteAll();
     }, 1000);
-}
-
-
-function restartGame() {
-    win = null;
-    document.getElementById('icon-main-con').style.display = 'flex';
-    hideEndscreen();
-    restartSounds();
-    handleFullscreen();
-    init();
-    startGame();
-}
-
-
-function handleFullscreen() {
-    fullscreenWasntActive();
-    fullscreenWasActive();
-}
-
-
-function fullscreenWasntActive() {
-    if (!fullscreen) {
-        toggleVolumeIcon();
-    }
-}
-
-
-function fullscreenWasActive() {
-    let wasFullscreen = fullscreen;
-    if (wasFullscreen) {
-        enterCanvasFullscreen();
-    } else {
-        toggleFullscreenIcon();
-    }
-}
-
-
-function backToStartscreen() {
-    location.reload();
 }
 
 

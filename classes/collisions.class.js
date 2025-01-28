@@ -186,7 +186,7 @@ class Collisions {
     endbossIsDead(endboss) {
         endboss.isDead();
         setTimeout(() => {
-            this.world.objectMAnager.deleteObjectFromArray(this.world.level.enemies, endboss);
+            this.world.objectManager.deleteObjectFromArray(this.world.level.enemies, endboss);
             this.world.pauseAllSounds();
         }, 1000);
     }

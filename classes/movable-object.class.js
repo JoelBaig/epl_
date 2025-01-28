@@ -19,7 +19,9 @@ class MovableObject extends DrawableObject {
     hurt = false;
     gravity;
 
-
+    /**
+     * Applies gravity to the object, making it fall to the ground.
+     */
     applyGravity() {
         this.gravity = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
@@ -28,7 +30,11 @@ class MovableObject extends DrawableObject {
         }, 1000 / 60);
     }
 
-
+    /**
+     * Checks if the object is above the ground.
+     * 
+     * @returns {boolean} - Returns true if the object is above the ground.
+     */
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
@@ -39,7 +45,9 @@ class MovableObject extends DrawableObject {
         return this.y < 170;
     }
 
-
+    /**
+     * Handles falling mechanics for the character and the Endboss.
+     */
     isFallingToGround() {
         if (this instanceof Endboss) {
             this.endbossIsFalling();
@@ -48,27 +56,41 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Handles the Endboss's falling behavior.
+     */
     endbossIsFalling() {
         this.y -= this.speedY * 4;
         this.speedY -= this.acceleration * 4;
     }
 
-
+    /**
+     * Handles the character's falling behavior.
+     */
     characterIsFalling() {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
     }
 
-
+    /**
+     * Checks if this object is colliding with another movable object.
+     * 
+     * @param {MovableObject} mo - The object to check collision with.
+     * @returns {boolean} - Returns true if a collision is detected.
+     */
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-
+    /**
+     * Checks if the object is falling on top of an enemy.
+     * 
+     * @param {MovableObject} enemy - The enemy object to check against.
+     * @returns {boolean} - Returns true if the object is falling on the enemy.
+     */
     isFallingOn(enemy) {
         return (
             this.speedY > 0 &&
@@ -78,7 +100,9 @@ class MovableObject extends DrawableObject {
         );
     }
 
-
+    /**
+     * Makes the character jump on a chicken and play a sound.
+     */
     jumpOnChicken() {
         if (this.speedY <= 0) {
             this.jump(20);
@@ -87,7 +111,9 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Handles when the object is hit, reducing its energy.
+     */
     hit() {
         if (this.isDead()) {
             return;
@@ -99,7 +125,9 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Checks if the character has died or just taken a hit.
+     */
     checkCharacterDeathOrHit() {
         if (!this.world.endboss.isDead()) {
             if (this.energy <= 0 && this instanceof Character) {
@@ -113,7 +141,9 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Handles collecting objects such as coins and bottles.
+     */
     hitObject() {
         if (this instanceof Coin) {
             this.coinAmount += 20;
@@ -122,19 +152,31 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    /**
+     * Checks if the object is currently hurt.
+     * 
+     * @returns {boolean} - Returns true if the object is still in the hurt animation.
+     */
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
-        timepassed = timepassed / 1000;
-        return timepassed < 0.5;
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.5;
     }
 
-
+    /**
+     * Checks if the object is dead.
+     * 
+     * @returns {boolean} - Returns true if the object is dead.
+     */
     isDead() {
         return this.dead || this.energy == 0;
     }
 
-
+    /**
+     * Plays an animation by cycling through an array of images.
+     * 
+     * @param {string[]} images - The array of image paths for the animation.
+     */
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
@@ -142,25 +184,26 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
-
     /**
-     * This function is used to move an object to the right side
-     *
+     * Moves the object to the right.
      */
     moveRight() {
         this.x += this.speed;
     }
 
     /**
-     * This function is used to move an object to the left side
-     *
+     * Moves the object to the left.
      */
     moveLeft() {
         this.x -= this.speed;
     }
 
-
+    /**
+     * Makes the object jump with a specified speed.
+     * 
+     * @param {number} speedY - The upward speed of the jump.
+     */
     jump(speedY) {
-        this.speedY = speedY; 
+        this.speedY = speedY;
     }
 }

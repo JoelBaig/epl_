@@ -9,7 +9,7 @@ class ChickenBig extends MovableObject {
     ];
     IMAGES_DEAD = [
         './assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
-    ]
+    ];
     offset = {
         top: 10,
         bottom: 5,
@@ -19,6 +19,9 @@ class ChickenBig extends MovableObject {
     energy = 10;
     dead = false;
 
+    /**
+     * Creates a new `ChickenBig` enemy at a random position with random speed.
+     */
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.preloadImages();
@@ -27,13 +30,17 @@ class ChickenBig extends MovableObject {
         this.animate();
     }
 
-
+    /**
+     * Preloads all images for walking and death animations.
+     */
     preloadImages() {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
     }
 
-
+    /**
+     * Handles the walking animation and movement of the chicken.
+     */
     animate() {
         setStoppableInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
@@ -46,7 +53,9 @@ class ChickenBig extends MovableObject {
         }, 1000 / 60);
     }
 
-
+    /**
+     * Marks the chicken as dead, plays death animation, stops movement, and schedules removal.
+     */
     isDead() {
         if (!this.dead) {
             this.dead = true;
@@ -57,7 +66,9 @@ class ChickenBig extends MovableObject {
         }
     }
 
-
+    /**
+     * Plays the death animation by displaying the dead chicken sprite.
+     */
     playDeathAnimation() {
         let currentFrame = 0;
 
@@ -68,7 +79,12 @@ class ChickenBig extends MovableObject {
         }, 200);
     }
 
-
+    /**
+     * Clears the death animation interval once all frames are displayed.
+     * 
+     * @param {number} intervalId - The interval ID of the animation.
+     * @param {number} currentFrame - The current frame index in the death animation.
+     */
     clearDeathInterval(intervalId, currentFrame) {
         if (currentFrame >= this.IMAGES_DEAD.length) {
             clearInterval(intervalId);
@@ -76,7 +92,9 @@ class ChickenBig extends MovableObject {
         }
     }
 
-
+    /**
+     * Schedules the removal of the chicken from the game world after a short delay.
+     */
     scheduleRemoval() {
         setTimeout(() => {
             if (this.world) {

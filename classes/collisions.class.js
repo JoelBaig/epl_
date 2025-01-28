@@ -2,19 +2,27 @@ class Collisions {
     lastThrowTime = 0;
     throwCooldown = 250;
 
-
+    /**
+     * Creates a new Collisions manager.
+     * 
+     * @param {Object} world - The game world instance.
+     */
     constructor(world) {
         this.world = world;
     }
 
-
+    /**
+     * Starts collision detection for enemies.
+     */
     handleEnemyIntervals() {
         this.startEndbossContactCheck();
         this.startSideCollisionCheck();
         this.startEndbossCollisionCheck();
     }
 
-
+    /**
+     * Checks when the character first makes contact with the Endboss.
+     */
     startEndbossContactCheck() {
         setInterval(() => {
             this.world.endbossFirstContact();
@@ -22,26 +30,34 @@ class Collisions {
         }, 1);
     }
 
-
+    /**
+     * Checks for side collisions with enemies at set intervals.
+     */
     startSideCollisionCheck() {
         setInterval(() => {
             this.checkSideCollisionEnemies();
         }, 200);
     }
 
-
+    /**
+     * Checks for collisions between the character and the Endboss.
+     */
     startEndbossCollisionCheck() {
         setInterval(() => {
             this.checkCollisionEndboss();
         }, 150);
     }
 
-
+    /**
+     * Starts collision detection for objects.
+     */
     handleObjectIntervals() {
         this.checkCollidingObjectInterval();
     }
 
-
+    /**
+     * Checks if objects like bottles and coins collide with the character.
+     */
     checkCollidingObjectInterval() {
         setInterval(() => {
             this.checkCollisionObjects(this.world.level.bottles, this.world.coinBar);
@@ -50,7 +66,9 @@ class Collisions {
         }, 50);
     }
 
-
+    /**
+     * Checks if the character jumps on an enemy.
+     */
     checkTopCollisionEnemies() {
         this.world.level.enemies.forEach((enemy) => {
             if (this.world.character.isColliding(enemy)) {
@@ -64,7 +82,9 @@ class Collisions {
         });
     }
 
-
+    /**
+     * Checks for side collisions between the character and enemies.
+     */
     checkSideCollisionEnemies() {
         this.world.level.enemies.forEach((enemy) => {
             if (this.world.character.isColliding(enemy) && !this.world.character.isAboveGround() && !this.world.hitEnemy) {
@@ -78,7 +98,9 @@ class Collisions {
         });
     }
 
-
+    /**
+     * Checks if the character collides with the Endboss.
+     */
     checkCollisionEndboss() {
         if (this.world.character.isColliding(this.world.endboss)) {
             this.world.character.hit();
@@ -92,7 +114,12 @@ class Collisions {
         }
     }
 
-
+    /**
+     * Checks if the character collides with a collectible object (coin or bottle).
+     * 
+     * @param {Array} arr - The array of collectible objects.
+     * @param {Object} bar - The status bar related to the collected object.
+     */
     checkCollisionObjects(arr, bar) {
         arr.forEach((object) => {
             if (this.world.character.isColliding(object)) {
@@ -105,14 +132,21 @@ class Collisions {
         });
     }
 
-
+    /**
+     * Checks if a thrown bottle collides with an enemy.
+     */
     checkBottleIsCollidingEnemy() {
         this.world.throwableObjects.forEach((bottle, i) => {
             this.checkCollisionBottleEnemies(bottle, i);
         });
     }
 
-
+    /**
+     * Checks for collisions between thrown bottles and enemies.
+     * 
+     * @param {Object} bottle - The thrown bottle object.
+     * @param {number} bottleIndex - The index of the bottle in the array.
+     */
     checkCollisionBottleEnemies(bottle, bottleIndex) {
         if (this.checkEndbossCollision(bottle, bottleIndex)) {
             return;
@@ -125,7 +159,13 @@ class Collisions {
         });
     }
 
-
+    /**
+     * Checks if a thrown bottle collides with the Endboss.
+     * 
+     * @param {Object} bottle - The thrown bottle object.
+     * @param {number} bottleIndex - The index of the bottle in the array.
+     * @returns {boolean} - Returns true if a collision occurs.
+     */
     checkEndbossCollision(bottle, bottleIndex) {
         if (this.world.endboss && bottle.isColliding(this.world.endboss)) {
             this.handleEndbossCollision(bottle, bottleIndex);
@@ -134,7 +174,12 @@ class Collisions {
         return false;
     }
 
-
+    /**
+     * Handles a collision between a thrown bottle and the Endboss.
+     * 
+     * @param {Object} bottle - The thrown bottle object.
+     * @param {number} bottleIndex - The index of the bottle in the array.
+     */
     handleEndbossCollision(bottle, bottleIndex) {
         bottle.hit(bottle.x, bottle.y + 10);
         audioManager.setVolume(SOUNDS.BREAK_BOTTLE, 0.5);
@@ -143,7 +188,13 @@ class Collisions {
         this.world.objectManager.deleteThrownObject(bottleIndex);
     }
 
-
+    /**
+     * Handles a collision between a thrown bottle and an enemy.
+     * 
+     * @param {Object} bottle - The thrown bottle object.
+     * @param {Object} enemy - The enemy that was hit.
+     * @param {number} bottleIndex - The index of the bottle in the array.
+     */
     handleEnemyCollision(bottle, enemy, bottleIndex) {
         bottle.hit(bottle.x, bottle.y + 10);
         audioManager.setVolume(SOUNDS.BREAK_BOTTLE, 0.5);
@@ -160,7 +211,11 @@ class Collisions {
         this.world.objectManager.deleteThrownObject(bottleIndex);
     }
 
-
+    /**
+     * Reduces the Endboss's health when hit by a bottle.
+     * 
+     * @param {Object} endboss - The Endboss instance.
+     */
     hitEndbossWithBottle(endboss) {
         this.world.hit = true;
         let previousEnergy = endboss.energy;
@@ -176,13 +231,21 @@ class Collisions {
         }
     }
 
-
+    /**
+     * Updates the Endboss's health bar after being hit.
+     * 
+     * @param {Object} endboss - The Endboss instance.
+     */
     updateEndbossHealth(endboss) {
         endboss.hit();
         this.world.endbossHealthBar.setPercentage(endboss.energy);
     }
 
-
+    /**
+     * Marks the Endboss as dead and removes it from the game world.
+     * 
+     * @param {Object} endboss - The Endboss instance.
+     */
     endbossIsDead(endboss) {
         endboss.isDead();
         setTimeout(() => {

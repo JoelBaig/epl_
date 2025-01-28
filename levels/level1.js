@@ -1,5 +1,9 @@
 let level1;
 
+/**
+ * Initializes level 1 by creating the game world with background objects, 
+ * clouds, collectible items (bottles & coins), and enemies (big & small chickens).
+ */
 function initLevel() {
     level1 = new Level(
         [

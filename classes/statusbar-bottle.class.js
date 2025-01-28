@@ -13,6 +13,9 @@ class BottleBar extends StatusBar {
     height = 60;
     width = 200;
 
+    /**
+     * Creates a new bottle bar instance and initializes it with empty status.
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

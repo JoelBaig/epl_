@@ -67,7 +67,9 @@ class Endboss extends MovableObject {
         this.x = 2500;
     }
 
-
+    /**
+     * Preloads all images for different Endboss animations.
+     */
     preloadImages() {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
@@ -76,14 +78,18 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
     }
 
-
+    /**
+     * Manages the Endboss animations and actions.
+     */
     animate() {
         this.handleEndbossDefeat();
         this.manageEndbossState();
         this.checkHealthStatus();
     }
 
-
+    /**
+     * Triggers the game won screen when the Endboss is defeated.
+     */
     handleEndbossDefeat() {
         setTimeout(() => {
             if (this.endbossIsDead) {
@@ -92,14 +98,18 @@ class Endboss extends MovableObject {
         }, 1000);
     }
 
-
+    /**
+     * Starts a loop to manage the Endboss's actions.
+     */
     manageEndbossState() {
         setStoppableInterval(() => {
             this.manageEndbossActions();
         }, 150);
     }
 
-
+    /**
+     * Continuously checks the Endboss's health and updates its state.
+     */
     checkHealthStatus() {
         setStoppableInterval(() => {
             if (this.isDead()) {
@@ -110,21 +120,27 @@ class Endboss extends MovableObject {
         }, 5000 / 60);
     }
 
-
+    /**
+     * Manages the Endboss's reactions and movements.
+     */
     manageEndbossActions() {
         this.manageEndbossIsHurt();
         this.manageEndbossReactions();
         this.trackCharacter();
     }
 
-
+    /**
+     * Prevents actions if the Endboss is currently hurt.
+     */
     manageEndbossIsHurt() {
         if (this.endbossIsHurt) {
             return;
         }
     }
 
-
+    /**
+     * Determines the Endboss's reaction based on the player's position.
+     */
     manageEndbossReactions() {
         if (this.world && this.world.character) {
             this.distance = Math.abs(this.world.character.x - this.x);
@@ -132,7 +148,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Handles different states of the Endboss based on distance.
+     */
     handleReactions() {
         if (this.isFirstContact()) {
             this.handleAlert();
@@ -143,12 +161,18 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Checks if the player is close enough for first contact.
+     * 
+     * @returns {boolean} - Whether first contact has occurred.
+     */
     isFirstContact() {
         return this.distance < 400 && !this.firstContact;
     }
 
-
+    /**
+     * Triggers the alert animation when first contact occurs.
+     */
     handleAlert() {
         this.firstContact = true;
         audioManager.setVolume(SOUNDS.REACH_ENDBOSS, 0.5);
@@ -156,7 +180,9 @@ class Endboss extends MovableObject {
         this.triggerEndbossAlert();
     }
 
-
+    /**
+     * Triggers the Endboss's walking animation.
+     */
     triggerEndbossWalking() {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
@@ -165,7 +191,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Moves the Endboss based on the player's position.
+     */
     trackCharacter() {
         if (!this.firstContact) {
             return;
@@ -181,7 +209,11 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Moves the Endboss left or right based on the player's position.
+     * 
+     * @param {string} direction - The direction to move ("left" or "right").
+     */
     moveInDirection(direction) {
         if (!this.firstContact) {
             return;
@@ -192,7 +224,9 @@ class Endboss extends MovableObject {
         this.traceCharacter();
     }
 
-
+    /**
+     * Starts movement in the determined direction.
+     */
     traceCharacter() {
         if (this.isMovingLeft) {
             this.startMovingLeft();
@@ -201,22 +235,35 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Clears movement intervals to prevent conflicts.
+     */
     clearMoveIntervals() {
         clearInterval(this.moveLeftInterval);
         clearInterval(this.moveRightInterval);
     }
 
+    /**
+     * Sets the movement direction.
+     * 
+     * @param {string} direction - The movement direction.
+     */
     setMovementDirection(direction) {
         this.isMovingLeft = direction === "left";
         this.isMovingRight = direction === "right";
         this.otherDirection = direction === "right";
     }
 
+    /**
+     * Sets the Endboss's speed.
+     */
     setSpeed() {
         this.speed = 15;
     }
 
+    /**
+     * Starts moving the Endboss to the left.
+     */
     startMovingLeft() {
         this.moveLeftInterval = setInterval(() => {
             if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
@@ -225,6 +272,9 @@ class Endboss extends MovableObject {
         }, 75);
     }
 
+    /**
+     * Starts moving the Endboss to the right.
+     */
     startMovingRight() {
         this.moveRightInterval = setInterval(() => {
             if (this.firstContact && !this.endbossIsHurt && !this.isDead()) {
@@ -233,7 +283,9 @@ class Endboss extends MovableObject {
         }, 75);
     }
 
-
+    /**
+     * Triggers the Endboss attack animation.
+     */
     triggerEndbossAttack() {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
@@ -241,7 +293,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Triggers the alert animation when the Endboss first notices the player.
+     */
     triggerEndbossAlert() {
         if (!this.endbossIsHurt) {
             this.stopCurrentAnimation();
@@ -252,7 +306,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Stops the alert animation after a delay.
+     */
     clearAlertAnimationTimeout() {
         setTimeout(() => {
             clearInterval(this.currentAnimation);
@@ -260,12 +316,16 @@ class Endboss extends MovableObject {
         }, 2000);
     }
 
-
+    /**
+     * Updates the Endboss's hurting animation.
+     */
     updateHurtingAnimation() {
         this.playHurtingAnimation();
     }
 
-
+    /**
+     * Plays the Endboss's hurting animation.
+     */
     playHurtingAnimation() {
         this.endbossIsHurt = true;
         this.stopCurrentAnimation();
@@ -273,14 +333,18 @@ class Endboss extends MovableObject {
         this.hurtingAnimationTimeout();
     }
 
-
+    /**
+     * Stops the hurting animation after a delay.
+     */
     hurtingAnimationTimeout() {
         setTimeout(() => {
             this.endbossIsHurt = false;
         }, 200);
     }
 
-
+    /**
+     * Updates the Endboss's dying animation.
+     */
     updateDyingAnimation() {
         if (this.isDead()) {
             this.endbossIsDead = true;
@@ -292,7 +356,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Stops the game after the Endboss dies.
+     */
     dyingAnimationTimeout() {
         setTimeout(() => {
             stopInterval();
@@ -302,7 +368,9 @@ class Endboss extends MovableObject {
         }, 500);
     }
 
-
+    /**
+     * Plays the Endboss's dying sound.
+     */
     playEndbossDyingSound() {
         if (!this.dyingSoundPlayed) {
             this.dyingSoundPlayed = true;
@@ -311,7 +379,9 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Stops the current animation.
+     */
     stopCurrentAnimation() {
         clearInterval(this.currentAnimation);
         this.currentAnimation = null;

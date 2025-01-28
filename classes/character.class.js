@@ -76,6 +76,11 @@ class Character extends MovableObject {
     characterIsDead = false;
     currentTime;
 
+    /**
+         * Creates a new character instance.
+         * 
+         * @param {Object} world - The game world instance.
+         */
     constructor(world) {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.world = world;
@@ -85,7 +90,9 @@ class Character extends MovableObject {
         this.jump();
     }
 
-
+    /**
+     * Preloads all character animation images.
+     */
     preloadImages() {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -95,13 +102,18 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_LONG_IDLE);
     }
 
-
+    /**
+     * Starts the character animations and movement handlers.
+     */
     animate() {
         this.handleMovement();
         this.handleAnimation();
         this.firstArrivel();
     }
-    
+
+    /**
+     * Handles character movement based on keyboard input.
+     */
     handleMovement() {
         setStoppableInterval(() => {
             this.updateWalkingDirection();
@@ -109,7 +121,10 @@ class Character extends MovableObject {
             this.updateCameraPosition();
         }, 2500 / 60);
     }
-    
+
+    /**
+     * Controls character animations based on its state.
+     */
     handleAnimation() {
         setStoppableInterval(() => {
             if (this.isDead()) {
@@ -120,22 +135,28 @@ class Character extends MovableObject {
                 this.updateJumpingAnimation();
                 this.updateWalkingAnimation();
             }
-        }, 1000 / 10); 
+        }, 1000 / 10);
     }
 
-
+    /**
+     * Checks if the game has started and initializes the idle timer.
+     */
     firstArrivel() {
         if (gameStarted) {
             this.startIdleTimer();
         }
     }
 
-
+    /**
+     * Starts the idle timer to track inactivity.
+     */
     startIdleTimer() {
         this.currentTime = new Date().getTime();
     }
 
-
+    /**
+     * Updates the character's movement direction based on input.
+     */
     updateWalkingDirection() {
         audioManager.setVolume(SOUNDS.WALKING, 1.0);
         audioManager.pause(SOUNDS.WALKING);
@@ -144,7 +165,9 @@ class Character extends MovableObject {
         this.resetIdleTimerIfMoving();
     }
 
-
+    /**
+     * Moves the character to the right.
+     */
     handleWalkingRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.isWalkingRight();
@@ -152,7 +175,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Moves the character to the left.
+     */
     handleWalkingLeft() {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.isWalkingLeft();
@@ -160,21 +185,27 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Executes the walking right animation and sound.
+     */
     isWalkingRight() {
         this.moveRight();
         audioManager.setVolume(SOUNDS.WALKING, 1);
         audioManager.play(SOUNDS.WALKING);
     }
 
-
+    /**
+     * Executes the walking left animation and sound.
+     */
     isWalkingLeft() {
         this.moveLeft();
         audioManager.setVolume(SOUNDS.WALKING, 1);
         audioManager.play(SOUNDS.WALKING);
     }
 
-
+    /**
+     * Handles the jumping behavior.
+     */
     handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.isJumping();
@@ -182,7 +213,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Triggers the jump animation and sound.
+     */
     isJumping() {
         this.jump(20);
         audioManager.setVolume(SOUNDS.JUMPING, 0.5);
@@ -190,7 +223,9 @@ class Character extends MovableObject {
         this.startIdleTimer();
     }
 
-
+    /**
+     * Handles the dying animation and triggers the game over sequence.
+     */
     updateDyingAnimation() {
         if (this.isDead()) {
             this.characterIsDead = true;
@@ -200,7 +235,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Waits briefly before showing the game-over screen.
+     */
     gameOverTimeout() {
         setTimeout(() => {
             audioManager.pause(SOUNDS.GAME_MUSIC);
@@ -211,7 +248,9 @@ class Character extends MovableObject {
         }, 200);
     }
 
-
+    /**
+     * Updates the character's hurting animation.
+     */
     updateHurtingAnimation() {
         if (this.isHurt()) {
             this.startIdleTimer();
@@ -220,7 +259,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Updates the jumping animation if the character is in the air.
+     */
     updateJumpingAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
@@ -231,7 +272,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Updates the walking animation when moving.
+     */
     updateWalkingAnimation() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_WALKING);
@@ -240,10 +283,11 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Triggers idle animations based on inactivity duration.
+     */
     isDoingNothing() {
         let timepassed = this.proofTime();
-
         if (timepassed > 3 && timepassed <= 5) {
             this.wait();
         } else if (timepassed > 5) {
@@ -251,25 +295,35 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Calculates the elapsed idle time.
+     * 
+     * @returns {number} - The idle time in seconds.
+     */
     proofTime() {
         if (!this.currentTime) return 0;
         let time = new Date().getTime();
         return (time - this.currentTime) / 1000;
     }
 
-
+    /**
+     * Plays the short idle animation.
+     */
     wait() {
         this.playAnimation(this.IMAGES_IDLE);
     }
 
-
+    /**
+     * Plays the long idle animation with a snoring sound.
+     */
     longWait() {
         this.playAnimation(this.IMAGES_LONG_IDLE);
         audioManager.play(SOUNDS.SNORING);
     }
 
-
+    /**
+     * Resets the idle timer if the character is moving or taking actions.
+     */
     resetIdleTimerIfMoving() {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D) {
             this.startIdleTimer();
@@ -277,7 +331,9 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Updates the camera position to follow the character.
+     */
     updateCameraPosition() {
         if (this.x < 2200) {
             this.trackCamera();
@@ -286,13 +342,17 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Adjusts the camera position to follow the character.
+     */
     trackCamera() {
         this.world.camera_x = -this.x + 100;
         this.cameraFollowEndX = null;
     }
 
-
+    /**
+     * Fixes the camera position when reaching the end of the level.
+     */
     fixCameraPosition() {
         if (this.cameraFollowEndX === null) {
             this.cameraFollowEndX = -this.x + 100;

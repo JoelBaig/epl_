@@ -13,6 +13,9 @@ class HealthBar extends StatusBar {
     height = 60;
     width = 200;
 
+    /**
+     * Creates a new health bar instance and initializes it with full health.
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

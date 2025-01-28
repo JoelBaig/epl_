@@ -1,0 +1,187 @@
+.info-btns {
+    position: relative;
+    top: 270px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.info-btns-fullscreen {
+    top: 450px !important;
+}
+
+.start-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.startscreen-btns {
+    width: 150px !important;
+    height: 50px;
+    position: relative;
+    top: -109px;
+    align-items: center;
+    background-clip: padding-box;
+    background-color: #fa6400;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+    z-index: 1;
+}
+
+.startscreen-btns:focus {
+    background-color: #fb8332;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.startscreen-btns:hover {
+    background-color: #fbbd95;
+    transform: translateY(-2px);
+}
+
+.startscreen-btns:active {
+    background-color: #c85000;
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+}
+
+.startscreen-btns-fullscreen {
+    top: -280px !important;
+}
+
+.close-btn-con-main {
+    position: relative;
+    top: -280px;
+}
+
+.close-btn-con {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.restart-btn {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    position: fixed;
+    top: 300px;
+    border: none;
+    background: none;
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
+}
+
+.restart-btn-fullscreen-game-over {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    position: fixed;
+    top: 100px;
+    border: none;
+    background: none;
+}
+
+.touch-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    z-index: 1000;
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+}
+
+.touch-btn:active {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.fullscreen-btn {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.fullscreen-btn:hover {
+    transform: translateY(-2px);
+}
+
+.volume-buttons-startscreen {
+    width: 32px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.volume-buttons-startscreen:hover {
+    transform: translateY(-2px);
+}
+
+.back-to-start-btn {
+    position: fixed;
+    bottom: 300px;
+    border-style: none;
+    background: none;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.back-to-start-btn-fullscreen {
+    position: fixed;
+    bottom: 130px;
+    border-style: none;
+    background: none;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

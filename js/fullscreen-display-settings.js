@@ -1,3 +1,6 @@
+/**
+ * Activates fullscreen mode for the game canvas and UI elements.
+ */
 function enterCanvasFullscreen() {
     fullscreen = true;
     const startscreen = document.getElementById('start-screen');
@@ -7,12 +10,15 @@ function enterCanvasFullscreen() {
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
     const startBtn = document.getElementById('start-btn');
     const infoBtns = document.getElementById('info-btns');
+
     manageEnterFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns);
     manageEnterGameOverFullscreen();
     manageEnterGameWonFullscreen();
 }
 
-
+/**
+ * Applies fullscreen styles to various game elements.
+ */
 function manageEnterFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns) {
     startscreen.classList.add('start-fullscreen');
     canvas.classList.add('canvas-fullscreen');
@@ -25,7 +31,9 @@ function manageEnterFullscreen(startscreen, canvas, iconMainCon, enterFullscreen
     infoBtns.classList.add('info-btns-fullscreen');
 }
 
-
+/**
+ * Adjusts styles for the game over screen in fullscreen mode.
+ */
 function manageEnterGameOverFullscreen() {
     const restartBtn = document.getElementById('restart-btn');
     const gameOverBgr = document.getElementById('game-over-bgr');
@@ -35,21 +43,20 @@ function manageEnterGameOverFullscreen() {
     toggleEnterGameOverFullscreen(restartBtn, gameOverBgr, gameOverImg, gameOverScreen, backToStartBtn);
 }
 
-
+/**
+ * Applies fullscreen styles to the game over screen elements.
+ */
 function toggleEnterGameOverFullscreen(restartBtn, gameOverBgr, gameOverImg, gameOverScreen, backToStartBtn) {
-    restartBtn.classList.remove('restart-btn');
-    restartBtn.classList.add('restart-btn-fullscreen-game-over');
-    gameOverBgr.classList.remove('endscreen-bgr');
-    gameOverBgr.classList.add('endscreen-bgr-fullscreen');
-    gameOverImg.classList.remove('game-over-img');
-    gameOverImg.classList.add('game-over-img-fullscreen');
-    gameOverScreen.classList.remove('game-over-screen');
-    gameOverScreen.classList.add('game-over-screen-fullscreen');
-    backToStartBtn.classList.remove('back-to-start-btn');
-    backToStartBtn.classList.add('back-to-start-btn-fullscreen');
+    restartBtn.classList.replace('restart-btn', 'restart-btn-fullscreen-game-over');
+    gameOverBgr.classList.replace('endscreen-bgr', 'endscreen-bgr-fullscreen');
+    gameOverImg.classList.replace('game-over-img', 'game-over-img-fullscreen');
+    gameOverScreen.classList.replace('game-over-screen', 'game-over-screen-fullscreen');
+    backToStartBtn.classList.replace('back-to-start-btn', 'back-to-start-btn-fullscreen');
 }
 
-
+/**
+ * Adjusts styles for the game won screen in fullscreen mode.
+ */
 function manageEnterGameWonFullscreen() {
     const gameWonBgr = document.getElementById('game-won-bgr');
     const gameWonScreen = document.getElementById('game-won-screen');
@@ -58,19 +65,19 @@ function manageEnterGameWonFullscreen() {
     toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn);
 }
 
-
+/**
+ * Applies fullscreen styles to the game won screen elements.
+ */
 function toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn) {
-    gameWonBgr.classList.remove('endscreen-bgr');
-    gameWonBgr.classList.add('endscreen-bgr-fullscreen');
-    gameWonScreen.classList.remove('game-won-screen');
-    gameWonScreen.classList.add('game-won-screen-fullscreen');
-    winHeadline.classList.remove('win-headline');
-    winHeadline.classList.add('win-headline-fullscreen');
-    backToStartBtn.classList.remove('back-to-start-btn');
-    backToStartBtn.classList.add('back-to-start-btn-fullscreen');
+    gameWonBgr.classList.replace('endscreen-bgr', 'endscreen-bgr-fullscreen');
+    gameWonScreen.classList.replace('game-won-screen', 'game-won-screen-fullscreen');
+    winHeadline.classList.replace('win-headline', 'win-headline-fullscreen');
+    backToStartBtn.classList.replace('back-to-start-btn', 'back-to-start-btn-fullscreen');
 }
 
-
+/**
+ * Exits fullscreen mode and restores original UI styles.
+ */
 function exitCanvasFullscreen() {
     fullscreen = false;
     const startscreen = document.getElementById('start-screen');
@@ -80,26 +87,28 @@ function exitCanvasFullscreen() {
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
     const startBtn = document.getElementById('start-btn');
     const infoBtns = document.getElementById('info-btns');
+
     manageExitFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns);
     manageExitGameOverFullscreen();
     manageExitGameWonFullscreen();
 }
 
-
+/**
+ * Restores original UI styles after exiting fullscreen mode.
+ */
 function manageExitFullscreen(startscreen, canvas, iconMainCon, enterFullscreenIcon, exitFullscreenIcon, startBtn, infoBtns) {
     startscreen.classList.remove('start-fullscreen');
-    canvas.classList.remove('canvas-fullscreen');
-    canvas.classList.add('canvas');
+    canvas.classList.replace('canvas-fullscreen', 'canvas');
     enterFullscreenIcon.classList.remove('d-none');
     exitFullscreenIcon.classList.add('d-none');
-    iconMainCon.classList.add('icon-main-con');
-    iconMainCon.classList.remove('icon-main-con-fullscreen');
+    iconMainCon.classList.replace('icon-main-con-fullscreen', 'icon-main-con');
     startBtn.classList.remove('startscreen-btns-fullscreen');
     infoBtns.classList.remove('info-btns-fullscreen');
-
 }
 
-
+/**
+ * Restores game over screen styles after exiting fullscreen mode.
+ */
 function manageExitGameOverFullscreen() {
     const restartBtn = document.getElementById('restart-btn');
     const gameOverBgr = document.getElementById('game-over-bgr');
@@ -109,21 +118,20 @@ function manageExitGameOverFullscreen() {
     toggleExitGameOverFullscreen(restartBtn, gameOverBgr, gameOverImg, gameOverScreen, backToStartBtn);
 }
 
-
+/**
+ * Restores original styles for the game over screen elements.
+ */
 function toggleExitGameOverFullscreen(restartBtn, gameOverBgr, gameOverImg, gameOverScreen, backToStartBtn) {
-    restartBtn.classList.add('restart-btn');
-    restartBtn.classList.remove('restart-btn-fullscreen-game-over');
-    gameOverBgr.classList.add('endscreen-bgr');
-    gameOverBgr.classList.remove('endscreen-bgr-fullscreen');
-    gameOverImg.classList.add('game-over-img');
-    gameOverImg.classList.remove('game-over-img-fullscreen');
-    gameOverScreen.classList.add('game-over-screen');
-    gameOverScreen.classList.remove('game-over-screen-fullscreen');
-    backToStartBtn.classList.add('back-to-start-btn');
-    backToStartBtn.classList.remove('back-to-start-btn-fullscreen');
+    restartBtn.classList.replace('restart-btn-fullscreen-game-over', 'restart-btn');
+    gameOverBgr.classList.replace('endscreen-bgr-fullscreen', 'endscreen-bgr');
+    gameOverImg.classList.replace('game-over-img-fullscreen', 'game-over-img');
+    gameOverScreen.classList.replace('game-over-screen-fullscreen', 'game-over-screen');
+    backToStartBtn.classList.replace('back-to-start-btn-fullscreen', 'back-to-start-btn');
 }
 
-
+/**
+ * Restores game won screen styles after exiting fullscreen mode.
+ */
 function manageExitGameWonFullscreen() {
     const gameWonBgr = document.getElementById('game-won-bgr');
     const gameWonScreen = document.getElementById('game-won-screen');
@@ -132,19 +140,19 @@ function manageExitGameWonFullscreen() {
     toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn);
 }
 
-
+/**
+ * Restores original styles for the game won screen elements.
+ */
 function toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn) {
-    gameWonBgr.classList.add('endscreen-bgr');
-    gameWonBgr.classList.remove('endscreen-bgr-fullscreen');
-    gameWonScreen.classList.add('game-won-screen');
-    gameWonScreen.classList.remove('game-won-screen-fullscreen');
-    winHeadline.classList.add('win-headline');
-    winHeadline.classList.remove('win-headline-fullscreen');
-    backToStartBtn.classList.add('back-to-start-btn');
-    backToStartBtn.classList.remove('back-to-start-btn-fullscreen');
+    gameWonBgr.classList.replace('endscreen-bgr-fullscreen', 'endscreen-bgr');
+    gameWonScreen.classList.replace('game-won-screen-fullscreen', 'game-won-screen');
+    winHeadline.classList.replace('win-headline-fullscreen', 'win-headline');
+    backToStartBtn.classList.replace('back-to-start-btn-fullscreen', 'back-to-start-btn');
 }
 
-
+/**
+ * Toggles between fullscreen icons based on the current fullscreen state.
+ */
 function toggleFullscreenIcon() {
     const enterFullscreenIcon = document.getElementById('fullscreen-icon');
     const exitFullscreenIcon = document.getElementById('exit-fullscreen-icon');
@@ -152,7 +160,9 @@ function toggleFullscreenIcon() {
     handleMobileMode(enterFullscreenIcon, exitFullscreenIcon);
 }
 
-
+/**
+ * Manages the display of fullscreen icons for desktop mode.
+ */
 function handleDesktopMode(enterFullscreenIcon, exitFullscreenIcon) {
     if (fullscreen) {
         enterFullscreenIcon.classList.add('d-none');
@@ -163,20 +173,26 @@ function handleDesktopMode(enterFullscreenIcon, exitFullscreenIcon) {
     }
 }
 
-
+/**
+ * Handles fullscreen state changes and updates UI accordingly.
+ */
 function handleFullscreen() {
     fullscreenWasntActive();
     fullscreenWasActive();
 }
 
-
+/**
+ * Handles UI updates when fullscreen was not active.
+ */
 function fullscreenWasntActive() {
     if (!fullscreen) {
         toggleVolumeIcon();
     }
 }
 
-
+/**
+ * Handles UI updates when fullscreen was active.
+ */
 function fullscreenWasActive() {
     let wasFullscreen = fullscreen;
     if (wasFullscreen) {

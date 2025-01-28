@@ -1,3 +1,6 @@
+/**
+ * Checks if the sounds are muted and plays background music if not muted.
+ */
 function checkIfSoundsMuted() {
     if (!soundsMuted) {
         audioManager.setVolume(SOUNDS.GAME_MUSIC, 0.5);
@@ -5,14 +8,18 @@ function checkIfSoundsMuted() {
     }
 }
 
-
+/**
+ * Registers all sound files by preloading their instances.
+ */
 function registerAllSounds() {
     Object.values(SOUNDS).forEach(src => {
         audioManager.getAudioInstance(src);
     });
 }
 
-
+/**
+ * Mutes all game sounds and updates the UI to reflect the mute state.
+ */
 function muteAllSounds() {
     soundsMuted = true;
     audioManager.muteAll();
@@ -20,7 +27,9 @@ function muteAllSounds() {
     document.getElementById('mute-btn').style.display = 'flex';
 }
 
-
+/**
+ * Unmutes all game sounds, updates the UI, and resumes game music if the game is started.
+ */
 function playAllSounds() {
     soundsMuted = false;
     audioManager.unmuteAll();
@@ -29,7 +38,9 @@ function playAllSounds() {
     manageSoundIfGameStarted();
 }
 
-
+/**
+ * Manages background music playback if the game has already started.
+ */
 function manageSoundIfGameStarted() {
     if (gameStarted) {
         audioManager.setVolume(SOUNDS.GAME_MUSIC, 0.5);
@@ -37,9 +48,12 @@ function manageSoundIfGameStarted() {
     }
 }
 
-
+/**
+ * Handles sound effects when the game is won.
+ * It pauses the background music and plays the victory sound.
+ */
 function handleGAmeWonSounds() {
-    if (soundsMuted == false) {
+    if (!soundsMuted) {
         audioManager.unmuteAll();
     }
     audioManager.pause(SOUNDS.GAME_MUSIC);
@@ -47,7 +61,10 @@ function handleGAmeWonSounds() {
     audioManager.play(SOUNDS.WIN_GAME);
 }
 
-
+/**
+ * Handles sound effects when the game is lost.
+ * It pauses background and boss music and plays the game-over sound.
+ */
 function handleGameOverSounds() {
     audioManager.pause(SOUNDS.GAME_MUSIC);
     audioManager.pause(SOUNDS.REACH_ENDBOSS);
@@ -55,12 +72,13 @@ function handleGameOverSounds() {
     audioManager.play(SOUNDS.LOOSE_GAME);
 }
 
-
+/**
+ * Restarts the sound settings based on whether sounds are muted or not.
+ */
 function restartSounds() {
-    if (soundsMuted == true) {
+    if (soundsMuted) {
         audioManager.muteAll();
-    }
-    if (soundsMuted == false) {
+    } else {
         audioManager.unmuteAll();
     }
 }

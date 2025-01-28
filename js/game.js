@@ -21,15 +21,18 @@ window.addEventListener('load', () => {
     setupTouchControls();
 });
 
-
 /**
- * Prüft, ob es sich um ein mobiles Gerät oder Tablet handelt
+ * Checks if the device is a mobile or tablet.
+ * 
+ * @returns {boolean} True if the device is mobile or tablet, otherwise false.
  */
 function isMobileDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 }
 
-
+/**
+ * Initializes the game by setting up the canvas, hiding unnecessary elements, and configuring controls.
+ */
 function init() {
     canvas = document.getElementById('canvas');
     hideOnLoadPage();
@@ -37,7 +40,9 @@ function init() {
     toggleFullscreenIcon();
 }
 
-
+/**
+ * Starts the game, initializes the game world, and handles UI changes.
+ */
 function startGame() {
     if (!gameStarted) {
         currentView = 'game';
@@ -53,7 +58,9 @@ function startGame() {
     }
 }
 
-
+/**
+ * Restarts the game by resetting necessary values and reinitializing the game world.
+ */
 function restartGame() {
     win = null;
     document.getElementById('icon-main-con').style.display = 'flex';
@@ -64,12 +71,16 @@ function restartGame() {
     startGame();
 }
 
-
+/**
+ * Resets the game state and reloads the page to start fresh.
+ */
 function backToStartscreen() {
     location.reload();
 }
 
-
+/**
+ * Initializes the game world, sets up levels, registers sounds, and displays the canvas.
+ */
 function initializeGameWorld() {
     initLevel();
     registerAllSounds();
@@ -78,7 +89,9 @@ function initializeGameWorld() {
     world = new World(canvas, keyboard, gameStarted, currentTime);
 }
 
-
+/**
+ * Checks if the Endboss is defeated and triggers the win screen.
+ */
 function checkIfEndbossIsDead() {
     if (world.endboss.endbossIsDead) {
         win = true;
@@ -88,7 +101,9 @@ function checkIfEndbossIsDead() {
     }
 }
 
-
+/**
+ * Checks if the character is dead and triggers the game over screen.
+ */
 function checkIfCharacterIsDead() {
     if (world.character.characterIsDead) {
         win = false;
@@ -98,7 +113,9 @@ function checkIfCharacterIsDead() {
     }
 }
 
-
+/**
+ * Handles the game-winning scenario, updating the UI and stopping the game loop.
+ */
 function gameWon() {
     currentView = 'gameWon';
     removeTouchControls();
@@ -109,7 +126,9 @@ function gameWon() {
     gameStarted = false;
 }
 
-
+/**
+ * Handles the game-over scenario, updating the UI and stopping the game loop.
+ */
 function gameOver() {
     currentView = 'gameOver';
     removeTouchControls();
@@ -119,7 +138,9 @@ function gameOver() {
     gameOverScreenTimeout();
 }
 
-
+/**
+ * Delays the display of the game-over screen and stops all sounds.
+ */
 function gameOverScreenTimeout() {
     setTimeout(() => {
         showGameOverScreen();
@@ -128,19 +149,30 @@ function gameOverScreenTimeout() {
     }, 1000);
 }
 
-
+/**
+ * Creates a stoppable interval and stores its ID for later clearing.
+ * 
+ * @param {Function} fn - The function to execute at intervals.
+ * @param {number} time - The interval duration in milliseconds.
+ */
 function setStoppableInterval(fn, time) {
     let intervalId = setInterval(fn, time);
     stoppableIntervalIds.push(intervalId);
 }
 
-
+/**
+ * Clears all active stoppable intervals.
+ */
 function stopInterval() {
     stoppableIntervalIds.forEach(clearInterval);
     stoppableIntervalIds = [];
 }
 
-
+/**
+ * Clears a specific interval if it exists.
+ * 
+ * @param {number} intervalId - The ID of the interval to clear.
+ */
 function clearSpecificInterval(intervalId) {
     if (intervalId) {
         clearInterval(intervalId);

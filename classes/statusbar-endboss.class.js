@@ -1,4 +1,7 @@
 class EndbossHealthBar extends StatusBar {
+    /**
+     * Creates a new Endboss health bar instance and initializes it with full health.
+     */
     constructor() {
         super();
         this.IMAGES = [

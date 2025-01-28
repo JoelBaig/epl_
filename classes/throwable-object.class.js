@@ -16,6 +16,13 @@ class ThrowableObject extends MovableObject {
         './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
+    /**
+     * Creates a new throwable object (bottle) at a given position.
+     * 
+     * @param {number} x - The initial x-coordinate of the object.
+     * @param {number} y - The initial y-coordinate of the object.
+     * @param {boolean} otherDirection - Whether the object is thrown to the left.
+     */
     constructor(x, y, otherDirection) {
         super().loadImage(this.IMAGES_ROTATING[0]);
         this.loadImages(this.IMAGES_ROTATING);
@@ -27,14 +34,18 @@ class ThrowableObject extends MovableObject {
         this.throw();
     }
 
-
+    /**
+     * Adjusts the initial x-position if the object is thrown to the left.
+     */
     setX() {
         if (this.otherDirection) {
             this.x = this.x - 60;
         }
     }
 
-
+    /**
+     * Initiates the throwing motion, applying gravity to the object.
+     */
     throw() {
         this.speedY = 20;
         this.applyGravity();
@@ -43,7 +54,9 @@ class ThrowableObject extends MovableObject {
         }, 20);
     }
 
-
+    /**
+     * Updates the object's position during the throw.
+     */
     updateThrow() {
         if (this.otherDirection) {
             this.x -= 10;
@@ -53,7 +66,12 @@ class ThrowableObject extends MovableObject {
         this.playAnimation(this.IMAGES_ROTATING);
     }
 
-
+    /**
+     * Handles the impact of the object upon collision, stopping movement and triggering the splash animation.
+     * 
+     * @param {number} x - The x-coordinate where the object hits.
+     * @param {number} y - The y-coordinate where the object hits.
+     */
     hit(x, y) {
         clearInterval(this.throwInterval);
         clearInterval(this.gravity);

@@ -119,6 +119,19 @@
         justify-content: center;
         top: -165px;
     }
+
+    .endscreen-bgr {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .back-to-start-btn {
+        bottom: 10px;
+    }
+
+    .restart-btn {
+        top: 0;
+    }
 }
 
 @media(max-width: 900px) {

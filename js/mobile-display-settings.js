@@ -17,7 +17,7 @@ function handleMobileMode(enterFullscreenIcon, exitFullscreenIcon) {
 function checkOrientation() {
     const overlay = document.getElementById('rotate-device-overlay');
 
-    if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
+    if (window.innerWidth <= 1400 && window.innerHeight > window.innerWidth) {
         overlay.style.display = 'flex';
         hideAllScreens();
     } else {

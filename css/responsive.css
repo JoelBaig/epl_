@@ -1,10 +1,150 @@
+@media(max-width: 1400px) {
+    h1 {
+        display: none;
+    }
+
+    canvas {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .start-screen {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .startscreen-img {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .icon-main-con {
+        top: -448px;
+    }
+
+    .endscreen-bgr {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .wreath-img {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .restart-btn {
+        top: 20px;
+    }
+
+    .back-to-start-btn {
+        bottom: 117px;
+    }
+
+    .win-headline {
+        display: flex;
+        position: fixed;
+        top: 200px;
+        font-size: 164px;
+    }
+
+    .game-won-screen {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .game-over-screen {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .game-over-img {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .start-btn {
+        position: fixed;
+        top: 200px;
+    }
+
+    .info-btns {
+        position: relative;
+        top: 530px;
+    }
+
+    .info-screen {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .close-btn-con-main {
+        top: -580px;
+    }
+
+    .close-btn-con-main-imprint {
+        top: 130px;
+    }
+
+    .how-to-play-main-con {
+        top: -650px;
+        margin-left: 100px;
+        font-size: 40px;
+    }
+
+    .imprint-bgr {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .legal-notice-main-con {
+        height: 100vh;
+        width: 100vw;
+        max-height: 100vh;
+        margin: 0;
+    }
+
+    .privacy-policy {
+        padding: 20px;
+        display: flex;
+    }
+
+    .how-to-play-bgr {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@media(max-width: 1200px) {
+    .info-btns {
+        position: relative;
+        top: 430px;
+    }
+
+    .how-to-play-main-con {
+        font-size: 30px;
+    }
+
+    .how-to-play-img {
+        top: -570px;
+    }
+
+    .close-btn-con-main {
+        top: -500px;
+    }
+
+    .icon-main-con {
+        top: -348px;
+    }
+}
+
 @media(max-width: 1000px) {
     h1 {
         display: none;
     }
 
     canvas {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .info-btns {
@@ -14,6 +154,7 @@
 
     .start-btn {
         position: absolute;
+        top: 180px;
     }
 
     .startscreen-btns {
@@ -34,23 +175,28 @@
     }
 
     .restart-con {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .game-won-screen {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .game-over-screen {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .game-over-img {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .game-over-img-bgr {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .restart-img {
@@ -60,6 +206,7 @@
     .win-headline {
         display: flex;
         position: fixed;
+        top: 20px;
     }
 
     .wreath-img {
@@ -91,11 +238,13 @@
     }
 
     .start-screen {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .startscreen-img {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .fullscreen-btn {
@@ -103,7 +252,8 @@
     }
 
     .info-screen {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .close-btn-how-to-play {
@@ -111,7 +261,11 @@
     }
 
     .close-btn-con-main {
-        top: -250px;
+        top: -220px;
+    }
+
+    .close-btn-con-main-imprint {
+        top: 150px;
     }
 
     .icon-main-con {
@@ -142,6 +296,20 @@
     .icon-main-con {
         top: -152px;
     }
+
+    .restart-img {
+        height: 70px;
+        width: 70px;
+    }
+
+    .win-headline {
+        position: fixed;
+        top: 2px;
+    }
+
+    .close-btn-how-to-play {
+        top: -185px;
+    }
 }
 
 @media(max-width: 850px) {
@@ -154,11 +322,24 @@
     }
 
     .how-to-play-main-con {
-        top: -525px;
+        top: -480px;
     }
 
     .how-to-play-img {
         top: -650px;
+    }
+
+    .restart-img {
+        height: 60px;
+        width: 60px;
+    }
+
+    .close-btn-con-main {
+        top: -180px;
+    }
+
+    .start-btn {
+        top: 170px;
     }
 }
 
@@ -177,7 +358,7 @@
     }
 
     .startscreen-btns {
-        top: -120px;
+        top: -133px;
         z-index: 1;
     }
 
@@ -187,23 +368,38 @@
     }
 
     .startscreen-img {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
         object-fit: contain;
     }
 
     .close-btn-con-main {
-        top: -190px;
+        top: -230px;
     }
 
     .how-to-play-img {
-        top: -530px;
+        top: -580px;
     }
 
     .how-to-play-main-con {
-        top: -415px;
+        top: -456px;
     }
 
     .icon-main-con {
         top: -143px;
+    }
+
+    .restart-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .win-headline {
+        font-size: 120px;
+        top: 30px;
+    }
+
+    .start-btn {
+        top: 185px;
     }
 }

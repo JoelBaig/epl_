@@ -64,7 +64,7 @@ function removeTouchControls() {
  * Checks if the screen is small and adjusts touch controls accordingly.
  */
 function checkIfSmallScreen() {
-    if (isSmallScreen()) {
+    if (window.matchMedia("(pointer: coarse)").matches) {
         addTouchControls();
     } else {
         removeTouchControls();
@@ -77,5 +77,5 @@ function checkIfSmallScreen() {
  * @returns {boolean} - Returns true if the screen is small.
  */
 function isSmallScreen() {
-    return window.innerWidth <= 900;
+    return window.innerWidth <= 1400;
 }

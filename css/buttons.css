@@ -90,7 +90,7 @@
     flex-direction: column;
     display: flex;
     position: fixed;
-    top: 300px;
+    top: 220px;
     border: none;
     background: none;
 }
@@ -164,7 +164,7 @@
 
 .back-to-start-btn {
     position: fixed;
-    bottom: 300px;
+    bottom: 272px;
     border-style: none;
     background: none;
     font-size: 18px;

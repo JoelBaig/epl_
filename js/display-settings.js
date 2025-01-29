@@ -7,6 +7,7 @@ function showGameWonScreen() {
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
+    document.getElementById('legal-notice-main-con').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'none';
     document.getElementById('back-to-start-btn').style.display = 'flex';
 }
@@ -20,6 +21,7 @@ function showGameOverScreen() {
     document.getElementById('restart-btn').style.display = 'flex';
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
+    document.getElementById('legal-notice-main-con').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'none';
     document.getElementById('back-to-start-btn').style.display = 'flex';
 }
@@ -31,6 +33,7 @@ function hideAllScreens() {
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'none';
+    document.getElementById('legal-notice-main-con').style.display = 'none';
     document.getElementById('game-won-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
@@ -69,6 +72,19 @@ function showHowToPlay() {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('how-to-play-screen').style.display = 'flex';
     document.getElementById('back-to-start-btn').style.display = 'none';
+    document.getElementById('epl-headline').style.display = 'none';
+    removeTouchControls();
+}
+
+/**
+ * Displays the "How to Play" screen and hides the start screen.
+ */
+function showImprint() {
+    currentView = 'imprint';
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('legal-notice-main-con').style.display = 'flex';
+    document.getElementById('back-to-start-btn').style.display = 'none';
+    document.getElementById('epl-headline').style.display = 'none';
     removeTouchControls();
 }
 
@@ -78,6 +94,16 @@ function showHowToPlay() {
 function closeHowToPlay() {
     document.getElementById('start-screen').style.display = 'flex';
     document.getElementById('how-to-play-screen').style.display = 'none';
+    document.getElementById('epl-headline').style.display = 'flex';
+}
+
+/**
+ * Closes the "How to Play" screen and returns to the start screen.
+ */
+function closeImprint() {
+    document.getElementById('start-screen').style.display = 'flex';
+    document.getElementById('legal-notice-main-con').style.display = 'none';
+    document.getElementById('epl-headline').style.display = 'flex';
 }
 
 /**
@@ -98,6 +124,8 @@ function handleCurrentView() {
         document.getElementById('canvas').style.display = 'flex';
     } else if (currentView === 'howToPlay') {
         document.getElementById('how-to-play-screen').style.display = 'flex';
+    } else if (currentView === 'imprint') {
+        document.getElementById('legal-notice-main-con').style.display = 'flex';
     } else if (currentView === 'gameOver') {
         document.getElementById('game-over-screen').style.display = 'flex';
         document.getElementById('restart-btn').style.display = 'flex';

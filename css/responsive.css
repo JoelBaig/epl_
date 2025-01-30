@@ -27,6 +27,10 @@
         width: 100vw;
     }
 
+    .epl-headline {
+        display: none;
+    }
+
     .wreath-img {
         height: 100vh;
         width: 100vw;
@@ -401,5 +405,9 @@
 
     .start-btn {
         top: 185px;
+    }
+
+    .back-to-start-btn {
+        bottom: 46px;
     }
 }

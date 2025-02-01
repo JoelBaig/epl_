@@ -7,6 +7,10 @@ class ObjectManager {
     constructor(world) {
         this.world = world;
         this.throwableObjects = [];
+        this.canThrowBottle = true; 
+        this.canBuyBottle = true; 
+        this.throwCooldown = 1000;
+        this.buyCooldown = 1000; 
     }
 
     /**
@@ -19,7 +23,7 @@ class ObjectManager {
     }
 
     /**
-     * Determines the type of object collected and updates the corresponding counters.
+     * Determines the collected object type and updates the corresponding counters.
      * 
      * @param {Object} object - The collected object (Bottle or Coin).
      */
@@ -32,7 +36,7 @@ class ObjectManager {
     }
 
     /**
-     * Handles bottle collection, increasing the bottle count and updating the UI.
+     * Handles the collection of bottles, increasing the bottle count and updating the UI.
      */
     collectBottle() {
         this.world.bottleBar.percentage += 20;
@@ -43,7 +47,7 @@ class ObjectManager {
     }
 
     /**
-     * Handles coin collection, increasing the coin count and updating the UI.
+     * Handles the collection of coins, increasing the coin count and updating the UI.
      */
     collectCoin() {
         this.world.coinBar.percentage += 20;
@@ -54,43 +58,41 @@ class ObjectManager {
     }
 
     /**
-     * Checks if a bottle should be thrown based on player input.
+     * Checks if a bottle can be thrown (prevents spamming using cooldown).
      */
     checkThrowObject() {
-        let currentTime = Date.now();
+        if (this.world.keyboard.D && this.canThrowBottle && this.world.bottleAmount >= 1) {
+            this.throwBottle();
+            this.canThrowBottle = false;
 
-        if (this.world.keyboard.D && 
-            !this.world.keyboard.lastD && 
-            this.world.bottleAmount >= 1 && 
-            (currentTime - this.world.lastThrowTime) >= this.world.throwCooldown) {
-            this.throwBottle(currentTime);
-            this.world.keyboard.lastD = true;
+            setTimeout(() => {
+                this.canThrowBottle = true;
+            }, this.throwCooldown);
         }
         this.world.collisions.checkBottleIsCollidingEnemy();
     }
 
     /**
-     * Throws a bottle, reducing the player's bottle count and playing the throw sound.
-     * 
-     * @param {number} currentTime - The current timestamp to track throw cooldown.
+     * Executes the bottle throwing action.
      */
-    throwBottle(currentTime) {
+    throwBottle() {
         audioManager.setVolume(SOUNDS.THROW_BOTTLE, 0.5);
         audioManager.play(SOUNDS.THROW_BOTTLE);
+
         let bottle = new ThrowableObject(
             this.world.character.x + 20, 
             this.world.character.y + 150, 
             this.world.character.otherDirection
         );
+
         this.world.throwableObjects.push(bottle);
         this.world.bottleAmount--;
         this.world.bottleBar.percentage -= 20;
         this.world.bottleBar.setPercentage(this.world.bottleBar.percentage);
-        this.world.lastThrowTime = currentTime;
     }
 
     /**
-     * Deletes a thrown bottle from the game after a short delay.
+     * Deletes a thrown bottle after a short delay.
      * 
      * @param {number} bottleIndex - The index of the bottle in the array.
      */
@@ -114,24 +116,32 @@ class ObjectManager {
     }
 
     /**
-     * Checks if the player can buy a bottle and updates their inventory.
+     * Checks if the player can buy a bottle (prevents spamming using cooldown).
      */
     checkBuyBottle() {
-        if (this.world.keyboard.F && 
-            !this.world.keyboard.lastF && 
-            this.world.bottleAmount < 5 && 
-            this.world.coinAmount > 0) {
-            
-            audioManager.play(SOUNDS.BUY_BOTTLE);
-            let bottle = new ThrowableObject();
-            this.world.throwableObjects.push(bottle);
-            this.world.bottleAmount++;
-            this.world.bottleBar.percentage += 20;
-            this.world.bottleBar.setPercentage(this.world.bottleBar.percentage);
-            this.world.coinAmount--;
-            this.world.coinBar.percentage -= 20;
-            this.world.coinBar.setPercentage(this.world.coinBar.percentage);
-            this.world.keyboard.lastF = true;
+        if (this.world.keyboard.F && this.canBuyBottle && this.world.bottleAmount < 5 && this.world.coinAmount > 0) {
+            this.buyBottle();
+            this.canBuyBottle = false; 
+
+            setTimeout(() => {
+                this.canBuyBottle = true; 
+            }, this.buyCooldown);
         }
+    }
+
+    /**
+     * Executes the bottle purchasing action.
+     */
+    buyBottle() {
+        audioManager.play(SOUNDS.BUY_BOTTLE);
+
+        let bottle = new ThrowableObject();
+        this.world.throwableObjects.push(bottle);
+        this.world.bottleAmount++;
+        this.world.bottleBar.percentage += 20;
+        this.world.bottleBar.setPercentage(this.world.bottleBar.percentage);
+        this.world.coinAmount--;
+        this.world.coinBar.percentage -= 20;
+        this.world.coinBar.setPercentage(this.world.coinBar.percentage);
     }
 }

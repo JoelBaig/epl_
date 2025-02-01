@@ -26,8 +26,17 @@ class MovableObject extends DrawableObject {
         this.gravity = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.isFallingToGround();
+            } else {
+                this.landOnGround(); // Ensure exact landing position
             }
         }, 1000 / 60);
+    }
+
+    /**
+     * Ensures the object lands exactly on the ground.
+     */
+    landOnGround() {
+        this.y = 170; // Set to fixed ground level
     }
 
     /**
@@ -70,6 +79,11 @@ class MovableObject extends DrawableObject {
     characterIsFalling() {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+
+        // Ensure the character does not fall below the ground level
+        if (this.y > 170 && this instanceof Character) {
+            this.landOnGround();
+        }
     }
 
     /**

@@ -62,17 +62,19 @@ function manageEnterGameWonFullscreen() {
     const gameWonScreen = document.getElementById('game-won-screen');
     const winHeadline = document.getElementById('win-headline');
     const backToStartBtn = document.getElementById('back-to-start-btn');
-    toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn);
+    const wreathImg = document.getElementById('wreath-img');
+    toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn, wreathImg);
 }
 
 /**
  * Applies fullscreen styles to the game won screen elements.
  */
-function toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn) {
+function toggleEnterGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn, wreathImg) {
     gameWonBgr.classList.replace('endscreen-bgr', 'endscreen-bgr-fullscreen');
     gameWonScreen.classList.replace('game-won-screen', 'game-won-screen-fullscreen');
     winHeadline.classList.replace('win-headline', 'win-headline-fullscreen');
     backToStartBtn.classList.replace('back-to-start-btn', 'back-to-start-btn-fullscreen');
+    wreathImg.classList.replace('wreath-img', 'wreath-img-fullscreen');
 }
 
 /**
@@ -137,17 +139,19 @@ function manageExitGameWonFullscreen() {
     const gameWonScreen = document.getElementById('game-won-screen');
     const winHeadline = document.getElementById('win-headline');
     const backToStartBtn = document.getElementById('back-to-start-btn');
-    toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn);
+    const wreathImg = document.getElementById('wreath-img');
+    toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn,wreathImg);
 }
 
 /**
  * Restores original styles for the game won screen elements.
  */
-function toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn) {
+function toggleExitGameWonFullscreen(gameWonBgr, gameWonScreen, winHeadline, backToStartBtn,wreathImg) {
     gameWonBgr.classList.replace('endscreen-bgr-fullscreen', 'endscreen-bgr');
     gameWonScreen.classList.replace('game-won-screen-fullscreen', 'game-won-screen');
     winHeadline.classList.replace('win-headline-fullscreen', 'win-headline');
     backToStartBtn.classList.replace('back-to-start-btn-fullscreen', 'back-to-start-btn');
+    wreathImg.classList.replace('wreath-img-fullscreen', 'wreath-img');
 }
 
 /**

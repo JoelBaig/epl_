@@ -89,8 +89,8 @@
     align-items: center;
     flex-direction: column;
     display: flex;
-    position: fixed;
-    top: 220px;
+    position: relative;
+    top: -470px;
     border: none;
     background: none;
 }
@@ -163,8 +163,8 @@
 }
 
 .back-to-start-btn {
-    position: fixed;
-    bottom: 272px;
+    position: relative;
+    bottom: 231px;
     border-style: none;
     background: none;
     font-size: 18px;

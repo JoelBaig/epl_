@@ -37,11 +37,11 @@
     }
 
     .restart-btn {
-        top: 20px;
+        top: -1000px;
     }
 
     .back-to-start-btn {
-        bottom: 117px;
+        bottom: 290px;
     }
 
     .win-headline {
@@ -139,6 +139,10 @@
     .icon-main-con {
         top: -348px;
     }
+
+    .restart-btn {
+        top: -815px;
+    }
 }
 
 @media(max-width: 1000px) {
@@ -214,7 +218,7 @@
     }
 
     .wreath-img {
-        height: 360px;
+        height: 100vh;
         width: 100%;
         position: fixed;
     }
@@ -284,11 +288,11 @@
     }
 
     .back-to-start-btn {
-        bottom: 10px;
+        bottom: 231px;
     }
 
     .restart-btn {
-        top: 0;
+        top: -431px;
     }
 }
 
@@ -313,6 +317,14 @@
 
     .close-btn-how-to-play {
         top: -185px;
+    }
+
+    .restart-btn {
+        top: -409px;
+    }
+
+    .back-to-start-btn {
+        bottom: 220px;
     }
 }
 
@@ -344,6 +356,15 @@
 
     .start-btn {
         top: 170px;
+    }
+
+    .restart-btn {
+        position: fixed;
+        top: 20px;
+    }
+
+    .back-to-start-btn {
+        bottom: 125px;
     }
 }
 
@@ -408,6 +429,6 @@
     }
 
     .back-to-start-btn {
-        bottom: 46px;
+        bottom: 119px;
     }
 }

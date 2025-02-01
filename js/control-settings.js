@@ -79,3 +79,13 @@ function checkIfSmallScreen() {
 function isSmallScreen() {
     return window.innerWidth <= 1400;
 }
+
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+});
+
+document.querySelectorAll('.touch-btn').forEach(button => {
+    button.addEventListener('touchstart', (event) => {
+        event.preventDefault();
+    });
+});

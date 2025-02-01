@@ -1,4 +1,15 @@
 /**
+ * Checks the stored sound preference from Local Storage and applies it.
+ */
+function checkSoundPreferences() {
+    let storedMuteStatus = localStorage.getItem('soundsMuted');
+    if (storedMuteStatus !== null) {
+        soundsMuted = storedMuteStatus === 'true';
+    }
+    toggleVolumeIcon();
+}
+
+/**
  * Checks if the sounds are muted and plays background music if not muted.
  */
 function checkIfSoundsMuted() {
@@ -22,6 +33,7 @@ function registerAllSounds() {
  */
 function muteAllSounds() {
     soundsMuted = true;
+    localStorage.setItem('soundsMuted', 'true');
     audioManager.muteAll();
     document.getElementById('volume-btn').style.display = 'none';
     document.getElementById('mute-btn').style.display = 'flex';
@@ -32,6 +44,7 @@ function muteAllSounds() {
  */
 function playAllSounds() {
     soundsMuted = false;
+    localStorage.setItem('soundsMuted', 'false');
     audioManager.unmuteAll();
     document.getElementById('volume-btn').style.display = 'flex';
     document.getElementById('mute-btn').style.display = 'none';

@@ -84,6 +84,13 @@ canvas {
     }
 }
 
+.touch-btn {
+    touch-action: manipulation; 
+    user-select: none; 
+    -webkit-user-select: none;
+    -webkit-touch-callout: none; 
+}
+
 .start-screen {
     height: 480px;
     width: 720px;
@@ -149,7 +156,7 @@ canvas {
     overflow-y: auto !important;
     max-height: 80vh;
     padding: 20px;
-    background-image: url('/assets/img/5_background/first_half_background.png');
+    background-image: url('../assets/img/5_background/first_half_background.png');
     background-size: cover;
     background-position: center;
 }
@@ -184,6 +191,7 @@ canvas {
     display: flex;
     position: fixed;
     top: 410px;
+    font-size: 164px;
 }
 
 .game-won-screen {
@@ -250,8 +258,14 @@ canvas {
     position: fixed;
 }
 
-.restart-con {
+.wreath-img-fullscreen {
+    height: 100vh;
+    width: 100vw;
     position: fixed;
+}
+
+.restart-con {
+    position: relative;
     top: 0;
     bottom: 0;
     left: 0;
@@ -306,7 +320,7 @@ canvas {
     display: flex;
     justify-content: space-between;
     position: relative;
-    top: -410px;
+    top: -575px;
     width: 80px;
 }
 
@@ -327,4 +341,13 @@ canvas {
 
 .back-to-start-img:hover {
     transform: translateY(-2px);
+}
+
+.game-over-main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
 }

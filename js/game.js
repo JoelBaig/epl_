@@ -17,6 +17,8 @@ window.addEventListener('resize', checkOrientation);
 
 
 window.addEventListener('load', () => {
+    localStorage.clear(); 
+    checkSoundPreferences();
     init();
     setupTouchControls();
 });
@@ -51,6 +53,11 @@ function startGame() {
         gameStarted = true;
         hideStartscreen();
         initializeGameWorld();
+
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            addTouchControls(); // Zeigt Touch-Steuerung erst jetzt an
+        }
+
         if (soundsMuted) {
             audioManager.muteAll();
         }

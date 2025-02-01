@@ -136,13 +136,15 @@ function handleCurrentView() {
 }
 
 /**
- * Toggles the volume icon based on the mute state.
+ * Applies the stored sound settings by muting or unmuting sounds accordingly.
  */
 function toggleVolumeIcon() {
     if (soundsMuted) {
+        audioManager.muteAll();
         document.getElementById('volume-btn').style.display = 'none';
         document.getElementById('mute-btn').style.display = 'flex';
     } else {
+        audioManager.unmuteAll();
         document.getElementById('volume-btn').style.display = 'flex';
         document.getElementById('mute-btn').style.display = 'none';
     }
